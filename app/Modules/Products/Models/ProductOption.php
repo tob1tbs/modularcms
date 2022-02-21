@@ -25,8 +25,6 @@ class ProductOption extends Model
         $OptionListArray = [
             'input' => 'Input',
             'select' => 'Select',
-            'checkbox' => 'Checkbox',
-            'radio' => 'Radio',
         ];
 
         return $OptionListArray;

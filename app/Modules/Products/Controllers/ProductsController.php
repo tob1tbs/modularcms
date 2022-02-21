@@ -35,10 +35,10 @@ class ProductsController extends Controller
 
             $ProductCategory = new ProductCategory();
             $ProductCategoryList = $ProductCategory::where('deleted_at_int', '!=', 0)
-            ->where('parent_id', 0)
-            ->where('active', 1)
-            ->orderBy('sortable', 'ASC')
-            ->get();
+                                                    ->where('parent_id', 0)
+                                                    ->where('active', 1)
+                                                    ->orderBy('sortable', 'ASC')
+                                                    ->get();
 
             $data = [
                 'product_category_list' => $ProductCategoryList,

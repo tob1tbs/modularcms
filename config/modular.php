@@ -16,5 +16,6 @@ return [
         'Orders',
         'Delivery',
         'FileManager',
+        'Content',
     ]
 ];

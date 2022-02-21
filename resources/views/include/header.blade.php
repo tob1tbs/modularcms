@@ -89,12 +89,12 @@
                     </li>
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-text">ვიზუალური პარამეტრები</span>
+                            <span class="nk-menu-text">კონტენტი</span>
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="{{ route('actionParametersIndex') }}" class="nk-menu-link">
-                                    <span class="nk-menu-text">ზოგადი პარამეტრები</span>
+                                <a href="{{ route('actionSliderIndex') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text">სლაიდერი</span>
                                 </a>
                             </li>
                         </ul>

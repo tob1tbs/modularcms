@@ -484,6 +484,48 @@ function GetSubCategoryAndBrandList() {
                 } else {
                     $("#product_child_category").attr('disabled', 'true');
                 }
+
+                if(Object.keys(data['ProductOptionArray']).length > 0) {
+                    $("#product_parameters > .row").html('');
+                    $.each(data['ProductOptionArray'], function(key, value) {
+                        option_html = '';
+                        switch (value['type']) {
+                            case 'input':
+                                option_html += `
+                                <div class="col-4 mt-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="`+key+`">`+value['name']+`</label>
+                                        <input type="text" name="option[`+key+`]" id="`+key+`" class="form-control">
+                                    </div>
+                                </div>
+                                `;
+                            break;
+                            case 'select':
+                                select_html = '<option value="0"></option>';
+                                $.each(value['options'], function(select_key, select_value) {
+                                    select_html += `
+                                    <option value="`+select_key+`">`+select_value['name']+`</option>
+                                    `;
+                                });
+                                option_html += `
+                                <div class="col-4 mt-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="`+key+`">`+value['name']+`</label>
+                                        <select class="form-control" name="option[`+key+`]" id="`+key+`">
+                                        `+select_html+`
+                                        </select>
+                                    </div>
+                                </div>
+                                `;
+                            break;
+                            default:
+                            option_html += "";
+                        }
+                        $("#product_parameters > .row").append(option_html);
+                    });
+                } else {
+                    // $("#product_parameters > row").html('');
+                }
             }
         }
     });
@@ -1137,6 +1179,30 @@ function OptionValueNameSave(option_value_id) {
             } else {
                 toastr.clear();
                 NioApp.Toast(data['message'], 'error');
+            }
+        }
+    });
+}
+
+function ProductSubmit() {
+    var form = $('#product_form')[0];
+    var data = new FormData(form);
+
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/submit",
+        type: "POST",
+        data: data,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            if(data['status'] == true) {
+                
             }
         }
     });

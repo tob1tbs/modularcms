@@ -350,7 +350,7 @@
                     <div class="col-12">
                         <h5 class="font-neue" style="font-size: 16px; margin: 10px 0;">მნიშვნელობის დამატება</h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-label font-helvetica-regular" for="option_value_name_ge">მნიშვნელობის დასახელება (ქართულად)</label>
                             <div class="form-control-wrap">
@@ -359,21 +359,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-label font-helvetica-regular" for="option_value_name_en">მნიშვნელობის დასახელება (ინგლისურად)</label>
                             <div class="form-control-wrap">
                                 <input type="text" class="form-control check-input" name="option_value_name_en" id="option_value_name_en">
                                 <small class="option_value_name_en-error text-error text-danger mt-1"></small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label class="form-label font-helvetica-regular" for="option_value_key">მნიშვნელობის KEY </label>
-                            <div class="form-control-wrap">
-                                <input type="text" class="form-control check-input" name="option_value_key" id="option_value_key">
-                                <small class="option_value_key-error text-error text-danger mt-1"></small>
                             </div>
                         </div>
                     </div>

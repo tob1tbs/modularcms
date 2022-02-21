@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Modules\Orders\Models\Order;
+use App\Modules\Orders\Models\OrderStatus;
+use App\Modules\Orders\Models\OrderItem;
 
 class OrdersController extends Controller
 {
@@ -46,6 +48,9 @@ class OrdersController extends Controller
     public function actionOrdersEdit(Request $Request) {
         if (view()->exists('orders.orders_edit')) {
 
+            $Order = new Order();
+            $OrderData = $Order::find($Request->order_id);
+
             $data = [
             ];
 
@@ -57,6 +62,9 @@ class OrdersController extends Controller
 
     public function actionOrdersView(Request $Request) {
         if (view()->exists('orders.orders_view')) {
+
+            $Order = new Order();
+            $OrderData = $Order::find($Request->order_id);
 
             $data = [
             ];

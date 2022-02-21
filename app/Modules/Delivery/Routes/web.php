@@ -11,5 +11,4 @@ Route::group(['prefix' => 'delivery/ajax', 'middleware' => []], function () {
     Route::get('/streets', 'DeliveryAjaxController@ajaxGetDeliveryStreets')->name('ajaxGetDeliveryStreets');
     Route::post('/streets/active', 'DeliveryAjaxController@ajaxGetDeliveryStreetsActive')->name('ajaxGetDeliveryStreetsActive');
     Route::post('/district_price', 'DeliveryAjaxController@ajaxUpdateDeliveryPrice')->name('ajaxUpdateDeliveryPrice');
-    
 });

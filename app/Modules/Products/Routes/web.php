@@ -13,36 +13,39 @@ Route::group(['prefix' => 'products', 'middleware' => []], function () {
 
 // AJAX ROUTES
 Route::group(['prefix' => 'products/ajax', 'middleware' => []], function () {
+    // PRODUCTS
+    Route::post('/submit', 'ProductsAjaxController@ajaxProductSubmit')->name('ajaxProductSubmit');
+
     // CATEGORIES
-    Route::post('/categories/submit', 'ProductAjaxController@ajaxCategoriesAdd')->name('ajaxCategoriesAdd');
-    Route::post('/categories/sortable', 'ProductAjaxController@ajaxCategoriesSortable')->name('ajaxCategoriesSortable');
-    Route::post('/categories/active', 'ProductAjaxController@ajaxCategoriesActive')->name('ajaxCategoriesActive');
-    Route::post('/categories/delete', 'ProductAjaxController@ajaxCategoriesDelete')->name('ajaxCategoriesDelete');
-    Route::get('/categories/edit', 'ProductAjaxController@ajaxCategoriesEdit')->name('ajaxCategoriesEdit');
-    Route::get('/categories/child', 'ProductAjaxController@ajaxCategoriesChild')->name('ajaxCategoriesChild');
-    Route::post('/categories/child/submit', 'ProductAjaxController@ajaxCategoriesChildAdd')->name('ajaxCategoriesChildAdd');
-    Route::post('/categories/child/delete', 'ProductAjaxController@ajaxCategoriesChildDelete')->name('ajaxCategoriesChilddelete');
-    Route::post('/categories/child/sortable', 'ProductAjaxController@ajaxCategoriesChildSortable')->name('ajaxCategoriesChildSortable');
-    Route::get('/get/subcategories', 'ProductAjaxController@ajaxGetSubCategoryList')->name('ajaxGetSubCategoryList');
-    Route::get('/get/subcategoriesbrands', 'ProductAjaxController@ajaxGetSubCategoryAndBrandList')->name('ajaxGetSubCategoryAndBrandList');
-    Route::get('/get/brandsbysubcategory', 'ProductAjaxController@ajaxGetBrandByChildCategory')->name('ajaxGetBrandByChildCategory');
+    Route::post('/categories/submit', 'ProductsAjaxController@ajaxCategoriesAdd')->name('ajaxCategoriesAdd');
+    Route::post('/categories/sortable', 'ProductsAjaxController@ajaxCategoriesSortable')->name('ajaxCategoriesSortable');
+    Route::post('/categories/active', 'ProductsAjaxController@ajaxCategoriesActive')->name('ajaxCategoriesActive');
+    Route::post('/categories/delete', 'ProductsAjaxController@ajaxCategoriesDelete')->name('ajaxCategoriesDelete');
+    Route::get('/categories/edit', 'ProductsAjaxController@ajaxCategoriesEdit')->name('ajaxCategoriesEdit');
+    Route::get('/categories/child', 'ProductsAjaxController@ajaxCategoriesChild')->name('ajaxCategoriesChild');
+    Route::post('/categories/child/submit', 'ProductsAjaxController@ajaxCategoriesChildAdd')->name('ajaxCategoriesChildAdd');
+    Route::post('/categories/child/delete', 'ProductsAjaxController@ajaxCategoriesChildDelete')->name('ajaxCategoriesChilddelete');
+    Route::post('/categories/child/sortable', 'ProductsAjaxController@ajaxCategoriesChildSortable')->name('ajaxCategoriesChildSortable');
+    Route::get('/get/subcategories', 'ProductsAjaxController@ajaxGetSubCategoryList')->name('ajaxGetSubCategoryList');
+    Route::get('/get/subcategoriesbrands', 'ProductsAjaxController@ajaxGetSubCategoryAndBrandList')->name('ajaxGetSubCategoryAndBrandList');
+    Route::get('/get/brandsbysubcategory', 'ProductsAjaxController@ajaxGetBrandByChildCategory')->name('ajaxGetBrandByChildCategory');
     // BRANDS
-    Route::post('/brands/submit', 'ProductAjaxController@ajaxBrandFormSubmit')->name('ajaxBrandFormSubmit');
-    Route::post('/brands/active', 'ProductAjaxController@ajaxBrandActiveChange')->name('ajaxBrandActiveChange');
-    Route::post('/brands/delete', 'ProductAjaxController@ajaxBrandDelete')->name('ajaxBrandDelete');
-    Route::post('/brands/sortable', 'ProductAjaxController@ajaxBrandSort')->name('ajaxBrandSort');
-    Route::get('/brands/edit', 'ProductAjaxController@ajaxBrandEdit')->name('ajaxBrandEdit');
+    Route::post('/brands/submit', 'ProductsAjaxController@ajaxBrandFormSubmit')->name('ajaxBrandFormSubmit');
+    Route::post('/brands/active', 'ProductsAjaxController@ajaxBrandActiveChange')->name('ajaxBrandActiveChange');
+    Route::post('/brands/delete', 'ProductsAjaxController@ajaxBrandDelete')->name('ajaxBrandDelete');
+    Route::post('/brands/sortable', 'ProductsAjaxController@ajaxBrandSort')->name('ajaxBrandSort');
+    Route::get('/brands/edit', 'ProductsAjaxController@ajaxBrandEdit')->name('ajaxBrandEdit');
     //OPTIONS
-    Route::post('/options/submit', 'ProductAjaxController@ajaxOptionSubmit')->name('ajaxOptionSubmit');
-    Route::post('/options/active', 'ProductAjaxController@ajaxOptionActive')->name('ajaxOptionActive');
-    Route::get('/options/edit', 'ProductAjaxController@ajaxOptionOptions')->name('ajaxOptionOptions');
-    Route::post('/options/delete', 'ProductAjaxController@ajaxOptionDelete')->name('ajaxOptionDelete');
-    Route::post('/options/sortable', 'ProductAjaxController@ajaxOptionSortable')->name('ajaxOptionSortable');
-    Route::get('/options/value', 'ProductAjaxController@ajaxOptionValue')->name('ajaxOptionValue');
-    Route::post('/options/value/submit', 'ProductAjaxController@ajaxOptionValueSubmit')->name('ajaxOptionValueSubmit');
-    Route::post('/options/value/active', 'ProductAjaxController@ajaxOptionValueActive')->name('ajaxOptionValueActive');
-    Route::post('/options/value/delete', 'ProductAjaxController@ajaxOptionValueDelete')->name('ajaxOptionValueDelete');
-    Route::post('/options/value/sortable', 'ProductAjaxController@ajaxOptionValueSortable')->name('ajaxOptionValueSortable');
-    Route::get('/options/value/edit', 'ProductAjaxController@ajaxOptionValueEdit')->name('ajaxOptionValueEdit');
-    Route::post('/options/value/update', 'ProductAjaxController@ajaxOptionValueUpdate')->name('ajaxOptionValueUpdate');
+    Route::post('/options/submit', 'ProductsAjaxController@ajaxOptionSubmit')->name('ajaxOptionSubmit');
+    Route::post('/options/active', 'ProductsAjaxController@ajaxOptionActive')->name('ajaxOptionActive');
+    Route::get('/options/edit', 'ProductsAjaxController@ajaxOptionOptions')->name('ajaxOptionOptions');
+    Route::post('/options/delete', 'ProductsAjaxController@ajaxOptionDelete')->name('ajaxOptionDelete');
+    Route::post('/options/sortable', 'ProductsAjaxController@ajaxOptionSortable')->name('ajaxOptionSortable');
+    Route::get('/options/value', 'ProductsAjaxController@ajaxOptionValue')->name('ajaxOptionValue');
+    Route::post('/options/value/submit', 'ProductsAjaxController@ajaxOptionValueSubmit')->name('ajaxOptionValueSubmit');
+    Route::post('/options/value/active', 'ProductsAjaxController@ajaxOptionValueActive')->name('ajaxOptionValueActive');
+    Route::post('/options/value/delete', 'ProductsAjaxController@ajaxOptionValueDelete')->name('ajaxOptionValueDelete');
+    Route::post('/options/value/sortable', 'ProductsAjaxController@ajaxOptionValueSortable')->name('ajaxOptionValueSortable');
+    Route::get('/options/value/edit', 'ProductsAjaxController@ajaxOptionValueEdit')->name('ajaxOptionValueEdit');
+    Route::post('/options/value/update', 'ProductsAjaxController@ajaxOptionValueUpdate')->name('ajaxOptionValueUpdate');
 });
