@@ -12,7 +12,6 @@
         var file_path = items.map(function (item) {
           return item.url;
         }).join(',');
-
         // set the value of the desired input to image url
         target_input.val('').val(file_path).trigger('change');
 
@@ -21,12 +20,12 @@
 
         // set or change the preview image src
         items.forEach(function (item) {
+          console.log(item);
           target_preview.append(
             $('<img>').attr('src', item.thumb_url)
           );
+          $("#product_photo").val(item.name);
         });
-
-        // trigger change event
         target_preview.trigger('change');
       };
       return false;

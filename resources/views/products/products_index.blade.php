@@ -25,6 +25,31 @@
                                                     </ul>
                                                 </div>
                                             </div>
+                                            <div class="dropdown">
+                                                <a href="#" class="dropdown-toggle btn btn-light font-helvetica-regular ml-2" data-toggle="dropdown">ნაშთები</a>
+                                                <div class="dropdown-menu" style="min-width: 300px;">
+                                                    <ul class="link-check font-helvetica-regular">
+                                                        <li><span>Excel</span></li>
+                                                        <li><a href="javascript:;" onclick="ProductBalanceExport()">
+                                                            <em class="icon ni ni-download"></em><span>არსებული ნაშთების ჩამოტვირთვა</span></a>
+                                                        </li>
+                                                        <li><a href="javascript:;" onclick="ProductBalanceUpload()">
+                                                            <em class="icon ni ni-upload"></em><span>ახალი ნაშთების ატვირთვა</span></a>
+                                                        </li>
+                                                    </ul>
+                                                    <ul class="link-check font-helvetica-regular">
+                                                        <li class="font-neue"><span>სინქრონიზაცია</span></li>
+                                                        <li><a href="#">
+                                                            <em class="icon ni ni-reload-alt"></em><span>API NAME</span></a>
+                                                        </li>
+                                                    </ul>
+                                                    <ul class="link-check font-helvetica-regular">
+                                                        <li><a href="{{ route('actionProductsBalanceHistory') }}">
+                                                            <em class="icon ni ni-file-plus"></em><span>ნაშთების ცვლილების ისტორია</span></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </li>
                                     </ul>
                                 </div>
@@ -126,8 +151,33 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="BalanceUploadModal" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-neue">პროდუქციის ნაშთების ატვირთვა</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                    <em class="icon ni ni-cross"></em>
+                </a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate is-alter" novalidate="novalidate" id="balance_upload_form">
+                    <div class="form-group">
+                        <label class="form-label font-helvetica-regular" for="excel_file">ექსელის ფაილი *</label>
+                        <div class="form-control-wrap">
+                            <input type="file" class="form-control check-input" name="excel_file" id="excel_file">
+                            <small class="excel_file-error text-error text-danger mt-1"></small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success" onclick="ProductBalanceSubmit()">ატვირთვა</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
-
+<script type="text/javascript" src="{{ url('assets/js/jquery-ui.min.js') }}"></script>
+<script src="{{ url('assets/scripts/products_scripts.js') }}"></script>
 @endsection

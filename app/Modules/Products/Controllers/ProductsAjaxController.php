@@ -11,11 +11,18 @@ use App\Modules\Products\Models\ProductOptionValue;
 use App\Modules\Products\Models\ProductBrand;
 use App\Modules\Products\Models\Product;
 use App\Modules\Products\Models\ProductMeta;
+use App\Modules\Products\Models\ProductPrice;
+use App\Modules\Products\Models\ProductVendor;
+
+use App\Imports\ProductBalanceImport;
 
 use Validator;
-use Illuminate\Validation\Rule;
 use Response;
+use Excel;
+use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+
+use App\Exports\ProductBalanceExport;
 
 class ProductsAjaxController extends Controller
 {
@@ -28,6 +35,7 @@ class ProductsAjaxController extends Controller
             );
             $validator = Validator::make($Request->all(), [
                 'category_name_ge' => 'required|max:255',
+                'category_keywords_ge' => 'required|max:255',
             ], $messages);
 
             if ($validator->fails()) {
@@ -35,6 +43,7 @@ class ProductsAjaxController extends Controller
             } else {
 
                 $Array = ['ge' => $Request->category_name_ge, 'en' => $Request->category_name_en];
+                $ArrayMeta = ['ge' => $Request->category_keywords_ge, 'en' => $Request->category_keywords_en];
 
                 $ProductCategory = new ProductCategory();
                 $ProductCategory::updateOrCreate(
@@ -42,6 +51,7 @@ class ProductsAjaxController extends Controller
                     [
                         'id' => $Request->category_id, 
                         'name' => json_encode($Array),
+                        'meta' => json_encode($ArrayMeta),
                         'parent_id' => 0,
                     ],
                 );
@@ -141,12 +151,14 @@ class ProductsAjaxController extends Controller
             );
             $validator = Validator::make($Request->all(), [
                 'child_category_name_ge' => 'required|max:255',
+                'child_category_keywords_ge' => 'required|max:255',
             ], $messages);
 
             if ($validator->fails()) {
                 return Response::json(['status' => true, 'errors' => true, 'message' => $validator->getMessageBag()->toArray()], 200);
             } else {
                 $Array = ['ge' => $Request->child_category_name_ge, 'en' => $Request->child_category_name_en];
+                $ArrayMeta = ['ge' => $Request->child_category_keywords_ge, 'en' => $Request->child_category_keywords_en];
 
                 $ProductCategory = new ProductCategory();
                 $ProductCategory::updateOrCreate(
@@ -154,6 +166,7 @@ class ProductsAjaxController extends Controller
                     [
                         'id' => $Request->child_category_id, 
                         'name' => json_encode($Array),
+                        'meta' => json_encode($ArrayMeta),
                         'parent_id' => $Request->child_category_parent_id,
                     ],
                 );
@@ -248,7 +261,7 @@ class ProductsAjaxController extends Controller
 
 
     public function ajaxBrandActiveChange(Request $Request) {
-        if($Request->isMethod('POST') && !empty($Request->brand_id)) {
+        if($Request->isMethod('POST') && !empty($Request->brand_id) && $Request->brand_id > 1) {
 
             $ProductBrand = new ProductBrand();
             $ProductBrand::find($Request->brand_id)->update([
@@ -263,7 +276,7 @@ class ProductsAjaxController extends Controller
     }
 
     public function ajaxBrandDelete(Request $Request) {
-        if($Request->isMethod('POST') && !empty($Request->brand_id)) {
+        if($Request->isMethod('POST') && !empty($Request->brand_id) && $Request->brand_id > 1) {
 
             $ProductBrand = new ProductBrand();
             $ProductBrand::find($Request->brand_id)->update([
@@ -292,7 +305,7 @@ class ProductsAjaxController extends Controller
     }
 
     public function ajaxBrandEdit(Request $Request) {
-        if($Request->isMethod('GET') && !empty($Request->brand_id)) {
+        if($Request->isMethod('GET') && !empty($Request->brand_id)  && $Request->brand_id > 1) {
             $ProductBrand = new ProductBrand();
             $ProductBrandData = $ProductBrand::findOrFail($Request->brand_id);
 
@@ -593,6 +606,8 @@ class ProductsAjaxController extends Controller
                 'ProductBrandList' => $ProductBrandList,
                 'ProductOptionArray' => $OptionArray,
             ]);
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
         }
     }
 
@@ -605,19 +620,42 @@ class ProductsAjaxController extends Controller
                 'status' => true, 
                 'ProductBrandList' => $ProductBrandList
             ]);
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
         }
     }
 
-    public function ajaxGetProductCount(Request $Request) {
+    public function ajaxProductBalanceUpdate(Request $Request) {
+        if($Request->isMethod('POST')) {
+            $messages = array(
+                'required' => 'გთხოვთ აირჩიოთ ასატვირთი ფაილი',
+            );
+
+            $validator = Validator::make($Request->all(), [
+                'excel_file' => 'required|max:255',
+            ], $messages);
+
+            if ($validator->fails()) {
+                return Response::json(['status' => true, 'errors' => true, 'message' => $validator->getMessageBag()->toArray()], 200);
+            } else {
+                Excel::import(new ProductBalanceImport, $Request->excel_file);
+                return Response::json(['status' => true, 'message' => 'ნაშთები წარმატებით განახლდა']);
+            }
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxGetProductBalance(Request $Request) {
         if($Request->isMethod('GET') && !empty($Request->product_id)) {
             $Product = new Product();
-            $ProductCount = $Product::find($Request->product_id);
+            $ProductBalance = $Product::find($Request->product_id);
 
-            if(!empty($ProductCount)) {
+            if(!empty($ProductBalance)) {
                 return Response::json([
                     'status' => true, 
                     'errors' => false, 
-                    'ProductCount' => $ProductCount, 
+                    'ProductBalance' => $ProductBalance, 
                 ]);
             } else {
                 return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
@@ -625,10 +663,10 @@ class ProductsAjaxController extends Controller
         }
     }
 
-    public function ajaxProductCountUpdate(Request $Request) {
+    public function ajaxProductBaalanceUpdate(Request $Request) {
         if($Request->isMethod('POST') && !empty($Request->product_id) && $Request->product_id > 0) {
             $Product = new Product();
-            $ProductCount = $Product::find($Request->product_id)->update([
+            $ProductBalance = $Product::find($Request->product_id)->update([
                 'count' => $Request->product_count,
             ]);
 
@@ -642,6 +680,14 @@ class ProductsAjaxController extends Controller
         }
     }
 
+    public function ajaxProductBalanceExport(Request $Request) {
+        if($Request->isMethod('GET')) {
+            return (new ProductBalanceExport())->download('balance.xlsx');
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
     public function ajaxProductSubmit(Request $Request) {
         if($Request->isMethod('POST')) {
             $messages = array(
@@ -649,19 +695,18 @@ class ProductsAjaxController extends Controller
             );
 
             $validator = Validator::make($Request->all(), [
-                'product_category' => 'required|max:255',
-                'product_name_ge' => 'required|max:255',
-                'product_meta_keywords_ge' => 'required|max:255',
-                'product_meta_description_ge' => 'required|max:255',
-                'product_price' => 'required|max:255',
-                'product_discount_percent' => 'required|max:255',
-                'product_discount_price' => 'required|max:255',
-                'product_count' => 'required|max:255',
+                'product_photo' => 'required|max:255',
             ], $messages);
 
             if ($validator->fails()) {
                 return Response::json(['status' => true, 'errors' => true, 'message' => $validator->getMessageBag()->toArray()], 200);
             } else {
+
+                foreach($Request->product_option as $OptionKey => $OptionItem) {
+                    dd($Request->product_option);
+                }
+
+                exit();
                 $Product = new Product();
                 $ProductData = $Product::updateOrCreate(
                     ['id' => $Request->product_id],
@@ -671,7 +716,10 @@ class ProductsAjaxController extends Controller
                         'name_ge' => $Request->product_name_ge,
                         'name_en' => $Request->product_name_en,
                         'category_id' => $Request->product_category,
+                        'photo' => $Request->product_photo,
                         'child_category_id' => $Request->product_child_category,
+                        'discount_price' => $Request->product_discount_price * 100,
+                        'discount_percent' => $Request->product_discount_percent,
                         'brand_id' => $Request->product_brand,
                         'count' => $Request->product_count,
                         'stock' => $Request->product_in_stock,
@@ -685,9 +733,48 @@ class ProductsAjaxController extends Controller
                 $ProductMeta->keywords_en = $Request->product_meta_keywords_en;
                 $ProductMeta->description_ge = $Request->product_meta_description_ge;
                 $ProductMeta->description_en = $Request->product_meta_description_en;
-                $ProductMeta->save();
+                // $ProductMeta->save();
+
+                $ProductPrice = new ProductPrice();
+                $ProductPrice->product_id = $ProductData->id;
+                $ProductPrice->price = $Request->product_price * 100;
+                // $ProductPrice->save();
+
+                return Response::json(['status' => true]);
             }
 
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxVendorsSubmit(Request $Request) {
+        if($Request->isMethod('POST')) {
+            $messages = array(
+                'required' => 'გთხოვთ შეიყვანოთ ყველა აუცილებელი ველი',
+            );
+            $validator = Validator::make($Request->all(), [
+                'vendor_name' => 'required|max:255',
+                'vendor_code' => 'required|unique:new_product_vendors,code,'.$Request->vendor_id.'|max:50',
+                'vendor_address' => 'required|max:255',
+                'vendor_phone' => 'required|max:255',
+            ], $messages);
+
+            if ($validator->fails()) {
+                return Response::json(['status' => true, 'errors' => true, 'message' => $validator->getMessageBag()->toArray()], 200);
+            } else {
+                $ProductVendor = new ProductVendor();
+                $ProductVendor::updateOrCreate(
+                    ['id' => $Request->vendor_id],
+                    [
+                        'id' => $Request->vendor_id,
+                        'name' => $Request->vendor_name,
+                        'code' => $Request->vendor_code,
+                        'phone' => $Request->vendor_phone,
+                        'address' => $Request->vendor_address,
+                    ],
+                );
+            }
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
         }

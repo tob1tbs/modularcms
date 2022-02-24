@@ -98,7 +98,8 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                   <input id="thumbnail" class="form-control" type="text" name="filepath" style="width: 85%; float: left;">
+                                                    <input id="thumbnail" class="form-control" type="text" style="width: 85%; float: left;">
+                                                    <input type="hidden" name="product_photo" id="product_photo">
                                                     <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-light font-helvetica-regular" style="max-width: 15%; float: right;">სურათის არჩევა</a>
                                                 </div>
                                             </div>
@@ -165,14 +166,14 @@
                                     </div>
                                     <div class="col-6 mt-2">
                                         <div class="form-group">
-                                            <label class="form-label" for="product_discount_percent">პროდუქტის ფასდაკლების %</label>
-                                            <input type="number" name="product_discount_percent" id="product_discount_percent" class="form-control">
+                                            <label class="form-label" for="product_discount_price">პროდუქტის ფასდაკლების თანხა</label>
+                                            <input type="number" name="product_discount_price" id="product_discount_price" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-6 mt-2">
                                         <div class="form-group">
-                                            <label class="form-label" for="product_discount_price">პროდუქტის ფასდაკლების თანხა</label>
-                                            <input type="number" name="product_discount_price" id="product_discount_price" class="form-control">
+                                            <label class="form-label" for="product_discount_percent">პროდუქტის ფასდაკლების %</label>
+                                            <input type="number" name="product_discount_percent" id="product_discount_percent" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-12 mt-2">

@@ -71,6 +71,11 @@
                                 </a>
                             </li>
                             <li class="nk-menu-item">
+                                <a href="{{ route('actionProductsVendors') }}" class="nk-menu-link">
+                                    <span class="nk-menu-text">მომწოდებლები</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
                                 <a href="{{ route('actionProductsOptions') }}" class="nk-menu-link">
                                     <span class="nk-menu-text">დამატებითი ველები</span>
                                 </a>

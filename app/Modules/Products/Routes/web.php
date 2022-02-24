@@ -8,14 +8,18 @@ Route::group(['prefix' => 'products', 'middleware' => []], function () {
     Route::get('/categories', 'ProductsController@actionProductsCategories')->name('actionProductsCategories');
     Route::get('/brands', 'ProductsController@actionProductsBrands')->name('actionProductsBrands');
     Route::get('/options', 'ProductsController@actionProductsOptions')->name('actionProductsOptions');
+    Route::get('/vendor', 'ProductsController@actionProductsVendors')->name('actionProductsVendors');
     Route::get('/facebook', 'ProductsController@actionProductsFacebook')->name('actionProductsFacebook');
+    Route::get('/balance/history', 'ProductsController@actionProductsBalanceHistory')->name('actionProductsBalanceHistory');
+    Route::get('/balance/history/{id}', 'ProductsController@actionProductsBalanceHistoryList')->name('actionProductsBalanceHistoryList');
 });
 
 // AJAX ROUTES
 Route::group(['prefix' => 'products/ajax', 'middleware' => []], function () {
     // PRODUCTS
     Route::post('/submit', 'ProductsAjaxController@ajaxProductSubmit')->name('ajaxProductSubmit');
-
+    Route::get('/balance/export', 'ProductsAjaxController@ajaxProductBalanceExport')->name('ajaxProductBalanceExport');
+    Route::post('/balance/update', 'ProductsAjaxController@ajaxProductBalanceUpdate')->name('ajaxProductBalanceUpdate');
     // CATEGORIES
     Route::post('/categories/submit', 'ProductsAjaxController@ajaxCategoriesAdd')->name('ajaxCategoriesAdd');
     Route::post('/categories/sortable', 'ProductsAjaxController@ajaxCategoriesSortable')->name('ajaxCategoriesSortable');
@@ -48,4 +52,6 @@ Route::group(['prefix' => 'products/ajax', 'middleware' => []], function () {
     Route::post('/options/value/sortable', 'ProductsAjaxController@ajaxOptionValueSortable')->name('ajaxOptionValueSortable');
     Route::get('/options/value/edit', 'ProductsAjaxController@ajaxOptionValueEdit')->name('ajaxOptionValueEdit');
     Route::post('/options/value/update', 'ProductsAjaxController@ajaxOptionValueUpdate')->name('ajaxOptionValueUpdate');
+    //VENDORS
+    Route::post('/vendors/submit', 'ProductsAjaxController@ajaxVendorsSubmit')->name('ajaxVendorsSubmit');
 });

@@ -11,5 +11,5 @@ class ProductCategory extends Model
 
     protected $table = "new_product_category";
 
-    protected $fillable = ['name', 'parent_id', 'active', 'deleted_at', 'deleted_at_int'];
+    protected $fillable = ['name', 'parent_id', 'meta', 'active', 'deleted_at', 'deleted_at_int'];
 }

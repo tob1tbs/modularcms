@@ -171,12 +171,15 @@
                                             </a>
                                         </div>
                                         <div class="nk-tb-col tb-col-md">
+                                            @if($brand_item->id != 1)
                                             <div class="custom-control custom-switch">
                                                 <input type="checkbox" class="custom-control-input" id="brand_active_{{ $brand_item->id }}" onclick="BrandActiveChange({{ $brand_item->id }}, this)" @if($brand_item->active == 1) checked @endif>
                                                 <label class="custom-control-label" for="brand_active_{{ $brand_item->id }}"></label>
                                             </div>
+                                            @endif
                                         </div>
                                         <div class="nk-tb-col nk-tb-col-tools">
+                                            @if($brand_item->id != 1)
                                             <ul class="nk-tb-actions gx-1">
                                                 <li>
                                                     <div class="drodown">
@@ -200,6 +203,7 @@
                                                     </div>
                                                 </li>
                                             </ul>
+                                            @endif
                                         </div>
                                     </div>
                                     @endforeach

@@ -9,7 +9,10 @@ use App\Http\Controllers\Controller;
 use App\Modules\Products\Models\Product;
 use App\Modules\Products\Models\ProductCategory;
 use App\Modules\Products\Models\ProductBrand;
+use App\Modules\Products\Models\ProductVendor;
 use App\Modules\Products\Models\ProductOption;
+use App\Modules\Products\Models\ProductCountLog;
+use App\Modules\Products\Models\ProductCountLogItem;
 
 class ProductsController extends Controller
 {
@@ -124,6 +127,17 @@ class ProductsController extends Controller
         }
     }
 
+    public function actionProductsVendors(Request $Request) {
+        if (view()->exists('products.products_vendors')) {
+
+            $data = [];
+
+            return view('products.products_vendors', $data);
+        } else {
+            abort('404');
+        }
+    }
+
     public function actionProductsOptions(Request $Request) {
         if (view()->exists('products.products_options')) {
 
@@ -152,6 +166,44 @@ class ProductsController extends Controller
             ];
 
             return view('products.products_facebook', $data);
+        } else {
+            abort('404');
+        }
+    }
+
+    public function actionProductsBalanceHistory(Request $Request) {
+        if (view()->exists('products.products_balance_history')) {
+
+            $ProductCountLog = new ProductCountLog();
+            $ProductCountLogData = $ProductCountLog::where('deleted_at_int', '!=', 0)->get();
+
+            $data = [
+                'product_count_log_list' => $ProductCountLogData,
+            ];
+
+            return view('products.products_balance_history', $data);
+        } else {
+            abort('404');
+        }
+    }
+
+    public function actionProductsBalanceHistoryList(Request $Request) {
+        if (view()->exists('products.products_balance_history_items')) {
+
+            $ProductCountLog = new ProductCountLog();
+            $ProductCountLogData = $ProductCountLog::find($Request->id);
+
+            $LogArray = [];
+
+            $ProductCountLogItem = new ProductCountLogItem();
+            $ProductCountLogItemList = $ProductCountLogItem::where('log_id', $Request->id)->get();
+
+            $data = [
+                'product_count_log' => $ProductCountLogData,
+                'product_count_log_item_list' => $ProductCountLogItemList,
+            ];
+
+            return view('products.products_balance_history_items', $data);
         } else {
             abort('404');
         }

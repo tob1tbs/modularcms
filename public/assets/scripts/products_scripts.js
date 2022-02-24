@@ -125,6 +125,8 @@ function CategoryEdit(category_id) {
         		$('#category_form')[0].reset();
 	            $("#category_name_ge").val(JSON.parse(data['ProductCategoryData']['name'])['ge']);
 	            $("#category_name_en").val(JSON.parse(data['ProductCategoryData']['name'])['en']);
+                $("#category_keywords_ge").val(JSON.parse(data['ProductCategoryData']['meta'])['ge']);
+                $("#category_keywords_en").val(JSON.parse(data['ProductCategoryData']['meta'])['en']);
 	            $("#category_id").val(data['ProductCategoryData']['id']);
 		        $("#CategoryModal").modal('show');
             }
@@ -173,10 +175,9 @@ function ChildCategoriesList(category_id) {
                                                 <em class="icon ni ni-more-h"></em>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right" style="width: 240px;">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li class="divider"></li>
+                                                <ul class="link-list-opt no-bdr font-helvetica-regular">
                                                     <li>
-                                                        <a href="javascript:;" onclick="CategoryEdit({{ $category_item->id }})">
+                                                        <a href="javascript:;" onclick="CategoryEdit(`+value['id']+`)">
                                                             <em class="icon ni ni-dot"></em>
                                                             <span>რედაქტირება</span>
                                                         </a>
@@ -495,7 +496,7 @@ function GetSubCategoryAndBrandList() {
                                 <div class="col-4 mt-2">
                                     <div class="form-group">
                                         <label class="form-label" for="`+key+`">`+value['name']+`</label>
-                                        <input type="text" name="option[`+key+`]" id="`+key+`" class="form-control">
+                                        <input type="text" name="product_option[`+key+`]" id="`+key+`" class="form-control">
                                     </div>
                                 </div>
                                 `;
@@ -511,7 +512,7 @@ function GetSubCategoryAndBrandList() {
                                 <div class="col-4 mt-2">
                                     <div class="form-group">
                                         <label class="form-label" for="`+key+`">`+value['name']+`</label>
-                                        <select class="form-control" name="option[`+key+`]" id="`+key+`">
+                                        <select class="form-control" name="product_option[`+key+`]" id="`+key+`">
                                         `+select_html+`
                                         </select>
                                     </div>
@@ -1203,6 +1204,122 @@ function ProductSubmit() {
         success: function(data) {
             if(data['status'] == true) {
                 
+            }
+        }
+    });
+}
+
+function ProductBalanceExport() {
+    $.ajax({
+        xhrFields: {
+            responseType: 'blob',
+        },
+        url: "/products/ajax/balance/export",
+        type: "GET",
+        data: {
+            
+        },
+        success: function(result, status, xhr) {
+            var disposition = xhr.getResponseHeader('content-disposition');
+            var matches = /"([^"]*)"/.exec(disposition);
+            var blob = new Blob([result], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'balance.xlsx';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    });
+}
+
+function ProductBalanceUpload() {
+    $("#BalanceUploadModal").modal('show');
+}
+
+function ProductBalanceSubmit() {
+    Swal.fire({
+        title: "ნამდვილად გსურთ მომხმარებლის ნაშთების განახლება?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'დადასტურება',
+        cancelButtonText: "გათიშვა",
+        preConfirm: () => {
+            var form = $('#balance_upload_form')[0];
+            var data = new FormData(form);
+
+            $.ajax({
+                type: "POST",
+                url: "/products/ajax/balance/update",
+                data: data,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    if(data['errors'] == true) {
+                        $(".check-input").removeClass('border-danger'); 
+                        $(".text-error").html('');
+                        $.each(data['message'], function(key, value) {
+                            $("#"+key).addClass('border-danger');
+                            $("."+key+"-error").html(value);
+                        });
+                    } else {
+                        Swal.fire({
+                          icon: 'success',
+                          text: data['message'],
+                        })
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+}
+
+function VendorModal() {
+    $('#vendor_form')[0].reset();
+    $(".vendor-modal-head").html('ახალი მომწოდებლის დამატება');
+    $("#VendorModal").modal('show');
+}
+
+function VendorFormSubmit() {
+    var form = $('#vendor_form')[0];
+    var data = new FormData(form);
+
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/vendors/submit",
+        type: "POST",
+        data: data,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            if(data['status'] == true) {
+                if(data['errors'] == true) {
+                    $(".check-input").removeClass('border-danger'); 
+                    $(".text-error").html('');
+                    $.each(data['message'], function(key, value) {
+                        $("#"+key).addClass('border-danger');
+                        $("."+key+"-error").html(value);
+                    });
+                } else {
+                    Swal.fire({
+                      icon: 'success',
+                      text: data['message'],
+                    })
+                    location.reload();
+                }
             }
         }
     });

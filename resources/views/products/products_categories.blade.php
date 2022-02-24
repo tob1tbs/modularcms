@@ -212,7 +212,7 @@
     </div>
 </div>
 <div class="modal fade" id="CategoryModal" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title font-neue category-modal-head"></h5>
@@ -222,21 +222,48 @@
             </div>
             <div class="modal-body">
                 <form action="#" class="form-validate is-alter" novalidate="novalidate" id="category_form">
-                    <div class="form-group">
-                        <label class="form-label font-helvetica-regular" for="category_name_ge">კატეგორიის დასახელება (ქართულად) *</label>
-                        <div class="form-control-wrap">
-                            <input type="text" class="form-control check-input" name="category_name_ge" id="category_name_ge">
-                            <small class="category_name_ge-error text-error text-danger mt-1"></small>
+                    <div class="row">
+                        <div class="col-lg-6 mb-2">
+                            <div class="form-group">
+                                <label class="form-label font-helvetica-regular" for="category_name_ge">კატეგორიის დასახელება (ქართულად) *</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control check-input" name="category_name_ge" id="category_name_ge">
+                                    <small class="category_name_ge-error text-error text-danger mt-1"></small>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label font-helvetica-regular" for="category_name_en">კატეგორიის დასახელება (ინგლისურად)</label>
-                        <div class="form-control-wrap">
-                            <input type="text" class="form-control" name="category_name_en" id="category_name_en">
+                        <div class="col-lg-6 col-lg-6 mb-2">
+                            <div class="form-group">
+                                <label class="form-label font-helvetica-regular" for="category_name_en">კატეგორიის დასახელება (ინგლისურად)</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control" name="category_name_en" id="category_name_en">
+                                    <small class="category_name_en-error text-error text-danger mt-1"></small>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-lg btn-primary font-helvetica-regular" onclick="CategoryFormSubmit()">დადასტურება</button>
+                        <div class="col-lg-6 col-lg-6 mb-2">
+                            <div class="form-group">
+                                <label class="form-label font-helvetica-regular" for="category_keywords_ge">კატეგორიის Meta Keywords (ქართულად) *</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control" name="category_keywords_ge" id="category_keywords_ge">
+                                    <small class="category_keywords_ge-error text-error text-danger mt-1"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-lg-6 mb-2">
+                            <div class="form-group">
+                                <label class="form-label font-helvetica-regular" for="category_keywords_en">კატეგორიის Meta Keywords (ინგლისურად)</label>
+                                <div class="form-control-wrap">
+                                    <input type="text" class="form-control" name="category_keywords_en" id="category_keywords_en">
+                                    <small class="category_keywords_en-error text-error text-danger mt-1"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-lg-6 mb-2">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-lg btn-primary font-helvetica-regular" onclick="CategoryFormSubmit()">დადასტურება</button>
+                            </div>
+                        </div>
                     </div>
                     <input type="hidden" name="category_id" id="category_id">
                 </form>
@@ -273,7 +300,7 @@
                     <div class="col-12">
                         <h5 class="font-neue" style="font-size: 16px; margin: 10px 0;">ქვეკატეგორიის დამატება</h5>
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-6 mb-2">
                         <div class="form-group">
                             <label class="form-label font-helvetica-regular" for="child_category_name_ge">ქვეკატეგორიის დასახელება (ქართულად)</label>
                             <div class="form-control-wrap">
@@ -282,7 +309,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-6 mb-2">
                         <div class="form-group">
                             <label class="form-label font-helvetica-regular" for="child_category_name_en">ქვეკატეგორიის დასახელება (ინგლისურად)</label>
                             <div class="form-control-wrap">
@@ -291,7 +318,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-6 mb-2">
+                        <div class="form-group">
+                            <label class="form-label font-helvetica-regular" for="child_category_keywords_ge">ქვეკატეგორიის Meta Keywords (ქართულად)</label>
+                            <div class="form-control-wrap">
+                                <input type="text" class="form-control check-input" name="child_category_keywords_ge" id="child_category_keywords_ge">
+                                <small class="child_category_keywords_ge-error text-error text-danger mt-1"></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-2">
+                        <div class="form-group">
+                            <label class="form-label font-helvetica-regular" for="child_category_keywords_en">ქვეკატეგორიის Meta Keywords (ინგლისურად)</label>
+                            <div class="form-control-wrap">
+                                <input type="text" class="form-control check-input" name="child_category_keywords_en" id="child_category_keywords_en">
+                                <small class="child_category_keywords_en-error text-error text-danger mt-1"></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
                         <div class="form-group">
                             <label class="form-label font-helvetica-regular">&nbsp;</label>
                             <div class="form-control-wrap">

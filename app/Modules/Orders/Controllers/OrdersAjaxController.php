@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Modules\Orders\Models\Order;
+use App\Modules\Orders\Models\OrderAction;
 use App\Modules\Products\Models\Product;
 
 use Validator;
@@ -151,4 +152,28 @@ class OrdersAjaxController extends Controller
         }
     }
 
+    public function ajaxActionSubmit(Request $Request) {
+        if($Request->isMethod('POST')) {
+
+            $OrderAction = new OrderAction();
+            $OrderActionData = $OrderAction::find($Request->action_id);
+
+            switch ($OrderActionData->key) {
+                case 'inner_transportation_overhead_import':
+                dd("inner_transportation_overhead_import");
+                break;                
+                case 'send_to_courier':
+                dd("send_to_courier");
+                break;               
+                case 'send_to_courier_2':
+                dd("send_to_courier_2");
+                break;
+            default:
+                return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან !!!']);
+                break;
+            }
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
 }

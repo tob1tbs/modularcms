@@ -10,5 +10,5 @@ Route::group(['prefix' => 'orders', 'middleware' => []], function () {
 
 // AJAX ROUTES
 Route::group(['prefix' => 'orders/ajax', 'middleware' => []], function () {
-    
+    Route::post('/action/submit', 'OrdersAjaxController@ajaxActionSubmit')->name('ajaxActionSubmit');
 });
