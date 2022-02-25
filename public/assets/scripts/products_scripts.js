@@ -438,7 +438,7 @@ function GetSubCategoryList(field_name, append_field_name) {
             if(data['status'] == true) {
                 $("#"+append_field_name).html('');
                 if(data['ProductChildCategoryList'].length > 0) {
-                	html = '<option value="0"></option>';
+                	html = '';
                     $.each(data['ProductChildCategoryList'], function(key, value) {
                         html += `<option value="`+value['id']+`">`+JSON.parse(value['name'])['ge']+`</option>`;
                     });
@@ -464,7 +464,7 @@ function GetSubCategoryAndBrandList() {
             if(data['status'] == true) {
                 if(data['ProductBrandList'].length > 0) {
                     $("#product_brand").html('');
-                    brand_html = '<option value="0"></option>';
+                    brand_html = '';
                     $.each(data['ProductBrandList'], function(key, value) {
                         brand_html += `<option value="`+value['id']+`">`+JSON.parse(value['name'])['ge']+`</option>`;
                     });
@@ -477,7 +477,7 @@ function GetSubCategoryAndBrandList() {
 
                 if(data['ProductChildCategoryList'].length > 0) {
                     $("#product_child_category").html('');
-                    category_html = '<option value="0"></option>';
+                    category_html = '';
                     $.each(data['ProductChildCategoryList'], function(key, value) {
                         category_html += `<option value="`+value['id']+`">`+JSON.parse(value['name'])['ge']+`</option>`;
                     });

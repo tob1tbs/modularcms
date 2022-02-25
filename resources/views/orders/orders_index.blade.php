@@ -140,7 +140,6 @@
                                                         <div class="user-card">
                                                             <div class="user-info">
                                                                 <span class="tb-lead">Abu Bin Ishtiyak <span class="dot dot-success d-md-none ml-1"></span></span>
-                                                                <span>UD01544</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -158,13 +157,9 @@
                                                     </div>
                                                     <div class="nk-tb-col tb-col-md">
                                                         <span class="tb-status text-success">Approved</span>
-                                                        <span data-toggle="tooltip" title="Approved at 18 Dec, 2019 01:02 PM" data-placement="top"><em class="icon ni ni-info"></em></span>
                                                     </div>
                                                     <div class="nk-tb-col tb-col-lg">
                                                         <div class="user-card">
-                                                            <div class="user-avatar user-avatar-xs bg-orange-dim">
-                                                                <span>JS</span>
-                                                            </div>
                                                             <div class="user-name">
                                                                 <span class="tb-lead">Janet Snyder</span>
                                                             </div>
@@ -175,7 +170,7 @@
                                                             <li>
                                                                 <div class="drodown">
                                                                     <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                    <div class="dropdown-menu dropdown-menu-right" style="min-width: 280px;">
+                                                                    <div class="dropdown-menu dropdown-menu-right" style="min-width: 250px; width: 100%;">
                                                                         <ul class="link-check">
 																	      <li><span>Show</span></li>
 																	      <li class="active"><a href="#">10 Items</a></li>

@@ -105,6 +105,16 @@ class ProductsAjaxController extends Controller
                     'deleted_at_int' => 0,
                 ]);
 
+                $Product = new Product();
+                $Product::where('category_id', $Request->category_id)->update([
+                    'category_id' => 1,
+                ]);
+
+                $ProductBrand = new ProductBrand();
+                $ProductBrand::where('category_id', $Request->category_id)->update([
+                    'category_id' => 1,
+                ]);
+
                 return Response::json(['status' => true, 'errors' => false, 'message' => 'მომხმარებელი წარმატებით წაიშალა']);
             } else {
                 return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
@@ -190,6 +200,16 @@ class ProductsAjaxController extends Controller
                 'active' => 0,
                 'deleted_at' => Carbon::now(),
                 'deleted_at_int' => 0,
+            ]);
+
+            $Product = new Product();
+            $Product::where('child_category_id', $Request->child_category_id)->update([
+                'child_category_id' => 2,
+            ]);
+
+            $ProductBrand = new ProductBrand();
+            $ProductBrand::where('category_id', $Request->category_id)->update([
+                'child_category_id' => 2,
             ]);
 
             $ProductChildCategoryList = $ProductCategory::where('parent_id', $ProductCategoryData->parent_id)->where('deleted_at_int', '!=', 0)->get();
@@ -283,6 +303,11 @@ class ProductsAjaxController extends Controller
                 'active' => 0,
                 'deleted_at' => Carbon::now(),
                 'deleted_at_int' => 0,
+            ]);
+
+            $Product = new Product();
+            $Product::where('brand_id', $Request->brand_id)->update([
+                'brand_id' => 1,
             ]);
 
             return Response::json(['status' => true, 'errors' => false, 'message' => 'ბრენდი წარმატებით წაიშალა !!!']);
@@ -568,12 +593,17 @@ class ProductsAjaxController extends Controller
         if($Request->isMethod('GET') && !empty($Request->category_id)) {
             $ProductCategory = new ProductCategory();
             $ProductChildCategoryList = $ProductCategory::where('parent_id', $Request->category_id)
+                                                    ->orWhere('parent_id', 1)
                                                     ->where('deleted_at_int', '!=', 0)
                                                     ->orderBy('sortable', 'ASC')
                                                     ->get();
 
             $ProductBrand = new ProductBrand();
-            $ProductBrandList = $ProductBrand::where('category_id', $Request->category_id)->where('active', 1)->where('deleted_at_int', '!=', 0)->get();
+            $ProductBrandList = $ProductBrand::where('category_id', $Request->category_id)
+                                                ->orWhere('category_id', 1)
+                                                ->where('active', 1)
+                                                ->where('deleted_at_int', '!=', 0)
+                                                ->get();
 
             $ProductOption = new ProductOption();
             $ProductOptionList = $ProductOption::where('category_id', $Request->category_id)->where('active', 1)->where('deleted_at_int', '!=', 0)->get();
