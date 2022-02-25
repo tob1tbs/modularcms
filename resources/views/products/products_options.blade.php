@@ -335,7 +335,6 @@
                         <tr class="font-helvetica-regular">
                           <th>ID</th>
                           <th>SORT</th>
-                          <th>KEY</th>
                           <th>მნიშვნელობის დასახელება (ქართულად)</th>
                           <th>მნიშვნელობის დასახელება (ინგლისურად)</th>
                           <th>სტატუსი</th>

@@ -38,23 +38,60 @@
                             <table class="datatable-init table">
                                 <thead>
                                     <tr class="font-helvetica-regular">
+                                        <th>ID</th>
                                         <th>დასახელება</th>
                                         <th>საიდენტიფიკაციო კოდი</th>
                                         <th>მისამართი</th>
                                         <th>ტელეფონის ნომერი</th>
                                         <th>სტატუსი</th>
-                                        <th>მოქმედება</th>
+                                        <th class="text-right">მოქმედება</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Michael Bruce</td>
-                                        <td>Javascript Developer</td>
-                                        <td>Singapore</td>
-                                        <td>Singapore</td>
-                                        <td>Singapore</td>
-                                        <td>29</td>
+                                    @foreach($vendor_list as $vendor_item)
+                                    <tr class="font-helvetica-regular">
+                                        <td>{{ $vendor_item->id }}</td>
+                                        <td>{{ $vendor_item->name }}</td>
+                                        <td>{{ $vendor_item->code }}</td>
+                                        <td>{{ $vendor_item->address }}</td>
+                                        <td>{{ $vendor_item->phone }}</td>
+                                        <td>
+                                            @if($vendor_item->id != 1)
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="vendor_active_{{ $vendor_item->id }}" onclick="VendorActiveChange({{ $vendor_item->id }}, this)" @if($vendor_item->active == 1) checked @endif>
+                                                <label class="custom-control-label" for="vendor_active_{{ $vendor_item->id }}"></label>
+                                            </div>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($vendor_item->id != 1)
+                                            <ul class="nk-tb-actions gx-1">
+                                                <li>
+                                                    <div class="drodown">
+                                                        <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                                        <div class="dropdown-menu dropdown-menu-right" style="width: 240px;">
+                                                            <ul class="link-list-opt no-bdr">
+                                                                <li>
+                                                                    <a href="javascript:;" onclick="VendorEdit({{ $vendor_item->id }})">
+                                                                        <em class="icon ni ni-dot"></em>
+                                                                        <span>რედაქტირება</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="javascript:;" onclick="VendorDelete({{ $vendor_item->id }})" class="text-danger">
+                                                                        <em class="icon ni ni-trash"></em>
+                                                                        <span>მომწოდებლის წაშლა</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            @endif
+                                        </td>
                                     </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

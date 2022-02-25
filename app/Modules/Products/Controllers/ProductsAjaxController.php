@@ -774,7 +774,66 @@ class ProductsAjaxController extends Controller
                         'address' => $Request->vendor_address,
                     ],
                 );
+
+                return Response::json(['status' => true, 'errors' => false, 'message' => 'მომწოდებელი წარმატებით შეინახა']);
             }
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxVendorsActive(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->vendor_id)) {
+
+            if($Request->vendor_id != 1){
+                $ProductVendor = new ProductVendor();
+                $ProductVendor::find($Request->vendor_id)->update([
+                    'active' => $Request->vandor_active,
+                ]);
+
+                return Response::json(['status' => true, 'errors' => false]);
+            } else {
+                return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+            }
+
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxVendorsDelete(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->vendor_id)) {
+
+            if($Request->vendor_id != 1) {
+                $ProductVendor = new ProductVendor();
+                $ProductVendor::find($Request->vendor_id)->update([
+                    'active' => 0,
+                    'deleted_at' => Carbon::now(),
+                    'deleted_at_int' => 0,
+                ]);
+
+                $Product = new Product();
+                $Product::where('vendor_id', $Request->vendor_id)->update([
+                    'vendor_id' => 1,
+                ]);
+
+                return Response::json(['status' => true, 'errors' => false, 'message' => 'მომწოდებელი წარმატებით წაიშალა']);
+            } else {
+                return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+            }
+
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxVendorsEdit(Request $Request) {
+        if($Request->isMethod('GET') && $Request->vendor_id > 1) {
+
+            $ProductVendor = new ProductVendor();
+            $ProductVendorData = $ProductVendor::find($Request->vendor_id);
+
+            return Response::json(['status' => true, 'errors' => false, 'ProductVendorData' => $ProductVendorData]);
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
         }

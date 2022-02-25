@@ -42,9 +42,12 @@ class ProductsController extends Controller
                                                     ->where('active', 1)
                                                     ->orderBy('sortable', 'ASC')
                                                     ->get();
+            $ProductVendor = new ProductVendor();
+            $ProductVendorList = $ProductVendor::where('deleted_at_int', '!=', 0)->get();
 
             $data = [
                 'product_category_list' => $ProductCategoryList,
+                'product_vendor_list' => $ProductVendorList,
             ];
 
             return view('products.products_add', $data);
@@ -130,7 +133,12 @@ class ProductsController extends Controller
     public function actionProductsVendors(Request $Request) {
         if (view()->exists('products.products_vendors')) {
 
-            $data = [];
+            $ProductVendor = new ProductVendor();
+            $ProductVendorList = $ProductVendor::where('deleted_at_int', '!=', 0)->get();
+
+            $data = [
+                'vendor_list' => $ProductVendorList,
+            ];
 
             return view('products.products_vendors', $data);
         } else {

@@ -54,4 +54,7 @@ Route::group(['prefix' => 'products/ajax', 'middleware' => []], function () {
     Route::post('/options/value/update', 'ProductsAjaxController@ajaxOptionValueUpdate')->name('ajaxOptionValueUpdate');
     //VENDORS
     Route::post('/vendors/submit', 'ProductsAjaxController@ajaxVendorsSubmit')->name('ajaxVendorsSubmit');
+    Route::get('/vendors/edit', 'ProductsAjaxController@ajaxVendorsEdit')->name('ajaxVendorsEdit');
+    Route::post('/vendors/active', 'ProductsAjaxController@ajaxVendorsActive')->name('ajaxVendorsActive');
+    Route::post('/vendors/delete', 'ProductsAjaxController@ajaxVendorsDelete')->name('ajaxVendorsDelete');
 });

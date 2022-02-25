@@ -471,6 +471,7 @@ function GetSubCategoryAndBrandList() {
                     $("#product_brand").append(brand_html);
                     $("#product_brand").removeAttr('disabled');
                 } else {
+                    $("#product_brand").html('');
                     $("#product_brand").attr('disabled', 'true');
                 }
 
@@ -483,6 +484,7 @@ function GetSubCategoryAndBrandList() {
                     $("#product_child_category").append(category_html);
                     $("#product_child_category").removeAttr('disabled');
                 } else {
+                    $("#product_child_category").html('');
                     $("#product_child_category").attr('disabled', 'true');
                 }
 
@@ -525,7 +527,7 @@ function GetSubCategoryAndBrandList() {
                         $("#product_parameters > .row").append(option_html);
                     });
                 } else {
-                    // $("#product_parameters > row").html('');
+                    $("#product_parameters > row").html('');    
                 }
             }
         }
@@ -837,7 +839,6 @@ function OptionValue(option_id) {
                         <tr id="option_value_item-`+value['id']+`">
                             <th>`+value['id']+`</th>
                             <th class="text-center">`+value['sortable']+`</th>
-                            <th class="text-center">`+value['key']+`</th>
                             <td>
                                 <div class="form-group">
                                     <label class="form-label d-none"></label>
@@ -942,7 +943,6 @@ function OptionValueSubmit() {
                            <tr id="option_value_item-`+value['id']+`">
                                 <th>`+value['id']+`</th>
                                 <th class="text-center">`+value['sortable']+`</th>
-                                <th class="text-center">`+value['key']+`</th>
                                 <td>
                                     <div class="form-group">
                                         <label class="form-label d-none"></label>
@@ -955,7 +955,7 @@ function OptionValueSubmit() {
                                         <small class="option_name_ge_`+value['id']+`-error text-error text-danger mt-1"></small>
                                     </div>
                                 </td>
-                               <td>
+                                <td>
                                     <div class="form-group">
                                         <label class="form-label d-none"></label>
                                         <div class="form-control-wrap">
@@ -1320,6 +1320,83 @@ function VendorFormSubmit() {
                     })
                     location.reload();
                 }
+            }
+        }
+    });
+}
+
+function VendorActiveChange(vendor_id, elem) {
+    if($(elem).is(":checked")) {
+        vandor_active = 1;
+    } else {
+        vandor_active = 2
+    }
+
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/vendors/active",
+        type: "POST",
+        data: {
+            vendor_id: vendor_id,
+            vandor_active: vandor_active,
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            return;
+        }
+    });
+}
+
+function VendorDelete(vendor_id) {
+    Swal.fire({
+        title: "ნამდვილად გსურთ მომწოდებლის წაშლა?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'წაშლა',
+        cancelButtonText: "გათიშვა",
+        preConfirm: () => {
+            $.ajax({
+                dataType: 'json',
+                url: "/products/ajax/vendors/delete",
+                type: "POST",
+                data: {
+                    vendor_id: vendor_id,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    Swal.fire({
+                      icon: 'success',
+                      text: data['message'],
+                    })
+                    location.reload();
+                }
+            });
+        }
+    });
+}
+
+function VendorEdit(vendor_id) {
+    $(".vendor-modal-head").html('მომწოდებლის რედაქტირება');
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/vendors/edit",
+        type: "GET",
+        data: {
+            vendor_id: vendor_id,
+        },
+        success: function(data) {
+            if(data['status'] == true) {
+                $('#vendor_form')[0].reset();
+                $("#vendor_name").val(data['ProductVendorData']['name']);
+                $("#vendor_code").val(data['ProductVendorData']['code']);
+                $("#vendor_phone").val(data['ProductVendorData']['phone']);
+                $("#vendor_address").val(data['ProductVendorData']['address']);
+                $("#vendor_id").val(data['ProductVendorData']['id']);
+                $("#VendorModal").modal('show');
             }
         }
     });

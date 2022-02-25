@@ -15,7 +15,7 @@
                     </div>    
                 </div>
             </div>
-            <div class="nk-content-body">
+            <div class="nk-content-body card-bordered">
                 <div class="card card-preview">
                     <form id="product_form" class="row">
                         <div class="col-lg-8">
@@ -29,14 +29,6 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="basic_parameters">
                                         <div class="row">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label class="form-label" for="product_parent">მშობელი პროდუქტი</label>
-                                                    <select class="form-select form-control" data-search="on" name="product_parent" id="product_parent">
-                                                        <option value="0"></option>
-                                                    </select>
-                                                </div>
-                                            </div>
                                             <div class="col-4 mt-2">
                                                 <div class="row">
                                                     <div class="col-12">
@@ -121,7 +113,12 @@
                                     </div>
                                     <div class="tab-pane" id="product_parameters">
                                         <div class="row">
-
+                                            <div class="col-12">
+                                                <div class="alert alert-fill alert-warning alert-icon font-helvetica-regular">
+                                                    <em class="icon ni ni-alert-circle"></em> 
+                                                    პარამეტრების სანახავად გთხოვთ აირჩით პროდუქტის კატეგორია.
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="product_seo">
@@ -158,6 +155,16 @@
                         <div class="col-lg-4">
                             <div class="card-inner">
                                 <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="product_vendor">მომწოდებელი</label>
+                                            <select class="form-select form-control" data-search="on" name="product_vendor" id="product_vendor">
+                                                @foreach($product_vendor_list as $vendor_item)
+                                                <option value="{{ $vendor_item->id }}">{{ $vendor_item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-12 mt-2">
                                         <div class="form-group">
                                             <label class="form-label" for="product_price">პროდუქტის ღირებულება</label>
