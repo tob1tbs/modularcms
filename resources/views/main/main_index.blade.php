@@ -10,73 +10,131 @@
         <div class="nk-content-inner">
             <div class="nk-content-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="row">
                             <div class="col-md-12 mb-2">
-                                <div class="card card-bordered card-full">
+                                <div class="card card-bordered">
                                     <div class="card-inner">
-                                        <div class="card-title-group mb-1">
+                                        <div class="card-title-group align-start mb-2">
                                             <div class="card-title">
-                                                <h6 class="title font-neue">თანხობრივი ბრუნვა</h6>
-                                                <p><a href="#" class="font-helvetica-regular">დეტალური სტატისტიკა</a></p>
+                                                <h6 class="title">Active Subscriptions</h6>
                                             </div>
                                         </div>
-                                        <ul class="nav nav-tabs nav-tabs-card nav-tabs-xs font-helvetica-regular">
-                                            <li class="nav-item">
-                                                <a class="nav-link active" data-toggle="tab" href="#overview">მიმდინარე თვე</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#thisyear">მიმდინარე წელი</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#alltime">ჯამი</a>
-                                            </li>
-                                        </ul>
-                                        <div class="tab-content mt-0">
-                                            <div class="tab-pane active" id="overview">
-                                                <div class="invest-ov gy-2">
-                                                    <div class="subtitle font-helvetica-regular">მიმდინარე თვის ბრუნვა</div>
-                                                    <div class="invest-ov-details">
-                                                        <div class="invest-ov-info">
-                                                            <div class="title font-helvetica-regular mb-1">მინდინარე თვის შეკვეთების ღირებულება</div>
-                                                            <div class="amount">49,395.395 <span class="currency currency-usd">₾</span></div>
-                                                        </div>
-                                                        <div class="invest-ov-stats">
-                                                            <div class="title font-helvetica-regular mb-1">მინდინარე თვის შესრულებული შეკვეთა:</div>
-                                                            <div><span class="amount">56</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
+                                            <div class="nk-sale-data">
+                                                <span class="amount">9.69K</span>
                                             </div>
-                                            <div class="tab-pane" id="thisyear">
-                                                <div class="invest-ov gy-2">
-                                                    <div class="subtitle font-helvetica-regular">მიმდინარე წლის ბრუნვა</div>
-                                                    <div class="invest-ov-details">
-                                                        <div class="invest-ov-info">
-                                                            <div class="title font-helvetica-regular mb-1">მინდინარე წლის შეკვეთების ღირებულება</div>
-                                                            <div class="amount">49,395.395 <span class="currency currency-usd">₾</span></div>
-                                                        </div>
-                                                        <div class="invest-ov-stats">
-                                                            <div class="title font-helvetica-regular mb-1">მინდინარე წელს შესრულებული შეკვეთა:</div>
-                                                            <div><span class="amount">56</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="card-title-group align-start mb-2">
+                                            <div class="card-title">
+                                                <h6 class="title">Active Subscriptions</h6>
                                             </div>
-                                            <div class="tab-pane" id="alltime">
-                                                <div class="invest-ov gy-2">
-                                                    <div class="subtitle font-helvetica-regular">ჯამური ბრუნვა</div>
-                                                    <div class="invest-ov-details">
-                                                        <div class="invest-ov-info">
-                                                            <div class="title font-helvetica-regular mb-1">შეკვეთების ჯამური ღირებულება</div>
-                                                            <div class="amount">49,395.395 <span class="currency currency-usd">₾</span></div>
-                                                        </div>
-                                                        <div class="invest-ov-stats">
-                                                            <div class="title font-helvetica-regular mb-1">შესრულებული შეკვეთა:</div>
-                                                            <div><span class="amount">56</span></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                        <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
+                                            <div class="nk-sale-data">
+                                                <span class="amount">9.69K</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="card-title-group align-start mb-2">
+                                            <div class="card-title">
+                                                <h6 class="title">Active Subscriptions</h6>
+                                            </div>
+                                        </div>
+                                        <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
+                                            <div class="nk-sale-data">
+                                                <span class="amount">9.69K</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="card-title-group align-start mb-2">
+                                            <div class="card-title">
+                                                <h6 class="title">Active Subscriptions</h6>
+                                            </div>
+                                        </div>
+                                        <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
+                                            <div class="nk-sale-data">
+                                                <span class="amount">9.69K</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="card-title-group align-start mb-2">
+                                            <div class="card-title">
+                                                <h6 class="title">Active Subscriptions</h6>
+                                            </div>
+                                        </div>
+                                        <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
+                                            <div class="nk-sale-data">
+                                                <span class="amount">9.69K</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="card-title-group align-start mb-2">
+                                            <div class="card-title">
+                                                <h6 class="title">Active Subscriptions</h6>
+                                            </div>
+                                        </div>
+                                        <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
+                                            <div class="nk-sale-data">
+                                                <span class="amount">9.69K</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="card-title-group align-start mb-2">
+                                            <div class="card-title">
+                                                <h6 class="title">Active Subscriptions</h6>
+                                            </div>
+                                        </div>
+                                        <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
+                                            <div class="nk-sale-data">
+                                                <span class="amount">9.69K</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="card-title-group align-start mb-2">
+                                            <div class="card-title">
+                                                <h6 class="title">Active Subscriptions</h6>
+                                            </div>
+                                        </div>
+                                        <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
+                                            <div class="nk-sale-data">
+                                                <span class="amount">9.69K</span>
                                             </div>
                                         </div>
                                     </div>
@@ -84,7 +142,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <div class="row">
                             <div class="col-md-12 mb-2">
                                 <div class="card card-bordered">
@@ -238,6 +296,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-12 mb-2 mt-2">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="card-head">
+                                            <h6 class="title font-neue">მიმდინარე თვის სტატისტიკა</h6>
+                                        </div>
+                                        <div class="nk-ck-sm">
+                                            <canvas class="line-chart" id="filledLineChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -248,5 +318,5 @@
 @endsection
 
 @section('js')
-
+<script src="{{ url('assets/js/example-chart.js') }}"></script>
 @endsection
