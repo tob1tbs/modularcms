@@ -499,6 +499,7 @@ function GetSubCategoryAndBrandList() {
                                     <div class="form-group">
                                         <label class="form-label" for="`+key+`">`+value['name']+`</label>
                                         <input type="text" name="product_option[`+key+`]" id="`+key+`" class="form-control">
+                                        <input type="hidden" name="product_option_id[`+key+`]" value="`+value['id']+`">
                                     </div>
                                 </div>
                                 `;
@@ -517,6 +518,7 @@ function GetSubCategoryAndBrandList() {
                                         <select class="form-control" name="product_option[`+key+`]" id="`+key+`">
                                         `+select_html+`
                                         </select>
+                                        <input type="hidden" name="product_option_id[`+key+`]" value="`+value['id']+`">
                                     </div>
                                 </div>
                                 `;
@@ -527,8 +529,26 @@ function GetSubCategoryAndBrandList() {
                         $("#product_parameters > .row").append(option_html);
                     });
                 } else {
-                    $("#product_parameters > row").html('');    
+                    $("#product_parameters > .row").html(`
+                        <div class="col-12">
+                            <div class="alert alert-fill alert-warning alert-icon font-helvetica-regular">
+                                <em class="icon ni ni-alert-circle"></em> 
+                                აღნიშნულ კატეგორიაში არ არი პარამეტრები
+                            </div>
+                        </div>
+                    `);    
                 }
+            } else {
+                $("#product_brand, #product_child_category").html('');
+                $("#product_brand, #product_child_category").attr('disabled', 'true');
+                $("#product_parameters > .row").html(`
+                    <div class="col-12">
+                        <div class="alert alert-fill alert-warning alert-icon font-helvetica-regular">
+                            <em class="icon ni ni-alert-circle"></em> 
+                            პარამეტრების სანახავად გთხოვთ აირჩით პროდუქტის კატეგორია.
+                        </div>
+                    </div>
+                `);    
             }
         }
     });
@@ -1203,7 +1223,18 @@ function ProductSubmit() {
         },
         success: function(data) {
             if(data['status'] == true) {
-                
+                if(data['errors'] == true) {
+                    $(".check-input").removeClass('border-danger'); 
+                    $.each(data['message'], function(key, value) {
+                        $("#"+key).addClass('border-danger');
+                    });
+                } else {
+                    Swal.fire({
+                      icon: 'success',
+                      text: data['message'],
+                    })
+                    window.location.replace(data['redirect_url']);
+                }
             }
         }
     });
@@ -1241,7 +1272,7 @@ function ProductBalanceUpload() {
 
 function ProductBalanceSubmit() {
     Swal.fire({
-        title: "ნამდვილად გსურთ მომხმარებლის ნაშთების განახლება?",
+        title: "ნამდვილად გსურთ ნაშთების განახლება?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: 'დადასტურება',
@@ -1401,3 +1432,200 @@ function VendorEdit(vendor_id) {
         }
     });
 }
+
+function ImportParentProduct() {    
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/parent",
+        type: "GET",
+        data: {
+            parent_id: $("#product_parent").val(),
+        },
+        success: function(data) {
+            if(data['status'] == true) {
+                $('#product_form')[0].reset();
+                $("#product_parent option[value='"+data['ProductData']['id']+"']").attr("selected","selected");
+                $("#product_name_ge").val(data['ProductData']['name_ge']);
+                $("#product_name_en").val(data['ProductData']['name_en']);
+                $("#product_category option[value='"+data['ProductData']['category_id']+"']").attr("selected","selected");
+                
+                if(data['ProductChildCategoryList'].length > 0) {
+                    $("#product_child_category").html('');
+                    $.each(data['ProductChildCategoryList'], function(key, value) {
+                        if(data['ProductData']['child_category_id'] == value['id']) {
+                            var Selected = 'selected';
+                        } else {
+                            var Selected = ' ';
+                        }
+                        $("#product_child_category").append(`<option value="`+value['id']+`" `+Selected+`>`+JSON.parse(value['name'])['ge']+`</option>`);
+                    });
+                    $("#product_child_category").removeAttr('disabled');
+                } else {
+                    $("#product_child_category").attr('disabled', 'true');
+                }
+
+                if(data['ProductBrandList'].length > 0) {
+                    $("#product_brand").html('');
+                    $.each(data['ProductBrandList'], function(key, value) {
+                        if(data['ProductData']['brand_id'] == value['id']) {
+                            var Selected = 'selected';
+                        } else {
+                            var Selected = ' ';
+                        }
+                        $("#product_brand").append(`<option value="`+value['id']+`" `+Selected+`>`+JSON.parse(value['name'])['ge']+`</option>`);
+                    });
+                    $("#product_brand").removeAttr('disabled');
+                } else {
+                    $("#product_brand").attr('disabled', 'true');
+                }
+
+                $("#product_status").val(data['ProductData']['status']);
+                $("#product_vendor option[value='"+data['ProductData']['vendor_id']+"']").attr("selected","selected");
+                $("#product_price").val(data['ProductPriceData']['price'] / 100);
+                $("#product_discount_price").val(data['ProductData']['discount_price'] / 100);
+                $("#product_discount_percent").val(data['ProductData']['discount_percent']);
+                $("#product_count").val(data['ProductData']['count']);
+
+                if(data['ProductData']['stock'] == 1) {
+                    $("#product_in_stock").prop('checked', true);
+                } else {
+                    $("#product_in_stock").prop('checked', false);
+                }
+
+                if(data['ProductData']['preorder'] == 1) {
+                    $("#product_preorder").prop('checked', true);
+                } else {
+                    $("#product_preorder").prop('checked', false);
+                }
+
+                if(Object.keys(data['ProductOptionArray']).length > 0) {
+                    $("#product_parameters > .row").html('');
+                    $.each(data['ProductOptionArray'], function(key, value) {
+                        option_html = '';
+                        switch (value['type']) {
+                            case 'input':
+                                option_html += `
+                                <div class="col-4 mt-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="`+key+`">`+JSON.parse(value['name'])['ge']+`</label>
+                                        <input type="text" name="product_option[`+key+`]" id="`+key+`" class="form-control" value="`+value['value']+`">
+                                        <input type="hidden" name="product_option_id[`+key+`]" value="`+value['id']+`">
+                                    </div>
+                                </div>
+                                `;
+                            break;
+                            case 'select':
+                                select_html = '<option value="0"></option>';
+                                $.each(value['options'], function(select_key, select_value) {
+                                    if(select_value['id'] == value['value']) {
+                                        selected = 'selected';
+                                    } else {
+                                        selected = ' ';
+                                    }
+                                    select_html += `
+                                    <option value="`+select_value['id']+`" `+selected+`>`+JSON.parse(select_value['name'])['ge']+`</option>
+                                    `;
+                                });
+                                option_html += `
+                                <div class="col-4 mt-2">
+                                    <div class="form-group">
+                                        <label class="form-label" for="`+key+`">`+JSON.parse(value['name'])['ge']+`</label>
+                                        <select class="form-control" name="product_option[`+key+`]" id="`+key+`">
+                                        `+select_html+`
+                                        </select>
+                                        <input type="hidden" name="product_option_id[`+key+`]" value="`+value['id']+`">
+                                    </div>
+                                </div>
+                                `;
+                            break;
+                            default:
+                            option_html += "";
+                        }
+                        $("#product_parameters > .row").append(option_html);
+                    });
+                } else {
+                    $("#product_parameters > .row").html(`
+                        <div class="col-12">
+                            <div class="alert alert-fill alert-warning alert-icon font-helvetica-regular">
+                                <em class="icon ni ni-alert-circle"></em> 
+                                აღნიშნულ კატეგორიაში არ არი პარამეტრები
+                            </div>
+                        </div>
+                    `);    
+                }
+
+                $("#product_meta_keywords_ge").val(JSON.parse(data['ProductMetaData']['keywords'])['ge']);
+                $("#product_meta_keywords_en").val(JSON.parse(data['ProductMetaData']['keywords'])['en']);
+                $("#product_meta_description_ge").val(JSON.parse(data['ProductMetaData']['description'])['ge']);
+                $("#product_meta_description_en").val(JSON.parse(data['ProductMetaData']['description'])['en']);
+            } else {
+                Swal.fire({
+                  icon: 'warning',
+                  text: data['message'],
+                })
+            }
+        }
+    });
+}
+
+function UpdateProductCount(product_id, elem) {
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/count",
+        type: "GET",
+        data: {
+            product_id: product_id,
+        },
+        success: function(data) {
+            if(data['status'] == true) {
+                $('#product_count_form')[0].reset();
+                $("#product_count").val(data['ProductData']['count']);
+                $("#product_count_id").val(data['ProductData']['id']);
+                $("#CountUploadModal").modal('show');
+            }
+        }
+    });
+}
+
+function ProductCountSubmit() {
+    var form = $('#product_count_form')[0];
+    var data = new FormData(form);
+
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/count/submit",
+        type: "POST",
+        data: data,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            if(data['status'] == true) {
+                if(data['errors'] == true) {
+                    $(".check-input").removeClass('border-danger'); 
+                    $(".text-error").html('');
+                    $.each(data['message'], function(key, value) {
+                        $("#"+key).addClass('border-danger');
+                        $("."+key+"-error").html(value);
+                    });
+                } else {
+                    Swal.fire({
+                      icon: 'success',
+                      text: data['message'],
+                    })
+                    location.reload();
+                }
+            }
+        }
+    });
+}
+
+
+$(".show-child-product").click(function() {
+    var parent_id = $(this).data("parent-id");
+    $(".view-child-item-"+parent_id).toggle('slow');
+})

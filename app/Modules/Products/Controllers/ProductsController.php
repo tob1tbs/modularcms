@@ -13,18 +13,29 @@ use App\Modules\Products\Models\ProductVendor;
 use App\Modules\Products\Models\ProductOption;
 use App\Modules\Products\Models\ProductCountLog;
 use App\Modules\Products\Models\ProductCountLogItem;
+use App\Modules\Products\Models\ProductStatus;
 
 class ProductsController extends Controller
 {
 
     public function __construct() {
-        //
+
     }
 
     public function actionProductsIndex(Request $Request) {
         if (view()->exists('products.products_index')) {
 
+            $Product = new Product();
+            $ProductList = $Product::where('deleted_at_int', '!=', 0)
+                                    ->where('parent_id', 0)
+                                    ->where('active', 1)
+                                    ->get()
+                                    ->load('getProductChild')
+                                    ->load('getProductPrice')
+                                    ->load('getCategoryData')
+                                    ->load('getChildCategoryData');
             $data = [
+                'product_list' => $ProductList,
             ];
 
             return view('products.products_index', $data);
@@ -45,9 +56,24 @@ class ProductsController extends Controller
             $ProductVendor = new ProductVendor();
             $ProductVendorList = $ProductVendor::where('deleted_at_int', '!=', 0)->get();
 
+            $Product = new Product();
+            $ProductList = $Product::where('deleted_at_int', '!=', 0)
+                                    ->where('parent_id', 0)
+                                    ->where('active', 1)
+                                    ->orderBy('sortable', 'ASC')
+                                    ->get();
+
+            $ProductStatus = new ProductStatus();
+            $ProductStatusList = $ProductStatus::where('deleted_at_int', '!=', 0)
+                                    ->where('active', 1)
+                                    ->get();
+
+
             $data = [
                 'product_category_list' => $ProductCategoryList,
                 'product_vendor_list' => $ProductVendorList,
+                'product_list' => $ProductList,
+                'product_status' => $ProductStatusList,
             ];
 
             return view('products.products_add', $data);

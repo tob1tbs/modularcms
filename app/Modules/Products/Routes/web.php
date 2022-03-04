@@ -18,6 +18,11 @@ Route::group(['prefix' => 'products', 'middleware' => []], function () {
 Route::group(['prefix' => 'products/ajax', 'middleware' => []], function () {
     // PRODUCTS
     Route::post('/submit', 'ProductsAjaxController@ajaxProductSubmit')->name('ajaxProductSubmit');
+    Route::get('/parent', 'ProductsAjaxController@ajaxProductParentImport')->name('ajaxProductParentImport');
+    Route::get('/count', 'ProductsAjaxController@ajaxUpdateProductCount')->name('ajaxUpdateProductCount');
+    Route::post('/count/submit', 'ProductsAjaxController@ajaxProductCountSubmit')->name('ajaxProductCountSubmit');
+
+
     Route::get('/balance/export', 'ProductsAjaxController@ajaxProductBalanceExport')->name('ajaxProductBalanceExport');
     Route::post('/balance/update', 'ProductsAjaxController@ajaxProductBalanceUpdate')->name('ajaxProductBalanceUpdate');
     // CATEGORIES

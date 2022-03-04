@@ -13,6 +13,9 @@ use App\Modules\Products\Models\Product;
 use App\Modules\Products\Models\ProductMeta;
 use App\Modules\Products\Models\ProductPrice;
 use App\Modules\Products\Models\ProductVendor;
+use App\Modules\Products\Models\ProductOptionItem;
+use App\Modules\Products\Models\ProductCountLog;
+use App\Modules\Products\Models\ProductCountLogItem;
 
 use App\Imports\ProductBalanceImport;
 
@@ -595,7 +598,7 @@ class ProductsAjaxController extends Controller
             $ProductChildCategoryList = $ProductCategory::where('parent_id', $Request->category_id)
                                                     ->orWhere('parent_id', 1)
                                                     ->where('deleted_at_int', '!=', 0)
-                                                    ->orderBy('sortable', 'ASC')
+                                                    ->orderBy('id', 'ASC')
                                                     ->get();
 
             $ProductBrand = new ProductBrand();
@@ -718,13 +721,109 @@ class ProductsAjaxController extends Controller
         }
     }
 
+    public function ajaxProductParentImport(Request $Request) {
+        if($Request->isMethod('GET') && $Request->parent_id > 0) {
+            $Product = new Product();
+            $ProductData = $Product::find($Request->parent_id);
+
+            $ProductCategory = new ProductCategory();
+            $ProductChildCategoryList = $ProductCategory::where('parent_id', $ProductData->category_id)
+                                                    ->where('deleted_at_int', '!=', 0)
+                                                    ->orderBy('sortable', 'ASC')
+                                                    ->get();
+
+            $ProductBrand = new ProductBrand();
+            $ProductBrandList = $ProductBrand::where('category_id', $ProductData->category_id)
+                                                ->orWhere('category_id', 1)
+                                                ->where('active', 1)
+                                                ->where('deleted_at_int', '!=', 0)
+                                                ->get();
+
+            $ProductPrice = new ProductPrice();
+            $ProductPriceData = $ProductPrice::where('product_id', $ProductData->id)->orderBy('id', 'DESC')->first();
+
+            $ProductMeta = new ProductMeta();
+            $ProductMetaData = $ProductMeta::where('product_id', $ProductData->id)->first();
+
+            $ProductOption = new ProductOption();
+            $ProductOptionList = $ProductOption::where('category_id', $ProductData->id)->orWhere('category_id', 1)
+                                                ->where('active', 1)
+                                                ->where('deleted_at_int', '!=', 0)
+                                                ->get();
+
+            $ProductOptionArray = [];
+
+            foreach($ProductOptionList as $Key => $Value) {
+                $ProductOptionValue = new ProductOptionValue();
+                $ProductOptionValueList = $ProductOptionValue::where('option_id', $Value->id)->where('active', 1)
+                                                ->where('deleted_at_int', '!=', 0)
+                                                ->get();
+
+                $ProductOptionItem = new ProductOptionItem();
+                $ProductOptionItemList = $ProductOptionItem::where('product_id', $ProductData->id)->get();
+
+                $ProductOptionArray[$Value->key] = [
+                    'id' => $Value->id,
+                    'type' => $Value->type,
+                    'name' => $Value->name,
+                    'options' => [],
+                    'value' => [],
+                ];
+
+                foreach($ProductOptionValueList as $OptionValueItem) {
+                    if($OptionValueItem->option_key == $Value->key) {
+                        $ProductOptionArray[$Value->key]['options'][] = [
+                            'id' => $OptionValueItem->id,
+                            'name' => $OptionValueItem->name,
+                            'option_key' => $OptionValueItem->option_key,
+                            'option_id' => $OptionValueItem->option_id,
+                        ];
+                    }
+                }
+
+                foreach($ProductOptionItemList as $OptionItem) {
+                    if($OptionItem->key == $Value->key) {
+                        $ProductOptionArray[$Value->key]['value'] = $OptionItem->value;
+                    }
+                }
+            }
+
+            if(!empty($ProductData)) {
+                return Response::json([
+                    'status' => true, 
+                    'ProductData' => $ProductData, 
+                    'ProductChildCategoryList' => $ProductChildCategoryList,
+                    'ProductBrandList' => $ProductBrandList,
+                    'ProductPriceData' => $ProductPriceData,
+                    'ProductMetaData' => $ProductMetaData,
+                    'ProductOptionArray' => $ProductOptionArray,
+                ]);
+            } else {
+                return Response::json(['status' => false, 'message' => 'პროდუქტი ვერ მოიძებნა']);
+            }
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
     public function ajaxProductSubmit(Request $Request) {
         if($Request->isMethod('POST')) {
             $messages = array(
-                'required' => 'გთხოვთ შეიყვანოთ ყველა აუცილებელი ველი',
+                'product_name_ge.required' => 'გთხოვთ შეიყვანოთ პროდუქტის დასახელება',
+                'product_category.required' => 'გთხოვთ აირჩიოთ პროდუქტის კატეგორია',
+                'product_meta_keywords_ge.required' => 'გთხოვთ შეიყვანოთ მეტა ქივორდები',
+                'product_meta_description_ge.required' => 'გთხოვთ შეიყვანოთ მეტა აღწერა',
+                'product_price.required' => 'გთხოვთ შეიყვანოთ პროდუქტის ფასი',
+                'product_photo.required' => 'გთხოვთ აირჩიოთ პროდუქტის სურათი',
+                'not_in' => 'გთხოვთ აირჩიოთ ყველა აუცილებელი ველი',
             );
 
             $validator = Validator::make($Request->all(), [
+                'product_name_ge' => 'required|max:255',
+                'product_category' => 'required|max:255',
+                'product_meta_keywords_ge' => 'required|max:255',
+                'product_meta_description_ge' => 'required|max:255',
+                'product_price' => 'required|max:255|not_in:0',
                 'product_photo' => 'required|max:255',
             ], $messages);
 
@@ -732,11 +831,6 @@ class ProductsAjaxController extends Controller
                 return Response::json(['status' => true, 'errors' => true, 'message' => $validator->getMessageBag()->toArray()], 200);
             } else {
 
-                foreach($Request->product_option as $OptionKey => $OptionItem) {
-                    dd($Request->product_option);
-                }
-
-                exit();
                 $Product = new Product();
                 $ProductData = $Product::updateOrCreate(
                     ['id' => $Request->product_id],
@@ -759,20 +853,96 @@ class ProductsAjaxController extends Controller
 
                 $ProductMeta = new ProductMeta();
                 $ProductMeta->product_id = $ProductData->id;
-                $ProductMeta->keywords_ge = $Request->product_meta_keywords_ge;
-                $ProductMeta->keywords_en = $Request->product_meta_keywords_en;
-                $ProductMeta->description_ge = $Request->product_meta_description_ge;
-                $ProductMeta->description_en = $Request->product_meta_description_en;
-                // $ProductMeta->save();
+
+                $MetaKeywordsArray = [
+                    'ge' => $Request->product_meta_keywords_ge,
+                    'en' => $Request->product_meta_keywords_en,
+                ];
+
+                $MetaDescriptionArray = [
+                    'ge' => $Request->product_meta_description_ge,
+                    'en' => $Request->product_meta_description_en,
+                ];
+
+                $ProductMeta->keywords = json_encode($MetaKeywordsArray);
+                $ProductMeta->description = json_encode($MetaDescriptionArray);
+                $ProductMeta->save();
 
                 $ProductPrice = new ProductPrice();
                 $ProductPrice->product_id = $ProductData->id;
                 $ProductPrice->price = $Request->product_price * 100;
-                // $ProductPrice->save();
+                $ProductPrice->save();
 
-                return Response::json(['status' => true]);
+
+                foreach($Request->product_option as $OptionKey => $OptionItem) {
+                    $ProductOptionItem = new ProductOptionItem();
+                    $ProductOptionItem->updateOrCreate(
+                        [
+                            'id' => $Request->product_option_id[$OptionKey]
+                        ],
+                        [
+                            'id' => $Request->product_option_id[$OptionKey], 
+                            'product_id' => $ProductData->id, 
+                            'key' => $OptionKey, 
+                            'value' => $OptionItem
+                        ],
+                    );
+                }
+
+                return Response::json(['status' => true, 'message' => 'პროდუქტი წარმატებით დაემატა', 'redirect_url' => route('actionProductsIndex')]);
             }
 
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxUpdateProductCount(Request $Request) {
+        if($Request->isMethod('GET') && !empty($Request->product_id)) {
+
+            $Product = new Product();
+            $ProductData = $Product::find($Request->product_id);
+
+            return Response::json(['status' => true, 'ProductData' => $ProductData]);
+
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxProductCountSubmit(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->product_count_id)) {
+            $messages = array(
+                'required' => 'გთხოვთ შეიყვანოთ პროდუქტის დასახელება',
+            );
+
+            $validator = Validator::make($Request->all(), [
+                'product_count' => 'required|max:255',
+            ], $messages);
+
+            if ($validator->fails()) {
+                return Response::json(['status' => true, 'errors' => true, 'message' => $validator->getMessageBag()->toArray()], 200);
+            } else {
+
+                $ProductCountLog = new ProductCountLog();
+                $ProductCountLog->user_id = 1;
+                $ProductCountLog->method = 'Manual';
+                $ProductCountLog->save();
+
+                $Product = new Product();
+                $ProductData = $Product::find($Request->product_count_id);
+
+                $ProductCountLogItem = new ProductCountLogItem();
+                $ProductCountLogItem->product_id = $ProductData->id;
+                $ProductCountLogItem->value_old = $ProductData->count;
+                $ProductCountLogItem->value_new = $Request->product_count;
+                $ProductCountLogItem->log_id = $ProductCountLog->id;
+                $ProductCountLogItem->save();
+
+                $ProductData->update(['count' => $Request->product_count]);
+
+                return Response::json(['status' => true, 'message' => 'ნაშთი წარმატებით შეიცვალა']);
+            }
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
         }
