@@ -158,19 +158,29 @@
                             </div>
                             <div class="dropdown-body">
                                 <div class="nk-notification">
-                                    <div class="nk-notification-item dropdown-inner">
+                                    @if(count($notifications) > 0)
+                                    @foreach($notifications as $notification_item)
+                                    <div class="nk-notification-item dropdown-inner" style="cursor: pointer;" onclick="ViewNotification({{ $notification_item->id }})">
                                         <div class="nk-notification-icon">
                                             <em class="icon icon-circle bg-warning-dim ni ni-curve-down-right"></em>
                                         </div>
                                         <div class="nk-notification-content">
-                                            <div class="nk-notification-text">You have requested to <span>Widthdrawl</span></div>
-                                            <div class="nk-notification-time">2 hrs ago</div>
+                                            <div class="nk-notification-text font-helvetica-regular q">{{ $notification_item->title }}</div>
+                                            <div class="nk-notification-time">{{ \Carbon\Carbon::parse($notification_item->created_at)->format('Y-m-d H:m:s') }}</div>
                                         </div>
                                     </div>
+                                    @endforeach
+                                    @else
+                                    <div class="nk-notification-item dropdown-inner">
+                                        <div class="nk-notification-content">
+                                            <div class="nk-notification-text text-center font-neue">ნოტიფიკაციების სია ცარიელია</div>
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="font-helvetica-regular dropdown-foot center">
-                                <a href="#">სრული ჩამონათვალი</a>
+                                <a href="javascript:;" onclick="ViewAllNotification()">სრული ჩამონათვალი</a>
                             </div>
                         </div>
                     </li>
