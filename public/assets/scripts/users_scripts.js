@@ -322,3 +322,35 @@ function UserRolePermissionDelete(permission_id, role_id) {
         }
     });
 }
+
+function UserLoginSubmit() {
+    var form = $('#user_login_form')[0];
+    var data = new FormData(form);
+
+    $.ajax({
+        dataType: 'json',
+        url: "/users/ajax/login/submit",
+        type: "POST",
+        data: data,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            if(data['status'] == true) {
+                if(data['errors'] == true) {
+                    $.each(data['message'], function(key, value) {
+                        NioApp.Toast(value, 'error');
+                    })
+                } else {
+                    window.location.replace(data['redirect_url']);
+                }
+            } else {
+                NioApp.Toast(data['message'], 'error');
+            }
+        }
+    });
+}

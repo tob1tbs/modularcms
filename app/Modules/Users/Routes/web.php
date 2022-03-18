@@ -1,11 +1,14 @@
 <?php
 
 // GENERAL ROUTES
+Route::get('/login', 'UsersController@actionLoginIndex')->name('actionLoginIndex');
+Route::get('/logout', 'UsersController@actionUserLogout')->name('actionUserLogout');
+Route::post('/users/ajax/login/submit', 'UsersAjaxController@ajaxUserLoginSubmit')->name('ajaxUserLoginSubmit');
+
 Route::group(['prefix' => 'users', 'middleware' => []], function () {
     Route::get('/', 'UsersController@actionUsersIndex')->name('actionUsersIndex');
     Route::get('/add', 'UsersController@actionUsersAdd')->name('actionUsersAdd');
     Route::get('/edit/{user_id}', 'UsersController@actionUsersEdit')->name('actionUsersEdit');
-
     Route::get('/role', 'UsersController@actionUsersRole')->name('actionUsersRole');
 });
 

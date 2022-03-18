@@ -85,7 +85,7 @@
                                                                     </a>
                                                                     <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-right">
                                                                         <div class="dropdown-head">
-                                                                            <span class="sub-title dropdown-title font-neue">კატეგორიების ფილტრი</span>
+                                                                            <span class="sub-title dropdown-title font-neue">პროდუქციის ფილტრი</span>
                                                                             <div class="dropdown">
                                                                                 <a href="#" class="btn btn-sm btn-icon">
                                                                                     <em class="icon ni ni-more-h"></em>
@@ -96,31 +96,64 @@
                                                                             <form method="get" class="row gx-6 gy-3">
                                                                                 <div class="col-6">
                                                                                     <div class="form-group">
-                                                                                        <label class="font-helvetica-regular overline-title overline-title-alt">კატეგორიის სახელი <br></label>
+                                                                                        <label class="font-helvetica-regular overline-title overline-title-alt">დასახელება<br></label>
                                                                                         <input type="text" class="form-control" name="search_query">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-6">
                                                                                     <div class="form-group">
-                                                                                        <label class="font-helvetica-regular overline-title overline-title-alt">სტატუსი</label>
-                                                                                        <select class="form-select form-select-sm" name="category_active">
-                                                                                            
+                                                                                        <label class="font-helvetica-regular overline-title overline-title-alt">კატეგორია</label>
+                                                                                        <select class="form-control form-select-sm" name="product_category">
+                                                                                            <option value="0"></option>
+                                                                                            @foreach($product_category_list as $category_item)
+                                                                                            <option value="{{ $category_item->id }}" @if(request()->product_category == $category_item->id) selected @endif>{{ json_decode($category_item->name)->ge }}</option>
+                                                                                            @endforeach
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="font-helvetica-regular overline-title overline-title-alt">რაოდენობა<br></label>
+                                                                                        <input type="number" class="form-control" name="product_count" value="{{ request()->product_count }}">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="font-helvetica-regular overline-title overline-title-alt">სტატუსი</label>
+                                                                                        <select class="form-control form-select-sm" name="product_status">
+                                                                                            @foreach($product_statuses as $key => $status)
+                                                                                            <option value="{{ $key }}" @if(request()->product_status == $key) selected @endif>{{ $status }}</option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="font-helvetica-regular overline-title overline-title-alt">მარაგშია</label>
+                                                                                        <select class="form-control form-select-sm" name="in_stock">
+                                                                                            @foreach($yes_no as $key => $value)
+                                                                                            <option value="{{ $key }}" @if(request()->in_stock == $key) selected @endif>{{ $value }}</option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-6">
+                                                                                    <div class="form-group">
+                                                                                        <label class="font-helvetica-regular overline-title overline-title-alt">მდგომარეობა</label>
+                                                                                        <select class="form-control form-select-sm" name="product_condition">
+                                                                                            @foreach($product_condition as $key => $condition)
+                                                                                            <option value="{{ $key }}" @if(request()->product_condition == $key) selected @endif>{{ $condition }}</option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-12">
                                                                                     <div class="form-group">
                                                                                         <label class="font-helvetica-regular overline-title overline-title-alt">სორტირება</label>
-                                                                                        <select class="form-select form-select-sm" name="sort_by">
-                                                                                           
-                                                                                        </select>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-6">
-                                                                                    <div class="form-group">
-                                                                                        <label class="font-helvetica-regular overline-title overline-title-alt">რაოდენობა</label>
-                                                                                        <select class="form-select form-select-sm" name="count">
-                                                                                           
+                                                                                        <select class="form-select form-select-sm" name="product_sort">
+                                                                                            @foreach($product_sort as $key => $sort)
+                                                                                            <option value="{{ $key }}" @if(request()->product_sort == $key) selected @endif>{{ $sort }}</option>
+                                                                                            @endforeach
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>
@@ -198,7 +231,7 @@
                                                     </div>
                                                     <div class="nk-tb-col tb-col-lg">
                                                         <div class="custom-control custom-switch">
-                                                            <input type="checkbox" class="custom-control-input" id="product_active_{{ $product_item->id }}" onclick="VendorActiveChange({{ $product_item->id }}, this)" @if($product_item->active == 1) checked @endif>
+                                                            <input type="checkbox" class="custom-control-input" id="product_active_{{ $product_item->id }}" onclick="ProductActiveChange({{ $product_item->id }}, this)" @if($product_item->active == 1) checked @endif>
                                                             <label class="custom-control-label" for="product_active_{{ $product_item->id }}"></label>
                                                         </div>
                                                     </div>
@@ -208,14 +241,25 @@
                                                                 <div class="drodown">
                                                                     <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                     <div class="dropdown-menu dropdown-menu-right" style="min-width: 250px; width: 100%;">
-                                                                        <ul class="link-check">
-                                                                          <li><span>Show</span></li>
-                                                                          <li class="active"><a href="#">10 Items</a></li>
-                                                                          <li><a href="#">20 Items</a></li>
-                                                                          <li><a href="#">50 Items</a></li>
-                                                                        </ul>
-                                                                        <ul class="link-check">
-                                                                          <li><span class="font-neue">მოქმედება</span></li>
+                                                                        <ul class="link-list-opt no-bdr">
+                                                                            <li>
+                                                                                <a href="{{ route('actionProductsEdit', $product_item->id) }}">
+                                                                                    <em class="icon ni ni-dot"></em>
+                                                                                    <span>რედაქტირება</span>
+                                                                                </a>
+                                                                            </li>                                                                                   
+                                                                            <li>
+                                                                                <a href="javascript:;" onclick="GetProductPhotos({{ $product_item->id }})">
+                                                                                    <em class="icon ni ni-dot"></em>
+                                                                                    <span>დამატებითი სურათები</span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript:;" onclick="ProductDelete({{ $product_item->id }})" class="text-danger">
+                                                                                    <em class="icon ni ni-trash"></em>
+                                                                                    <span>პროდუქტის წაშლა</span>
+                                                                                </a>
+                                                                            </li>
                                                                         </ul>
                                                                     </div>
                                                                 </div>
@@ -264,7 +308,7 @@
                                                         </div>
                                                         <div class="nk-tb-col tb-col-lg">
                                                             <div class="custom-control custom-switch">
-                                                                <input type="checkbox" class="custom-control-input" id="product_active_{{ $product_child_item->id }}" onclick="VendorActiveChange({{ $product_child_item->id }}, this)" @if($product_child_item->active == 1) checked @endif>
+                                                                <input type="checkbox" class="custom-control-input" id="product_active_{{ $product_child_item->id }}" onclick="ProductActiveChange({{ $product_child_item->id }}, this)" @if($product_child_item->active == 1) checked @endif>
                                                                 <label class="custom-control-label" for="product_active_{{ $product_child_item->id }}"></label>
                                                             </div>
                                                         </div>
@@ -353,9 +397,44 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="ProductPhotoModal" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-neue">ატვირთული დამატებითი სურათები</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                    <em class="icon ni ni-cross"></em>
+                </a>
+            </div>
+            <div class="modal-body">
+                <div class="nk-files nk-files-view-grid">
+                    <div class="nk-files-list product-photo-body">
+
+                    </div>
+                </div>
+                <form id="gallery_photo_upload_form" class="row mt-2">
+                    <div class="col-sm-12 mt-2">
+                        <label class="form-label w-100">დამატებითი რაოდენობა (მაქს 5)</label>
+                        <input id="gallery" name="gallery_photo" class="form-control" type="text" style="width: 80%; float: left;">
+                        <a id="lfm_gallery" data-input="gallery" data-preview="holder" class="btn btn-light font-helvetica-regular" style="max-width: 20%; float: right;">სურათის არჩევა</a>
+                    </div>
+                    <div class="col-12 mt-2">
+                        <button class="btn btn-success font-helvetica-regular" type="button" onclick="GalleryPhotoUploadSubmit()">სურათების ატვირთვა</button>
+                    </div>
+                    <input type="hidden" name="gallery_product_id" id="gallery_product_id">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
 <script type="text/javascript" src="{{ url('assets/js/jquery-ui.min.js') }}"></script>
 <script src="{{ url('assets/scripts/products_scripts.js') }}"></script>
+<script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+<script type="text/javascript">
+    var route_prefix = "{{ url('filemanager') }}";
+    $('#lfm_gallery').filemanager('image', {prefix: route_prefix});
+</script>
 @endsection

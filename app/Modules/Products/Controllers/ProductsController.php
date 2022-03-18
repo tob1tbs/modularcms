@@ -19,7 +19,7 @@ class ProductsController extends Controller
 {
 
     public function __construct() {
-
+        
     }
 
     public function actionProductsIndex(Request $Request) {
@@ -27,15 +27,72 @@ class ProductsController extends Controller
 
             $Product = new Product();
             $ProductList = $Product::where('deleted_at_int', '!=', 0)
-                                    ->where('parent_id', 0)
-                                    ->where('active', 1)
-                                    ->get()
-                                    ->load('getProductChild')
-                                    ->load('getProductPrice')
-                                    ->load('getCategoryData')
-                                    ->load('getChildCategoryData');
+                                    ->where('parent_id', 0);
+
+            $ProductCategory = new ProductCategory();
+            $ProductCategoryList = $ProductCategory::where('deleted_at_int', '!=', 0)
+                                                    ->where('parent_id', 0)
+                                                    ->where('active', 1)
+                                                    ->orderBy('sortable', 'ASC')
+                                                    ->get();
+                                    
+            if($Request->isMethod('GET')) {
+                if($Request->has('search_query') && !empty($Request->search_query)) {
+                    $ProductList = $ProductList->where('name_ge', 'like', '%'.$Request->search_query.'%')->orWhere('name_en', 'like', '%'.$Request->search_query.'%');
+                }
+
+                if($Request->has('product_category') && !empty($Request->product_category) && $Request->product_category > 0) {
+                    $ProductList = $ProductList->where('category_id', $Request->product_category);
+                }
+
+                if($Request->has('product_count') && !empty($Request->product_count)) {
+                    $ProductList = $ProductList->where('count', $Request->product_count);
+                }
+
+                if($Request->has('product_status') && !empty($Request->product_status)) {
+                    if($Request->product_status == 2) {
+                        $Status = 0;
+                    } else {
+                        $Status = $Request->product_status;
+                    }
+                    $ProductList = $ProductList->where('active', $Status);
+                }
+
+                if($Request->has('in_stock') && !empty($Request->in_stock)) {
+                    if($Request->in_stock == 2) {
+                        $Stock = 0;
+                    } else {
+                        $Stock = $Request->in_stock;
+                    }
+                    $ProductList = $ProductList->where('stock', $Stock);
+                }
+
+                if($Request->has('product_condition') && !empty($Request->product_condition)) {
+                    if($Request->product_condition == 2) {
+                        $Condition = 0;
+                    } else {
+                        $Condition = $Request->product_condition;
+                    }
+                    $ProductList = $ProductList->where('used', $Condition);
+                }
+
+                if($Request->has('product_sort') && !empty($Request->product_sort)) {
+                    $OrderBy = $Request->product_sort;
+                } else { 
+                    $OrderBy = 'DESC';
+                }
+            }
+
+
+            $ProductList = $ProductList->orderBy('id', $OrderBy)->get();
+
             $data = [
                 'product_list' => $ProductList,
+                'product_statuses' => $Product->productStatuses(),
+                'yes_no' => $Product->yesNo(),
+                'product_condition' => $Product->productCondition(),
+                'product_sort' => $Product->productSort(),
+                'product_category_list' => $ProductCategoryList,
             ];
 
             return view('products.products_index', $data);
@@ -60,7 +117,6 @@ class ProductsController extends Controller
             $ProductList = $Product::where('deleted_at_int', '!=', 0)
                                     ->where('parent_id', 0)
                                     ->where('active', 1)
-                                    ->orderBy('sortable', 'ASC')
                                     ->get();
 
             $ProductStatus = new ProductStatus();
@@ -85,7 +141,36 @@ class ProductsController extends Controller
     public function actionProductsEdit(Request $Request) {
         if (view()->exists('products.products_edit')) {
 
+            $Product = new Product();
+            $ProductData = $Product::find($Request->product_id);
+
+            $ProductCategory = new ProductCategory();
+            $ProductCategoryList = $ProductCategory::where('deleted_at_int', '!=', 0)
+                                                    ->where('parent_id', 0)
+                                                    ->where('active', 1)
+                                                    ->orderBy('sortable', 'ASC')
+                                                    ->get();
+            $ProductVendor = new ProductVendor();
+            $ProductVendorList = $ProductVendor::where('deleted_at_int', '!=', 0)->get();
+
+            $Product = new Product();
+            $ProductList = $Product::where('deleted_at_int', '!=', 0)
+                                    ->where('parent_id', 0)
+                                    ->where('active', 1)
+                                    ->get();
+
+            $ProductStatus = new ProductStatus();
+            $ProductStatusList = $ProductStatus::where('deleted_at_int', '!=', 0)
+                                    ->where('active', 1)
+                                    ->get();
+
+
             $data = [
+                'product_category_list' => $ProductCategoryList,
+                'product_vendor_list' => $ProductVendorList,
+                'product_list' => $ProductList,
+                'product_status' => $ProductStatusList,
+                'product_data' => $ProductData,
             ];
 
             return view('products.products_edit', $data);

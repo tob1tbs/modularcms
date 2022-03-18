@@ -1,7 +1,7 @@
 <?php
 
 // GENERAL ROUTES
-Route::group(['prefix' => 'orders', 'middleware' => []], function () {
+Route::group(['prefix' => 'orders', 'middleware' => ['login']], function () {
     Route::get('/', 'OrdersController@actionOrdersIndex')->name('actionOrdersIndex');
     Route::get('/add', 'OrdersController@actionOrdersAdd')->name('actionOrdersAdd');
     Route::get('/edit/{order_id}', 'OrdersController@actionOrdersEdit')->name('actionOrdersEdit');

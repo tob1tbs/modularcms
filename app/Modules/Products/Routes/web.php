@@ -21,10 +21,15 @@ Route::group(['prefix' => 'products/ajax', 'middleware' => []], function () {
     Route::get('/parent', 'ProductsAjaxController@ajaxProductParentImport')->name('ajaxProductParentImport');
     Route::get('/count', 'ProductsAjaxController@ajaxUpdateProductCount')->name('ajaxUpdateProductCount');
     Route::post('/count/submit', 'ProductsAjaxController@ajaxProductCountSubmit')->name('ajaxProductCountSubmit');
-
-
+    Route::post('/active', 'ProductsAjaxController@ajaxProductActive')->name('ajaxProductActive');
+    Route::post('/delete', 'ProductsAjaxController@ajaxProductDelete')->name('ajaxProductDelete');
+    Route::get('/photo', 'ProductsAjaxController@ajaxGetProductPhotos')->name('ajaxGetProductPhotos');
+    Route::post('/photo/gallery/delete', 'ProductsAjaxController@ajaxGetProductPhotosGalleryDelete')->name('ajaxGetProductPhotosGalleryDelete');
+    Route::post('/photo/gallery/update', 'ProductsAjaxController@ajaxGetProductPhotosGalleryUpdate')->name('ajaxGetProductPhotosGalleryUpdate');
+    // BALANCE
     Route::get('/balance/export', 'ProductsAjaxController@ajaxProductBalanceExport')->name('ajaxProductBalanceExport');
     Route::post('/balance/update', 'ProductsAjaxController@ajaxProductBalanceUpdate')->name('ajaxProductBalanceUpdate');
+    Route::post('/balance/restore', 'ProductsAjaxController@ajaxProductBalanceRestore')->name('ajaxProductBalanceRestore');
     // CATEGORIES
     Route::post('/categories/submit', 'ProductsAjaxController@ajaxCategoriesAdd')->name('ajaxCategoriesAdd');
     Route::post('/categories/sortable', 'ProductsAjaxController@ajaxCategoriesSortable')->name('ajaxCategoriesSortable');

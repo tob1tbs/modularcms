@@ -11,7 +11,7 @@ class ProductCountLogItem extends Model
 
     protected $table = "new_product_count_log_item";
 
-    protected $fillable = ['log_id', 'product_id', 'value_old', 'value_new'];
+    protected $fillable = ['log_id', 'product_id', 'restored', 'value_old', 'value_new'];
 
     public function balanceProduct() {
         return $this->belongsTo('App\Modules\Products\Models\Product', 'product_id', 'id');

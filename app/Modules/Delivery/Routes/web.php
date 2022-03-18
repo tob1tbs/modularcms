@@ -9,6 +9,7 @@ Route::group(['prefix' => 'delivery', 'middleware' => []], function () {
 // AJAX ROUTES
 Route::group(['prefix' => 'delivery/ajax', 'middleware' => []], function () {
     Route::get('/streets', 'DeliveryAjaxController@ajaxGetDeliveryStreets')->name('ajaxGetDeliveryStreets');
-    Route::post('/streets/active', 'DeliveryAjaxController@ajaxGetDeliveryStreetsActive')->name('ajaxGetDeliveryStreetsActive');
-    Route::post('/district_price', 'DeliveryAjaxController@ajaxUpdateDeliveryPrice')->name('ajaxUpdateDeliveryPrice');
+    Route::post('/streets/active', 'DeliveryAjaxController@ajaxDeliveryStreetsActive')->name('ajaxDeliveryStreetsActive');
+    Route::post('/district/price', 'DeliveryAjaxController@ajaxUpdateDeliveryPrice')->name('ajaxUpdateDeliveryPrice');
+    Route::post('/district/active', 'DeliveryAjaxController@ajaxDeliveryDistrictActive')->name('ajaxDeliveryDistrictActive');
 });

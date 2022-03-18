@@ -53,7 +53,7 @@ function GetStreetList(district_id) {
 function SaveDeliveryPrice(district_id) {
 	$.ajax({
         dataType: 'json',
-        url: "/delivery/ajax/district_price",
+        url: "/delivery/ajax/district/price",
         type: "POST",
         data: {
         	district_id: district_id,
@@ -80,20 +80,44 @@ function SaveDeliveryPrice(district_id) {
     });
 }
 
-function StreetActiveChange(street_id, elem) {
+function DistrictActiveChange(district_id, elem) {
 	if($(elem).is(":checked")) {
+        district_active = 1;
+    } else {
+        district_active = 0
+    }
+
+	$.ajax({
+        dataType: 'json',
+        url: "/delivery/ajax/district/active",
+        type: "POST",
+        data: {
+        	district_id: district_id,
+        	district_active: district_active,
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            return;
+        }
+    });
+}
+
+function StreetActiveChange(street_id, elem) {
+    if($(elem).is(":checked")) {
         street_active = 1;
     } else {
         street_active = 0
     }
 
-	$.ajax({
+    $.ajax({
         dataType: 'json',
         url: "/delivery/ajax/streets/active",
         type: "POST",
         data: {
-        	street_id: street_id,
-        	street_active: street_active,
+            street_id: street_id,
+            street_active: street_active,
         },
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

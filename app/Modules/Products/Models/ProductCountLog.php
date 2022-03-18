@@ -14,7 +14,7 @@ class ProductCountLog extends Model
     protected $fillable = ['user_id', 'method'];
 
     public function balanceUpdatedBy() {
-        return $this->belongsTo('App\Modules\Customers\Models\Users', 'user_id', 'id');
+        return $this->belongsTo('App\Modules\Users\Models\User', 'user_id', 'id');
     }
 }
 

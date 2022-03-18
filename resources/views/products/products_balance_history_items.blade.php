@@ -35,6 +35,9 @@
                                                         <em class="icon ni ni-user-alt"></em> ძველი ნაშთი: {{ $log_item->value_old }} - განახლებული ნაშთი: {{ $log_item->value_new }}
                                                     </p>
                                                     <span class="time">{{ $log_item->created_at->format('H:i:s') }}</span>
+                                                    @if($log_item->restored == 0)
+                                                    <span class="font-helvetica-regular float-right text-success" style="cursor: pointer;" onclick="RestoreItemCount({{ $log_item->id }})">ნაშთის დაბრუნება</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </li>

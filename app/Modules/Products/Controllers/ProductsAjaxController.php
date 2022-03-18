@@ -12,12 +12,12 @@ use App\Modules\Products\Models\ProductBrand;
 use App\Modules\Products\Models\Product;
 use App\Modules\Products\Models\ProductMeta;
 use App\Modules\Products\Models\ProductPrice;
+use App\Modules\Products\Models\ProductGallery;
 use App\Modules\Products\Models\ProductVendor;
 use App\Modules\Products\Models\ProductOptionItem;
 use App\Modules\Products\Models\ProductCountLog;
 use App\Modules\Products\Models\ProductCountLogItem;
 
-use App\Imports\ProductBalanceImport;
 
 use Validator;
 use Response;
@@ -25,6 +25,7 @@ use Excel;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 
+use App\Imports\ProductBalanceImport;
 use App\Exports\ProductBalanceExport;
 
 class ProductsAjaxController extends Controller
@@ -831,6 +832,11 @@ class ProductsAjaxController extends Controller
                 return Response::json(['status' => true, 'errors' => true, 'message' => $validator->getMessageBag()->toArray()], 200);
             } else {
 
+                $DescriptionArray = [
+                    'ge' => $Request->product_description_ge,
+                    'en' => $Request->product_description_en,
+                ];
+
                 $Product = new Product();
                 $ProductData = $Product::updateOrCreate(
                     ['id' => $Request->product_id],
@@ -840,6 +846,7 @@ class ProductsAjaxController extends Controller
                         'name_ge' => $Request->product_name_ge,
                         'name_en' => $Request->product_name_en,
                         'category_id' => $Request->product_category,
+                        'description' => json_encode($DescriptionArray),
                         'photo' => $Request->product_photo,
                         'child_category_id' => $Request->product_child_category,
                         'discount_price' => $Request->product_discount_price * 100,
@@ -848,6 +855,7 @@ class ProductsAjaxController extends Controller
                         'count' => $Request->product_count,
                         'stock' => $Request->product_in_stock,
                         'preorder' => $Request->product_preorder,
+                        'used' => $Request->product_used,
                     ],
                 );
 
@@ -869,10 +877,10 @@ class ProductsAjaxController extends Controller
                 $ProductMeta->save();
 
                 $ProductPrice = new ProductPrice();
-                $ProductPrice->product_id = $ProductData->id;
-                $ProductPrice->price = $Request->product_price * 100;
-                $ProductPrice->save();
-
+                $ProductPrice::updateOrCreate(
+                    ['id' => $Request->product_price_id],
+                    ['id' => $Request->product_price_id, 'product_id' => $ProductData->id, 'price' => $Request->product_price * 100,],
+                );
 
                 foreach($Request->product_option as $OptionKey => $OptionItem) {
                     $ProductOptionItem = new ProductOptionItem();
@@ -887,6 +895,21 @@ class ProductsAjaxController extends Controller
                             'value' => $OptionItem
                         ],
                     );
+                }
+
+                if(!empty($Request->gallery_photo)) {
+                    $GalleryPath = explode(',', $Request->gallery_photo);
+
+                    if(count($GalleryPath) <= 5) {
+                        foreach($GalleryPath as $GalleryItem) {
+                            $ProductGallery = new ProductGallery();
+                            $ProductGallery->path = $GalleryItem;
+                            $ProductGallery->product_id = $ProductData->id;
+                            $ProductGallery->save();
+                        }
+                    } else {
+                        return Response::json(['status' => true, 'errors' => true, 'message' => ['0' => 'დამატებითი სურათების რაოდენობა აღემატება 5ს']]);
+                    }
                 }
 
                 return Response::json(['status' => true, 'message' => 'პროდუქტი წარმატებით დაემატა', 'redirect_url' => route('actionProductsIndex')]);
@@ -943,6 +966,38 @@ class ProductsAjaxController extends Controller
 
                 return Response::json(['status' => true, 'message' => 'ნაშთი წარმატებით შეიცვალა']);
             }
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxProductActive(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->product_id)) {
+
+            $Product = new Product();
+            $Product::find($Request->product_id)->update([
+                'active' => $Request->product_active,
+            ]);
+
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxProductDelete(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->product_id)) {
+
+            $Product = new Product();
+            $Product::find($Request->product_id)->update([
+                'active' => 0,
+                'deleted_at' => Carbon::now(),
+                'deleted_at_int' => 0,
+            ]);
+
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+            
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
         }
@@ -1034,6 +1089,88 @@ class ProductsAjaxController extends Controller
             $ProductVendorData = $ProductVendor::find($Request->vendor_id);
 
             return Response::json(['status' => true, 'errors' => false, 'ProductVendorData' => $ProductVendorData]);
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxGetProductPhotos(Request $Request) {
+        if($Request->isMethod('GET') && $Request->product_id > 1) {
+
+            $ProductGallery = new ProductGallery();
+            $ProductGalleryData = $ProductGallery::select('id', 'path', 'product_id')->where('product_id', $Request->product_id)->where('deleted_at_int', '!=', 0)->get()->toArray();
+
+            $ProductPhotos = [
+                'gallery' => $ProductGalleryData,
+            ];
+
+            return Response::json(['status' => true, 'ProductPhotos' => $ProductPhotos]);
+
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxGetProductPhotosGalleryDelete(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->photo_id)) {
+            
+            $ProductGallery = new ProductGallery();
+            $ProductGalleryData = $ProductGallery::find($Request->photo_id)->delete();
+
+            return Response::json(['status' => true, 'message' => 'გალერეის სურათი წაიშალა.']);
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxGetProductPhotosGalleryUpdate(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->gallery_product_id)) {
+            if(!empty($Request->gallery_photo)) {
+                $GalleryPath = explode(',', $Request->gallery_photo);
+                
+                $ProductGallery = new ProductGallery();
+                $ProductGalleryCount = $ProductGallery::where('product_id', $Request->gallery_product_id)->where('deleted_at_int', '!=', 0)->get();
+                $TotalCount = count($ProductGalleryCount) + count($GalleryPath);
+                $DiffCount = count($ProductGalleryCount) - count($GalleryPath);
+
+                if(count($ProductGalleryCount) == 5) {
+                    return Response::json(['status' => true, 'errors' => true, 'message' => ['0' => 'დამატებითი სურათების რაოდენობა აღემატება 5 ს']]);
+                } else if($TotalCount > 5) {
+                    if($DiffCount < 0) {
+                        $DiffCount = 0;
+                    }
+                    return Response::json(['status' => true, 'errors' => true, 'message' => ['0' => 'შესაძლებელია მხოლოდ '.$DiffCount.' სურათის ატვირთვა.' ]]);
+                } else {
+                    foreach($GalleryPath as $GalleryItem) {
+                        $ProductGallery = new ProductGallery();
+                        $ProductGallery->path = $GalleryItem;
+                        $ProductGallery->product_id = $Request->gallery_product_id;
+                        $ProductGallery->save();
+
+                        return Response::json(['status' => true, 'message' => 'სურათები წარმატებით განახლდა !!!']);
+                    }
+                }
+            } else {
+                return Response::json(['status' => true, 'errors' => true, 'message' => ['0' => 'გთოხვთ აირჩიოთ სურათი']]);
+            }
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxProductBalanceRestore(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->item_id)) {
+            $ProductCountLogItem = new ProductCountLogItem();
+            $ProductCountLogItemData = $ProductCountLogItem::find($Request->item_id);
+
+            $ProductCountLogItemData->update([
+                'value_new' => $ProductCountLogItemData->value_old,
+                'value_old' => $ProductCountLogItemData->value_new,
+                'restored' => 1,
+            ]);
+
+            return Response::json(['status' => true, 'message' => 'ნაშტები წარმატებით დაბრუნდა !!!']);
+
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
         }

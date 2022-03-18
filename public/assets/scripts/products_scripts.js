@@ -1227,6 +1227,7 @@ function ProductSubmit() {
                     $(".check-input").removeClass('border-danger'); 
                     $.each(data['message'], function(key, value) {
                         $("#"+key).addClass('border-danger');
+                        NioApp.Toast(value, 'error');
                     });
                 } else {
                     Swal.fire({
@@ -1629,3 +1630,230 @@ $(".show-child-product").click(function() {
     var parent_id = $(this).data("parent-id");
     $(".view-child-item-"+parent_id).toggle('slow');
 })
+
+function ProductActiveChange(product_id, elem) {
+    if($(elem).is(":checked")) {
+        product_active = 1;
+    } else {
+        product_active = 2
+    }
+
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/active",
+        type: "POST",
+        data: {
+            product_id: product_id,
+            product_active: product_active,
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            return;
+        }
+    });
+}
+
+function ProductDelete(product_id) {
+    Swal.fire({
+        title: "ნამდვილად გსურთ პროდუქტის წაშლა?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'წაშლა',
+        cancelButtonText: "გათიშვა",
+        preConfirm: () => {
+            $.ajax({
+                dataType: 'json',
+                url: "/products/ajax/delete",
+                type: "POST",
+                data: {
+                    product_id: product_id,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    Swal.fire({
+                      icon: 'success',
+                      text: data['message'],
+                    })
+                    location.reload();
+                }
+            });
+        }
+    });
+}
+
+function ProductDelete(product_id) {
+    Swal.fire({
+        title: "ნამდვილად გსურთ პროდუქტის წაშლა?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'წაშლა',
+        cancelButtonText: "გათიშვა",
+        preConfirm: () => {
+            $.ajax({
+                dataType: 'json',
+                url: "/products/ajax/delete",
+                type: "POST",
+                data: {
+                    product_id: product_id,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    Swal.fire({
+                      icon: 'success',
+                      text: data['message'],
+                    })
+                    location.reload();
+                }
+            });
+        }
+    });
+}
+
+function GetProductPhotos(product_id) {
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/photo",
+        type: "GET",
+        data: {
+            product_id: product_id,
+        },
+        success: function(data) {
+            if(data['status'] == true) {
+                $(".product-photo-body, .uploaded_photos").html('');
+                if(data['ProductPhotos']['gallery'].length > 0) {
+                    $.each(data['ProductPhotos']['gallery'], function(key, value) {
+                        $(".product-photo-body").append(`
+                            <div class="nk-file-item nk-file gallery-photo-`+value['id']+`">
+                            <div class="nk-file-info">
+                                <a href="javascript:;" class="nk-file-link">
+                                    <div class="nk-file-title">
+                                        <div class="nk-file-icon">
+                                            <span class="nk-file-icon-type" style="width: 100%;">
+                                                <img src="`+value['path']+`" style="width: 100%; padding: 0 12px;">    
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="nk-file-actions hideable">
+                                <a href="javascript:;" onclick="DeleteGalleryPhoto(`+value['id']+`)" class="btn btn-sm btn-icon btn-trigger"><em class="icon ni ni-cross"></em></a>
+                            </div>
+                        </div>`);
+                    });
+                } else {
+                    $(".product-photo-body").append(`
+                        <div class="alert alert-fill alert-warning alert-icon font-helvetica-regular w-100">
+                            <em class="icon ni ni-alert-circle"></em> აღნიშნულ პროდუქტს არააქვს დამატებითი სურათები.
+                        </div>
+                    `);
+                }
+                $("#gallery_product_id").val(product_id);
+                $("#ProductPhotoModal").modal('show');
+            }   
+        }
+    });
+}
+
+function DeleteGalleryPhoto(photo_id) {
+    Swal.fire({
+        title: "ნამდვილად გსურთ მთავარი სურათის წაშლა?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'წაშლა',
+        cancelButtonText: "გათიშვა",
+        preConfirm: () => {
+            $.ajax({
+                dataType: 'json',
+                url: "/products/ajax/photo/gallery/delete",
+                type: "POST",
+                data: {
+                    photo_id: photo_id,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    if(data['status'] == true) {
+                        $(".gallery-photo-"+photo_id).remove();
+                        Swal.fire({
+                          icon: 'success',
+                          text: data['message'],
+                        })
+                    }
+                }
+            });
+        }
+    });
+}
+
+function GalleryPhotoUploadSubmit() {
+    var form = $('#gallery_photo_upload_form')[0];
+    var data = new FormData(form);
+
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/photo/gallery/update",
+        type: "POST",
+        data: data,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            if(data['status'] == true) {
+                if(data['errors'] == true) {
+                    $.each(data['message'], function(key, value) {
+                        NioApp.Toast(value, 'error');
+                    });
+                } else {
+                    Swal.fire({
+                      icon: 'success',
+                      text: data['message'],
+                    })
+                    location.reload();
+                }   
+            }
+        }
+    });
+}
+
+function RestoreItemCount(item_id) {
+    Swal.fire({
+        title: "ნამდვილად გსურთ ნაშთების დაბრუნება?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'დადასტურება',
+        cancelButtonText: "გათიშვა",
+        preConfirm: () => {
+            $.ajax({
+                dataType: 'json',
+                url: "/products/ajax/balance/restore",
+                type: "POST",
+                data: {
+                    item_id: item_id,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    if(data['status'] == true) {
+                        Swal.fire({
+                          icon: 'success',
+                          text: data['message'],
+                        })
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+}

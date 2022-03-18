@@ -153,8 +153,8 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right dropdown-menu-s1">
                             <div class="dropdown-head">
-                                <span class="sub-title nk-dropdown-title">Notifications</span>
-                                <a href="#">Mark All as Read</a>
+                                <span class="sub-title nk-dropdown-title font-neue">ნიტიფიკაციები</span>
+                                <a href="#" class="font-helvetica-regular">ყველას წაკითხულად მონიშვნა</a>
                             </div>
                             <div class="dropdown-body">
                                 <div class="nk-notification">
@@ -169,8 +169,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="dropdown-foot center">
-                                <a href="#">View All</a>
+                            <div class="font-helvetica-regular dropdown-foot center">
+                                <a href="#">სრული ჩამონათვალი</a>
                             </div>
                         </div>
                     </li>
@@ -181,7 +181,7 @@
                                     <em class="icon ni ni-user-alt"></em>
                                 </div>
                                 <div class="user-info d-none d-xl-block">
-                                    <div class="user-name dropdown-indicator">მოგესალმები: </div>
+                                    <div class="user-name dropdown-indicator">მოგესალმები: {{ Auth::user()->name }} {{ Auth::user()->lastname }}</div>
                                 </div>
                             </div>
                         </a>
@@ -189,15 +189,14 @@
                             <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                                 <div class="user-card">
                                     <div class="user-info">
-                                        <span class="lead-text"></span>
-                                        <span class="sub-text"></span>
+                                        <span class="lead-text">{{ Auth::user()->name }} {{ Auth::user()->lastname }}</span>
+                                        <span class="sub-text">{{ Auth::user()->email }}</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="dropdown-inner">
                                 <ul class="link-list font-helvetica-regular">
-                                    <li><a href=""><em class="icon ni ni-user-alt"></em><span>ჩემი პროფილი</span></a></li>
-                                    <li><a href=""><em class="icon ni ni-signout"></em><span>გასვლა</span></a></li>
+                                    <li><a href="{{ route('actionUserLogout') }}"><em class="icon ni ni-signout"></em><span>გასვლა</span></a></li>
                                 </ul>
                             </div>
                         </div>

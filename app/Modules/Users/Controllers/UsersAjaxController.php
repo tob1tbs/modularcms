@@ -10,6 +10,7 @@ use App\Modules\Users\Models\UserPermission;
 use App\Modules\Users\Models\UserPermissionGroup;
 use App\Modules\Users\Models\UserRoleHasPermission;
 
+use Auth;
 use Validator;
 use Response;
 use \Carbon\Carbon;
@@ -225,6 +226,31 @@ class UsersAjaxController extends Controller
 
             return Response::json(['status' => true, 'message' => 'უფლება წარმატებით წაიშალა !!!']);
 
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxUserLoginSubmit(Request $Request) {
+        if($Request->isMethod('POST')) {
+            
+            $messages = array(
+                'required' => 'ელ-ფოსტა ან პაროლი არასწორია',
+            );
+            $validator = Validator::make($Request->all(), [
+                'user_email' => 'required|max:255',
+                'user_password' => 'required|max:255',
+            ], $messages);
+
+            if ($validator->fails()) {
+                return Response::json(['status' => true, 'errors' => true, 'message' => $validator->getMessageBag()->toArray()], 200);
+            } else {
+                if(Auth::attempt(['email' => $Request->user_email, 'password' => $Request->user_password, 'deleted_at_int' => 1, 'active' => 1], true)) {
+                   return Response::json(['status' => true, 'redirect_url' => route('actionMainIndex')]);
+                } else {
+                    return Response::json(['status' => true, 'errors' => true, 'message' => [0 => 'ელ-ფოსტა ან პაროლია არასწორია !!!']]);
+                }
+            }
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან !!!']);
         }

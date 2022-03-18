@@ -10,11 +10,24 @@ use App\Modules\Users\Models\User;
 use App\Modules\Users\Models\UserRole;
 use App\Modules\Users\Models\UserPermissionGroup;
 
+use Auth;
+
 class UsersController extends Controller
 {
 
     public function __construct() {
         
+    }
+
+    public function actionLoginIndex(Request $Request) {
+        if (view()->exists('users.users_login')) {
+
+            $data = [];
+
+            return view('users.users_login', $data);
+        } else {
+            abort('404');
+        }
     }
 
     public function actionUsersIndex(Request $Request) {
@@ -68,5 +81,10 @@ class UsersController extends Controller
         } else {
             abort('404');
         }
+    }
+
+    public function actionUserLogout() {
+        Auth::logout();
+        return redirect()->route('actionLoginIndex');
     }
 }

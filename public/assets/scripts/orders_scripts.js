@@ -15,3 +15,13 @@ function MakeOrderAction(action_id, order_id) {
         }
     });
 }
+
+$("#customer_type").change(function(){
+    if($("#customer_type").val() == 1) {
+        $(".company-import").hide();
+        $(".customer-import").show();
+    } else {
+        $(".company-import").show();
+        $(".customer-import").hide();
+    }
+});

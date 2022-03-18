@@ -31,7 +31,7 @@
                                                     <a href="{{ route('actionProductsBalanceHistoryList', $log_item->id) }}">ნაშთების ცვლილება - {{ $log_item->method }} - {{ $log_item->id }}</a>
                                                 </h6>
                                                 <div class="timeline-des">
-                                                    <p><em class="icon ni ni-user-alt"></em> Re-submitted KYC form.</p>
+                                                    <p><em class="icon ni ni-user-alt"></em> </p>
                                                     <span class="time">{{ $log_item->created_at->format('H:i:s') }}</span>
                                                 </div>
                                             </div>
