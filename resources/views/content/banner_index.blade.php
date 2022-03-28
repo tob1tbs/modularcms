@@ -16,7 +16,7 @@
                     <div class="nk-block-head-content">
                         <ul class="nk-block-tools g-3">
                             <li>
-                                <a href="javascript:;" onclick="AddNewPhoto()" class="btn btn-white btn-outline-light">
+                                <a href="javascript:;" class="btn btn-white btn-outline-light">
                                     <em class="icon ni ni-plus"></em>
                                     <span class="font-helvetica-regular">ახალი სურათი</span>
                                 </a>
@@ -44,19 +44,22 @@
         width: calc(33.33% - 16px);
     }
 </style>
-<div class="modal fade" id="SliderPhotoUpload" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="BannerPhotoUpload" style="display: none;" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content modal-xl">
+        <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title font-neue">სურათების ატვირთვა</h5>
+                <h5 class="modal-title font-neue">პროდუქციის ნაშთების ატვირთვა</h5>
                 <a href="#" class="close" data-dismiss="modal" aria-label="Close">
                     <em class="icon ni ni-cross"></em>
                 </a>
             </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs">
-                    <li class="nav-item"><a class="nav-link active font-neue" data-toggle="tab" href="#photo_data">სურათი</a></li>
-                    <li class="nav-item"><a class="nav-link font-neue" data-toggle="tab" href="#text_data">ტექსტები</a></li>
+                    <li class="nav-item"><a class="nav-link active font-neue" data-toggle="tab" href="#basic_parameters">ზოგადი პარამეტრები</a></li>
+                    <li class="nav-item"><a class="nav-link font-neue" data-toggle="tab" href="#contact_info">საკონტაქტო ინფორმაცია</a></li>
+                    <li class="nav-item"><a class="nav-link font-neue" data-toggle="tab" href="#social_network">სოციალური ქსელები</a></li>
+                    <li class="nav-item"><a class="nav-link font-neue" data-toggle="tab" href="#plugins">პლაგინები</a></li>
+                    <li class="nav-item"><a class="nav-link font-neue" data-toggle="tab" href="#seo">SEO</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active">

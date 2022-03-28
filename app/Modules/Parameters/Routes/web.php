@@ -9,6 +9,8 @@ Route::group(['prefix' => 'parameters', 'middleware' => []], function () {
 
 // AJAX ROUTES
 Route::group(['prefix' => 'parameters/ajax', 'middleware' => []], function () {
+    Route::post('/submit', 'ParametersAjaxController@ajaxParameterSubmit')->name('ajaxParameterSubmit');
+    
     // PAYMENTS
     Route::get('/payments/options', 'ParametersAjaxController@ajaxParameterPaymentOptions')->name('ajaxParameterPaymentOptions');
     Route::post('/payments/active', 'ParametersAjaxController@ajaxParameterPaymentActive')->name('ajaxParameterPaymentActive');

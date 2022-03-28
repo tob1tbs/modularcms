@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Modules\Parameters\Models\ParameterPayment;
 use App\Modules\Parameters\Models\ParameterTranslate;
+use App\Modules\Parameters\Models\Parameter;
 
 use Response;
 use Validator;
@@ -105,6 +106,21 @@ class ParametersAjaxController extends Controller
 
                 return Response::json(['status' => true, 'message' => 'თარგამნი წარმატებით დაემატა !!!']);
             }
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxParameterSubmit(Request $Request) {
+        if($Request->isMethod('POST')) {
+            foreach($Request->all() as $Key => $Item) {
+                $Parameter = new Parameter();
+                $Parameter::where('key', $Key)->update([
+                    'value' => $Item,
+                ]);
+            }
+
+            return Response::json(['status' => true, 'message' => 'პარამეტრები წარმატებით განახლდა !!!']);
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან !!!']);
         }
