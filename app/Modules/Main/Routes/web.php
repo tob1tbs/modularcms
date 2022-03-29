@@ -3,6 +3,8 @@
 // GENERAL ROUTES
 Route::group(['prefix' => '/', 'middleware' => ['login']], function () {
 	Route::get('/', 'MainController@actionMainIndex')->name('actionMainIndex');
+	Route::get('/storage', 'MainController@actionMainStorage')->name('actionMainStorage');
+
 });
 
 Route::group(['prefix' => '/main/ajax/', 'middleware' => []], function () {

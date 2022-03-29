@@ -13,7 +13,7 @@ class MainController extends Controller
 
     public function __construct() {
         //
-        
+
     }
 
     public function actionMainIndex() {
@@ -25,5 +25,10 @@ class MainController extends Controller
         } else {
             abort('404');
         }
+    }
+
+    public function actionMainStorage() {
+        $exitCode = Artisan::call('storage:link', [] );
+        echo $exitCode;
     }
 }
