@@ -82,7 +82,7 @@
                             </li>
                             <li class="nk-menu-item">
                                 <a href="{{ route('actionProductsIndex') }}" class="nk-menu-link">
-                                    <span class="nk-menu-text">ჩამონათვალი</span>
+                                    <span class="nk-menu-text">პროდუქციის დამატება</span>
                                 </a>
                             </li>
                             <li class="nk-menu-item">

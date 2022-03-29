@@ -8,14 +8,11 @@ use App\Http\Controllers\Controller;
 
 use App\Modules\Main\Models\Main;
 
-use Artisan;
-
 class MainController extends Controller
 {
 
     public function __construct() {
-        //
-
+        
     }
 
     public function actionMainIndex() {
@@ -27,9 +24,5 @@ class MainController extends Controller
         } else {
             abort('404');
         }
-    }
-
-    public function actionMainStorage() {
-        
     }
 }
