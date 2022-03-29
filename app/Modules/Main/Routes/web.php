@@ -3,8 +3,11 @@
 // GENERAL ROUTES
 Route::group(['prefix' => '/', 'middleware' => ['login']], function () {
 	Route::get('/', 'MainController@actionMainIndex')->name('actionMainIndex');
-	Route::get('/storage', 'MainController@actionMainStorage')->name('actionMainStorage');
-
+	Route::get('/link', function () {        
+	   $target = '/home/public_html/storage/app/public';
+	   $shortcut = '/home/public_html/public/storage';
+	   symlink($target, $shortcut);
+	});
 });
 
 Route::group(['prefix' => '/main/ajax/', 'middleware' => []], function () {

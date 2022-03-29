@@ -30,7 +30,6 @@ class MainController extends Controller
     }
 
     public function actionMainStorage() {
-        $exitCode = Artisan::call('storage:link', [] );
-        echo $exitCode;
+        
     }
 }
