@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 
 use App\Modules\Main\Models\Main;
 
+use Artisan;
+
 class MainController extends Controller
 {
 
