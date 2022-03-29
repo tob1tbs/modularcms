@@ -882,19 +882,21 @@ class ProductsAjaxController extends Controller
                     ['id' => $Request->product_price_id, 'product_id' => $ProductData->id, 'price' => $Request->product_price * 100,],
                 );
 
-                foreach($Request->product_option as $OptionKey => $OptionItem) {
-                    $ProductOptionItem = new ProductOptionItem();
-                    $ProductOptionItem->updateOrCreate(
-                        [
-                            'id' => $Request->product_option_id[$OptionKey]
-                        ],
-                        [
-                            'id' => $Request->product_option_id[$OptionKey], 
-                            'product_id' => $ProductData->id, 
-                            'key' => $OptionKey, 
-                            'value' => $OptionItem
-                        ],
-                    );
+                if(!empty($Request->product_option)) {
+                    foreach($Request->product_option as $OptionKey => $OptionItem) {
+                        $ProductOptionItem = new ProductOptionItem();
+                        $ProductOptionItem->updateOrCreate(
+                            [
+                                'id' => $Request->product_option_id[$OptionKey]
+                            ],
+                            [
+                                'id' => $Request->product_option_id[$OptionKey], 
+                                'product_id' => $ProductData->id, 
+                                'key' => $OptionKey, 
+                                'value' => $OptionItem
+                            ],
+                        );
+                    }
                 }
 
                 if(!empty($Request->gallery_photo)) {
