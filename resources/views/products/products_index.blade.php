@@ -207,7 +207,9 @@
                                                     </div>
                                                     <div class="nk-tb-col tb-col-md">
                                                         <span class="tb-date">
+                                                            @if(!empty($product_item->brand_id))
                                                             {{ json_decode($product_item->getBrandData->name)->ge }}
+                                                            @endif
                                                         </span>
                                                     </div>
                                                     <div class="nk-tb-col tb-col-lg">
