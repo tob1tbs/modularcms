@@ -46,14 +46,25 @@ class ParametersAjaxController extends Controller
 
     public function ajaxParameterPaymentSubmit(Request $Request) {
         if($Request->isMethod('POST')) {
-            if($Request->key = 'tbc_payment') {
-                $json = '{"key": {"label":"Payment Key","value":"tbc_payment","secret":false,"disabled":true},"api_key":{"label":"Api key","value":"'.$Request->api_key.'","secret":true,"disabled":false},"api_secret":{"label":"Api secret","value":"'.$Request->api_secret.'","secret":true,"disabled":false},"merchant_key":{"label":"Merchant key","value":"'.$Request->merchant_key.'","secret":false,"disabled":false}}';
-
-                $ParameterPayment = new ParameterPayment();
-                $ParameterPayment::where('key', $Request->key)->update(['options' => $json]);
-
-                return Response::json(['status' => true, 'message' => 'პარამეტრები წარმატებით შეიცვალა !!!']);
+            switch ($Request->key) {
+                case "tbc_payment":
+                    $json = '{"key": {"label":"Payment Key","value":"tbc_payment","secret":false,"disabled":true},"api_key":{"label":"Api key","value":"'.$Request->api_key.'","secret":true,"disabled":false},"api_secret":{"label":"Api secret","value":"'.$Request->api_secret.'","secret":true,"disabled":false},"merchant_key":{"label":"Merchant key","value":"'.$Request->merchant_key.'","secret":false,"disabled":false}}';
+                    break;
+                case "bog_payment":
+                    $json = '{"key":{"label":"Payment key","value":"bog_payment","secret":false,"disabled":true},"secret_key":{"label":"Secret key","value":"'.$Request->secret_key.'","secret":true,"disabled":false},"client_id":{"label":"Client id","value":"'.$Request->client_id.'","secret":false,"disabled":false}}';
+                    break;
+                case "bog_installment":
+                    $json = '{"key":{"label":"Payment key","value":"bog_payment","secret":false,"disabled":true},"secret_key":{"label":"Secret key","value":"'.$Request->secret_key.'","secret":true,"disabled":false},"client_id":{"label":"Client id","value":"'.$Request->client_id.'","secret":false,"disabled":false}}';
+                    break;
+                case "tbc_installment":
+                    $json = '{"key":{"label":"Payment key","value":"bog_payment","secret":false,"disabled":true},"secret_key":{"label":"Secret key","value":"'.$Request->secret_key.'","secret":true,"disabled":false},"client_id":{"label":"Client id","value":"'.$Request->client_id.'","secret":false,"disabled":false}}';
+                    break;
             }
+
+            $ParameterPayment = new ParameterPayment();
+            $ParameterPayment::where('key', $Request->key)->update(['options' => $json]);
+
+            return Response::json(['status' => true, 'message' => 'პარამეტრები წარმატებით შეიცვალა !!!']);
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან !!!']);
         }

@@ -11,5 +11,5 @@ class ParameterPayment extends Model
 
     protected $table = "new_payments";
 
-    protected $fillable = ['options', 'active'];
+    protected $fillable = ['options', 'active', 'photo', 'description'];
 }
