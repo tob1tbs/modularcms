@@ -25,17 +25,61 @@
                     </div>
                 </div>
             </div>
-            <div class="card card-preview">
-                <div class="card-inner">
-                    <div class="toggle-expand-content expanded" data-content="quick-access">
-                        <div class="nk-files nk-files-view-grid">
-                            <div class="nk-files-list">
-
+            <div class="card-inner">
+                <div class="nk-block">
+                    <div class="card card-bordered card-stretch">
+                        <div class="card-inner p-0">
+                            <div class="nk-tb-list nk-tb-ulist">
+                                <div class="nk-tb-item nk-tb-head font-helvetica-regular">
+                                    <div class="nk-tb-col"><span># სურათი</span></div>
+                                    <div class="nk-tb-col tb-col-md"><span>სტატუსი</span></div>
+                                    <div class="nk-tb-col nk-tb-col-tools">&nbsp;</div>
+                                </div>
+                                @foreach($slider_list as $slider_item)
+                                <div class="nk-tb-item font-helvetica-regular">
+                                    <div class="nk-tb-col">
+                                        <div class="user-avatar sq xl">
+                                            <img src="{{ $slider_item->path }}" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="nk-tb-col tb-col-lg">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="product_active_{{ $slider_item->id }}" onclick="ProductActiveChange({{ $slider_item->id }}, this)" @if($slider_item->active == 1) checked @endif>
+                                            <label class="custom-control-label" for="product_active_{{ $slider_item->id }}"></label>
+                                        </div>
+                                    </div>
+                                    <div class="nk-tb-col nk-tb-col-tools">
+                                        <ul class="nk-tb-actions gx-1">
+                                            <li>
+                                                <div class="drodown">
+                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" style="min-width: 250px; width: 100%;">
+                                                        <ul class="link-list-opt no-bdr">
+                                                            <li>
+                                                                <a href="javascript:;" onclick="ViewSliderPhoto({{ $slider_item->id }})">
+                                                                    <em class="icon ni ni-dot"></em>
+                                                                    <span>სურათის ნახვა</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" onclick="DeleteSliderPhoto({{ $slider_item->id }})" class="text-danger">
+                                                                    <em class="icon ni ni-trash"></em>
+                                                                    <span>სურათის წაშლა</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div>                         
+            </div>                         
         </div>
     </div>
 </div>	
@@ -54,14 +98,49 @@
                 </a>
             </div>
             <div class="modal-body">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item"><a class="nav-link active font-neue" data-toggle="tab" href="#photo_data">სურათი</a></li>
-                    <li class="nav-item"><a class="nav-link font-neue" data-toggle="tab" href="#text_data">ტექსტები</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active">
+                <form id="slider_form" class="row">
+                    <div class="col-12 mb-3">
+                        <label class="form-label">სურათი</label>
+                        <div class="form-group">
+                            <input id="slider_photo" name="slider_photo" class="form-control check-input" type="text" style="width: 65%; float: left;">
+                            <a id="lfm" data-input="slider_photo" data-preview="holder" class="btn btn-light font-helvetica-regular" style="max-width: 35%; float: right;">სურათის არჩევა</a>
+                        </div>
                     </div>
-                </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">ტექსტი 1 (ქართულად)</label>
+                        <div class="form-group">
+                            <input id="slider_small_text_ge" name="slider_small_text_ge" class="form-control check-input" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">ტექსტი 1 (ინგლისურად)</label>
+                        <div class="form-group">
+                            <input id="slider_small_text_en" name="slider_small_text_en" class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">ტექსტი 2 (ქართულად)</label>
+                        <div class="form-group">
+                            <input id="slider_big_text_ge" name="slider_big_text_ge" class="form-control check-input" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">ტექსტი 2 (ინგლისურად)</label>
+                        <div class="form-group">
+                            <input id="slider_big_text_en" name="slider_big_text_en" class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label">URL</label>
+                        <div class="form-group">
+                            <input id="slider_url" name="slider_url" class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mt-2">
+                        <button class="btn btn-success font-neue" type="button" onclick="SliderSubmit()">შენახვა</button>
+                    </div>
+                    <input type="hidden" name="slider_id" id="slider_id">
+                </form>
             </div>
         </div>
     </div>
