@@ -1,7 +1,7 @@
 <?php
 
 // GENERAL ROUTES
-Route::group(['prefix' => 'content', 'middleware' => []], function () {
+Route::group(['prefix' => 'content', 'middleware' => ['login']], function () {
     Route::get('/slider', 'SliderController@actionSliderIndex')->name('actionSliderIndex');
     Route::get('/banners', 'SliderController@actionBannerIndex')->name('actionBannerIndex');
 });

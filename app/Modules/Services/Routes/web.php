@@ -1,7 +1,7 @@
 <?php
 
 // GENERAL ROUTES
-Route::group(['prefix' => 'services', 'middleware' => []], function () {
+Route::group(['prefix' => 'services', 'middleware' => ['login']], function () {
     Route::get('/', 'actionServicesController@ServicesIndex')->name('actionServicesIndex');
 });
 

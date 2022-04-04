@@ -1,7 +1,7 @@
 <?php
 
 // GENERAL ROUTES
-Route::group(['prefix' => 'customers', 'middleware' => []], function () {
+Route::group(['prefix' => 'customers', 'middleware' => ['login']], function () {
     Route::get('/', 'CustomersController@actionCustomersIndex')->name('actionCustomersIndex');
     Route::get('/add', 'CustomersController@actionCustomersAdd')->name('actionCustomersAdd');
 });

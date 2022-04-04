@@ -1,7 +1,7 @@
 <?php
 
 // GENERAL ROUTES
-Route::group(['prefix' => 'parameters', 'middleware' => []], function () {
+Route::group(['prefix' => 'parameters', 'middleware' => ['login']], function () {
     Route::get('/basic', 'ParametersController@actionParametersIndex')->name('actionParametersIndex');
     Route::get('/payments', 'ParametersController@actionParametersPayments')->name('actionParametersPayments');
     Route::get('/translate', 'ParametersController@actionParametersTranslate')->name('actionParametersTranslate');
