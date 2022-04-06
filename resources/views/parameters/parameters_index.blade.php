@@ -20,7 +20,7 @@
                                 <li class="nav-item"><a class="nav-link font-neue" data-toggle="tab" href="#seo">SEO</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active">
+                                <div class="tab-pane active" id="basic_parameters">
                                     @foreach($parameter_list as $parameter_item)
                                     @switch($parameter_item->type)
                                     @case('input')
@@ -77,27 +77,7 @@
                                         <div class="col-lg-7">
                                             <div class="form-group">
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control" id="{{ $info_parameter_item->key }}" name="{{ $info_parameter_item->key }}" value="{{ $info_parameter_item->value }}" {{ $info_parameter_item->disabled == 1 ? 'disabled' : '' }}>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @break
-                                    @case('checkbox')
-                                    <div class="row g-3 align-center">
-                                        <div class="col-lg-5">
-                                            <div class="form-group">
-                                                <label class="form-label" for="{{ $info_parameter_item->key }}">{{ $info_parameter_item->label }}</label>
-                                                <span class="form-note font-helvetica-regular">{{ $info_parameter_item->snippet }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-7">
-                                            <div class="form-group">
-                                                <div class="form-control-wrap">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input font-neue" @if($info_parameter_item->value == 1) checked @endif name="{{ $info_parameter_item->key }}" id="{{ $info_parameter_item->key }}" value="1">
-                                                        <label class="custom-control-label" for="{{ $info_parameter_item->key }}"></label>
-                                                    </div>
+                                                    <input type="text" class="form-control" id="{{ $info_parameter_item->key }}" name="info[{{ $info_parameter_item->key }}]" value="{{ $info_parameter_item->value }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -120,27 +100,7 @@
                                         <div class="col-lg-7">
                                             <div class="form-group">
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control" id="{{ $social_parameter_item->key }}" name="{{ $social_parameter_item->key }}" value="{{ $social_parameter_item->value }}" {{ $social_parameter_item->disabled == 1 ? 'disabled' : '' }}>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @break
-                                    @case('checkbox')
-                                    <div class="row g-3 align-center">
-                                        <div class="col-lg-5">
-                                            <div class="form-group">
-                                                <label class="form-label" for="{{ $social_parameter_item->key }}">{{ $social_parameter_item->label }}</label>
-                                                <span class="form-note font-helvetica-regular">{{ $social_parameter_item->snippet }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-7">
-                                            <div class="form-group">
-                                                <div class="form-control-wrap">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input font-neue" @if($social_parameter_item->value == 1) checked @endif name="{{ $social_parameter_item->key }}" id="{{ $social_parameter_item->key }}" value="1">
-                                                        <label class="custom-control-label" for="{{ $social_parameter_item->key }}"></label>
-                                                    </div>
+                                                    <input type="text" class="form-control" id="{{ $social_parameter_item->key }}" name="social[{{ $social_parameter_item->key }}]" value="{{ $social_parameter_item->value }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -163,27 +123,7 @@
                                         <div class="col-lg-7">
                                             <div class="form-group">
                                                 <div class="form-control-wrap">
-                                                    <input type="text" class="form-control" id="{{ $plugin_parameter_item->key }}" name="{{ $plugin_parameter_item->key }}" value="{{ $plugin_parameter_item->value }}" {{ $plugin_parameter_item->disabled == 1 ? 'disabled' : '' }}>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @break
-                                    @case('checkbox')
-                                    <div class="row g-3 align-center">
-                                        <div class="col-lg-5">
-                                            <div class="form-group">
-                                                <label class="form-label" for="{{ $plugin_parameter_item->key }}">{{ $plugin_parameter_item->label }}</label>
-                                                <span class="form-note font-helvetica-regular">{{ $plugin_parameter_item->snippet }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-7">
-                                            <div class="form-group">
-                                                <div class="form-control-wrap">
-                                                    <div class="custom-control custom-switch">
-                                                        <input type="checkbox" class="custom-control-input font-neue" @if($plugin_parameter_item->value == 1) checked @endif name="{{ $plugin_parameter_item->key }}" id="{{ $plugin_parameter_item->key }}" value="1">
-                                                        <label class="custom-control-label" for="{{ $plugin_parameter_item->key }}"></label>
-                                                    </div>
+                                                    <input type="text" class="form-control" id="{{ $plugin_parameter_item->key }}" name="plugin[{{ $plugin_parameter_item->key }}]" value="{{ $plugin_parameter_item->value }}" {{ $plugin_parameter_item->disabled == 1 ? 'disabled' : '' }}>
                                                 </div>
                                             </div>
                                         </div>
@@ -193,7 +133,55 @@
                                     @endforeach
                                 </div>
                                 <div class="tab-pane" id="seo">
-                                    333
+                                    <ul class="nav nav-tabs">
+                                        @foreach($parameter_seo_list as $seo_item)
+                                        <li class="nav-item"><a class="nav-link @if($loop->first) active @endif font-neue" data-toggle="tab" href="#seo_{{$seo_item->key}}">{{ $seo_item->name }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                    <div class="tab-content">
+                                        @foreach($parameter_seo_list as $seo_item)
+                                        <div class="tab-pane @if($loop->first) active @endif" id="seo_{{$seo_item->key}}">
+                                            <div class="row">
+                                                <div class="col-6 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Meta title (ქართულად) *</label>
+                                                        <input type="text" class="form-control" name="seo[title][{{$seo_item->key}}][ge]" value="{{ json_decode($seo_item->title)->ge }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Meta title (ინგლისურად)</label>
+                                                        <input type="text" class="form-control" name="seo[title][{{$seo_item->key}}][en]" value="{{ json_decode($seo_item->title)->en }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Meta description (ქართულად) *</label>
+                                                        <input type="text" class="form-control" name="seo[description][{{$seo_item->key}}][ge]" value="{{ json_decode($seo_item->description)->ge }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Meta description (ინგლისურად)</label>
+                                                        <input type="text" class="form-control" name="seo[description][{{$seo_item->key}}][en]" value="{{ json_decode($seo_item->description)->en }}">
+                                                    </div>
+                                                </div>  
+                                                <div class="col-6 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Meta keywords (ქართულად) *</label>
+                                                        <input type="text" class="form-control" name="seo[keywords][{{$seo_item->key}}][ge]" value="{{ json_decode($seo_item->keywords)->ge }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 mb-2">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Meta keywords (ინგლისურად)</label>
+                                                        <input type="text" class="form-control" name="seo[keywords][{{$seo_item->key}}][en]" value="{{ json_decode($seo_item->keywords)->en }}">
+                                                    </div>
+                                                </div>    
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                             <div class="row g-3 align-center">

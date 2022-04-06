@@ -12,4 +12,12 @@ class Order extends Model
     protected $table = "new_orders";
 
     protected $fillable = ['id'];
+
+    public function getOrderStatus() {
+        return $this->belongsTo('App\Modules\Orders\Models\OrderStatus', 'status', 'id');
+    }
+
+    public function getPayment() {
+        return $this->belongsTo('App\Modules\Parameters\Models\ParameterPayment', 'payment_id', 'id');
+    }
 }

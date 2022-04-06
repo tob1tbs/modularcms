@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 
 use App\Modules\Parameters\Models\ParameterPayment;
 use App\Modules\Parameters\Models\ParameterTranslate;
+use App\Modules\Parameters\Models\ParameterSeo;
+use App\Modules\Parameters\Models\ParameterSocial;
+use App\Modules\Parameters\Models\ParameterInfo;
 use App\Modules\Parameters\Models\Parameter;
+use App\Modules\Parameters\Models\ParameterPlugin;
 
 use Response;
 use Validator;
@@ -124,11 +128,41 @@ class ParametersAjaxController extends Controller
 
     public function ajaxParameterSubmit(Request $Request) {
         if($Request->isMethod('POST')) {
-            foreach($Request->all() as $Key => $Item) {
+            foreach($Request->except(['seo', 'social']) as $Key => $Item) {
                 $Parameter = new Parameter();
                 $Parameter::where('key', $Key)->update([
                     'value' => $Item,
                 ]);
+            }
+
+            foreach($Request->social as $SocialKey => $SocialItem) {
+                $ParameterSocial = new ParameterSocial();
+                $ParameterSocial::where('key', $SocialKey)->update([
+                    'value' => $SocialItem,
+                ]);
+            }
+
+            foreach($Request->info as $InfoKey => $InfoItem) {
+                $ParameterInfo = new ParameterInfo();
+                $ParameterInfo::where('key', $InfoKey)->update([
+                    'value' => $InfoItem,
+                ]);
+            }
+
+            foreach($Request->plugin as $PluginKey => $PluginItem) {
+                $ParameterPlugin = new ParameterPlugin();
+                $ParameterPlugin::where('key', $PluginKey)->update([
+                    'value' => $PluginItem,
+                ]);
+            }
+
+            foreach($Request->seo as $SeoKey => $SeoItem) {
+                foreach($SeoItem as $InsertKey => $InsertItem) {
+                    $ParameterSeo = new ParameterSeo();
+                    $ParameterSeo->where('key', $InsertKey)->update([
+                        $SeoKey => json_encode($InsertItem),
+                    ]);
+                }
             }
 
             return Response::json(['status' => true, 'message' => 'პარამეტრები წარმატებით განახლდა !!!']);

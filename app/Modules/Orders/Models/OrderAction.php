@@ -10,4 +10,5 @@ class OrderAction extends Model
     use HasFactory;
 
     protected $table = "new_order_actions";
+
 }

@@ -17,14 +17,14 @@
                                 <div class="toggle-expand-content" data-content="pageMenu">
                                     <ul class="nk-block-tools g-3">
                                         <li class="nk-block-tools-opt">
-                                            <div class="drodown">
+                                            <!-- <div class="drodown">
                                                 <a href="#" class="dropdown-toggle btn btn-icon btn-primary" data-toggle="dropdown"><em class="icon ni ni-plus"></em></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul class="link-list-opt no-bdr font-helvetica-regular">
                                                         <li><a href="{{ route('actionOrdersAdd') }}"><span>ახალი შეკვეთი დამატება</span></a></li>
                                                     </ul>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="dropdown">
                                                 <a href="#" class="dropdown-toggle btn btn-light font-helvetica-regular ml-2" data-toggle="dropdown">ექსპორტი</a>
                                                 <div class="dropdown-menu" style="min-width: 300px;">
@@ -130,16 +130,18 @@
                                                     <div class="nk-tb-col"><span>შეკვეთის #</span></div>
                                                     <div class="nk-tb-col tb-col-mb"><span>მომხმარებელი</span></div>
                                                     <div class="nk-tb-col tb-col-md"><span>ღირებულება</span></div>
+                                                    <div class="nk-tb-col tb-col-md"><span>გადახდის მეთოდი</span></div>
                                                     <div class="nk-tb-col tb-col-lg"><span>თარიღი</span></div>
                                                     <div class="nk-tb-col tb-col-md"><span>სტატუსი</span></div>
                                                     <div class="nk-tb-col tb-col-lg"><span>შეკვეთის ავტორი</span></div>
                                                     <div class="nk-tb-col nk-tb-col-tools">&nbsp;</div>
                                                 </div>
-                                                <div class="nk-tb-item">
+                                                @foreach($order_list as $order_item)
+                                                <div class="nk-tb-item font-helvetica-regular">
                                                     <div class="nk-tb-col">
                                                         <div class="user-card">
                                                             <div class="user-info">
-                                                                <span class="tb-lead">Abu Bin Ishtiyak <span class="dot dot-success d-md-none ml-1"></span></span>
+                                                                <span class="tb-lead">#{{ $order_item->id }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -148,15 +150,37 @@
                                                     </div>
                                                     <div class="nk-tb-col tb-col-md">
                                                         <ul class="list-inline list-download">
-                                                            <li>Front Side <a href="#" class="popup"><em class="icon ni ni-download"></em></a></li>
-                                                            <li>Back Side <a href="#" class="popup"><em class="icon ni ni-download"></em></a></li>
+                                                            <li>შეკვეთის ღირებულიბა: {{ $order_item->delivery_price / 100 }} ₾</li>
+                                                            <li>მიწოდების ღირებულება: {{ $order_item->item_price / 100 }} ₾</li>
+                                                            <li>ჯამი: {{ $order_item->total_price / 100 }} ₾</li>
                                                         </ul>
                                                     </div>
+                                                    <div class="nk-tb-col tb-col-md">
+                                                        <div class="user-card">
+                                                            <div class="user-info">
+                                                                <span class="tb-lead">{{ $order_item->getPayment->name_ge }}</span>
+                                                                <span class="tb-lead">{{ $order_item->getPayment->getPaymentCategory->name_ge }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="nk-tb-col tb-col-lg">
-                                                        <span class="tb-date">18 Dec, 2019 01:02 PM</span>
+                                                        <span class="tb-date">{{ Carbon\Carbon::parse($order_item->created_at)->format('Y-m-d') }}</span>
                                                     </div>
                                                     <div class="nk-tb-col tb-col-md">
-                                                        <span class="tb-status text-success">Approved</span>
+                                                        @switch($order_item->status)
+                                                        @case('1')
+                                                        <span class="tb-status text-warning">{{ $order_item->getOrderStatus->name }}</span>
+                                                        @break
+                                                        @case('2')
+                                                        <span class="tb-status text-primary">{{ $order_item->getOrderStatus->name }}</span>
+                                                        @break
+                                                        @case('3')
+                                                        <span class="tb-status text-success">{{ $order_item->getOrderStatus->name }}</span>
+                                                        @break
+                                                        @case('4')
+                                                        <span class="tb-status text-danger">{{ $order_item->getOrderStatus->name }}</span>
+                                                        @break
+                                                        @endswitch
                                                     </div>
                                                     <div class="nk-tb-col tb-col-lg">
                                                         <div class="user-card">
@@ -189,6 +213,7 @@
                                                         </ul>
                                                     </div>
                                                 </div>
+                                                @endforeach
                                             </div>
                                         </div>         
 	                                </div>

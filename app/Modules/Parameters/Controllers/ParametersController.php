@@ -13,6 +13,7 @@ use App\Modules\Parameters\Models\ParameterPlugin;
 use App\Modules\Parameters\Models\ParameterPaymentCategory;
 use App\Modules\Parameters\Models\ParameterPayment;
 use App\Modules\Parameters\Models\ParameterTranslate;
+use App\Modules\Parameters\Models\ParameterSeo;
 
 class ParametersController extends Controller
 {
@@ -36,11 +37,15 @@ class ParametersController extends Controller
             $ParameterPlugin = new ParameterPlugin();
             $ParameterPluginList = $ParameterPlugin::where('deleted_at_int', '!=', 0)->where('active', 1)->get();
 
+            $ParameterSeo = new ParameterSeo();
+            $ParameterSeoList = $ParameterSeo::where('deleted_at_int', '!=', 0)->get();
+
             $data = [
                 'parameter_list' => $ParameterList,
                 'parameter_info_list' => $ParameterInfoList,
                 'parameter_social_list' => $ParameterSocialList,
                 'parameter_plugin_list' => $ParameterPluginList,
+                'parameter_seo_list' => $ParameterSeoList,
             ];
 
             return view('parameters.parameters_index', $data);

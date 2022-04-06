@@ -12,4 +12,8 @@ class ParameterPayment extends Model
     protected $table = "new_payments";
 
     protected $fillable = ['options', 'active', 'photo', 'description'];
+
+    public function getPaymentCategory() {
+        return $this->belongsTo('App\Modules\Parameters\Models\ParameterPaymentCategory', 'category_id', 'id');
+    }
 }
