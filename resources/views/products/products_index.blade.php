@@ -255,6 +255,12 @@
                                                                                     <em class="icon ni ni-dot"></em>
                                                                                     <span>დამატებითი სურათები</span>
                                                                                 </a>
+                                                                            </li>                                                                              
+                                                                            <li>
+                                                                                <a href="javascript:;" onclick="ChangeProductStatus({{ $product_item->id }})">
+                                                                                    <em class="icon ni ni-dot"></em>
+                                                                                    <span>სტატუსის შეცვლა</span>
+                                                                                </a>
                                                                             </li>
                                                                             <li>
                                                                                 <a href="javascript:;" onclick="ProductDelete({{ $product_item->id }})" class="text-danger">
@@ -426,6 +432,30 @@
                         <button class="btn btn-success font-helvetica-regular" type="button" onclick="GalleryPhotoUploadSubmit()">სურათების ატვირთვა</button>
                     </div>
                     <input type="hidden" name="gallery_product_id" id="gallery_product_id">
+                </form>
+            </div>
+        </div>
+    </div>
+</div><div class="modal fade" id="ProductStatusModal" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-neue">პროდუქციის სტატუსის</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                    <em class="icon ni ni-cross"></em>
+                </a>
+            </div>
+            <div class="modal-body">
+                <form action="#" class="form-validate is-alter" novalidate="novalidate" id="product_status_form">
+                    <div class="form-group">
+                        <label class="form-label font-helvetica-regular" for="product_status">სტატუსი</label>
+                        <div class="form-control-wrap">
+                            <select class="form-control form-select-sm" name="product_status" id="product_status">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success font-helvetica-regular" onclick="ChangeProductStatusSubmit()">განახლება</button>
                 </form>
             </div>
         </div>

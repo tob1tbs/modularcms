@@ -1857,3 +1857,7 @@ function RestoreItemCount(item_id) {
         }
     });
 }
+
+function ChangeProductStatus(product_id) {
+    $("#ProductStatusModal").modal('show');
+}
