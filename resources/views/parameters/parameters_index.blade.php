@@ -134,53 +134,10 @@
                                 </div>
                                 <div class="tab-pane" id="seo">
                                     <ul class="nav nav-tabs">
-                                        @foreach($parameter_seo_list as $seo_item)
-                                        <li class="nav-item"><a class="nav-link @if($loop->first) active @endif font-neue" data-toggle="tab" href="#seo_{{$seo_item->key}}">{{ $seo_item->name }}</a></li>
-                                        @endforeach
+                                        
                                     </ul>
                                     <div class="tab-content">
-                                        @foreach($parameter_seo_list as $seo_item)
-                                        <div class="tab-pane @if($loop->first) active @endif" id="seo_{{$seo_item->key}}">
-                                            <div class="row">
-                                                <div class="col-6 mb-2">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Meta title (ქართულად) *</label>
-                                                        <input type="text" class="form-control" name="seo[title][{{$seo_item->key}}][ge]" value="{{ json_decode($seo_item->title)->ge }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-6 mb-2">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Meta title (ინგლისურად)</label>
-                                                        <input type="text" class="form-control" name="seo[title][{{$seo_item->key}}][en]" value="{{ json_decode($seo_item->title)->en }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-6 mb-2">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Meta description (ქართულად) *</label>
-                                                        <input type="text" class="form-control" name="seo[description][{{$seo_item->key}}][ge]" value="{{ json_decode($seo_item->description)->ge }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-6 mb-2">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Meta description (ინგლისურად)</label>
-                                                        <input type="text" class="form-control" name="seo[description][{{$seo_item->key}}][en]" value="{{ json_decode($seo_item->description)->en }}">
-                                                    </div>
-                                                </div>  
-                                                <div class="col-6 mb-2">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Meta keywords (ქართულად) *</label>
-                                                        <input type="text" class="form-control" name="seo[keywords][{{$seo_item->key}}][ge]" value="{{ json_decode($seo_item->keywords)->ge }}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-6 mb-2">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Meta keywords (ინგლისურად)</label>
-                                                        <input type="text" class="form-control" name="seo[keywords][{{$seo_item->key}}][en]" value="{{ json_decode($seo_item->keywords)->en }}">
-                                                    </div>
-                                                </div>    
-                                            </div>
-                                        </div>
-                                        @endforeach
+                                        
                                     </div>
                                 </div>
                             </div>

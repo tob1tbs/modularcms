@@ -156,14 +156,14 @@ class ParametersAjaxController extends Controller
                 ]);
             }
 
-            foreach($Request->seo as $SeoKey => $SeoItem) {
-                foreach($SeoItem as $InsertKey => $InsertItem) {
-                    $ParameterSeo = new ParameterSeo();
-                    $ParameterSeo->where('key', $InsertKey)->update([
-                        $SeoKey => json_encode($InsertItem),
-                    ]);
-                }
-            }
+            // foreach($Request->seo as $SeoKey => $SeoItem) {
+            //     foreach($SeoItem as $InsertKey => $InsertItem) {
+            //         $ParameterSeo = new ParameterSeo();
+            //         $ParameterSeo->where('key', $InsertKey)->update([
+            //             $SeoKey => json_encode($InsertItem),
+            //         ]);
+            //     }
+            // }
 
             return Response::json(['status' => true, 'message' => 'პარამეტრები წარმატებით განახლდა !!!']);
         } else {
