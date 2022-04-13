@@ -147,8 +147,8 @@
                         <label class="form-label">ბენერი</label>
                         <div class="form-group">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="is_slider" name="is_slider">
-                                <label class="custom-control-label" for="is_slider"></label>
+                                <input type="checkbox" class="custom-control-input" id="is_banner" name="is_banner" value="1">
+                                <label class="custom-control-label" for="is_banner"></label>
                             </div>
                         </div>
                     </div>

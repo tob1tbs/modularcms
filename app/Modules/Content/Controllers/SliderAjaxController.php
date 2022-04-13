@@ -31,7 +31,6 @@ class SliderAjaxController extends Controller
 
     public function ajaxSliderUploadPhoto(Request $Request) {
         if($Request->isMethod('POST')) {
-
             $messages = array(
                 'required' => 'გთხოვთ შეავსოთ ყველა აუცილებელი ველი!!!',
                 'slider_photo.required' => 'გთხოვთ აირჩიოთ ფოტო !!!',
