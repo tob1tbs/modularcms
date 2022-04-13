@@ -11,7 +11,7 @@ class Product extends Model
 
     protected $table = "new_products";
 
-    protected $fillable = ['id', 'name_ge', 'category_id', 'child_category_id', 'description','brand_id', 'parent_id', 'discount_price', 'discount_percent', 'photo', 'count', 'stock', 'used', 'preorder', 'active', 'deleted_at', 'deleted_at_int'];
+    protected $fillable = ['id', 'name_ge', 'category_id', 'child_category_id', 'description','brand_id', 'parent_id', 'discount_price', 'discount_percent', 'photo', 'count', 'stock', 'used', 'preorder', 'status', 'active', 'facebook', 'deleted_at', 'deleted_at_int'];
 
     public function productStatuses() {
         return $product_statuses = [
@@ -62,5 +62,9 @@ class Product extends Model
 
     public function getProductChild() {
         return $this->hasMany('App\Modules\Products\Models\Product', 'parent_id', 'id');
+    }
+
+    public function productStatus() {
+        return $this->hasOne('App\Modules\Products\Models\ProductStatus', 'id', 'status');
     }
 }

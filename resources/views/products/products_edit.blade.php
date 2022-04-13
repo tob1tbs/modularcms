@@ -35,7 +35,7 @@
                                                     <select class="form-control" name="product_parent" id="product_parent">
                                                         <option value="0"></option>
                                                         @foreach($product_list as $product_item)
-                                                        <option value="{{ $product_item->id }}" @if($product_data->parent_id == $product_item->id) selected @endif>{{ $product_item->name_ge }}</option>
+                                                        <option value="{{ $product_item->id }}">{{ $product_item->name_ge }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -49,7 +49,7 @@
                                                     <select class="form-control check-input" name="product_category" id="product_category" onchange="GetSubCategoryAndBrandList() ">
                                                         <option value="0"></option>
                                                         @foreach($product_category_list as $category_item)
-                                                        <option value="{{ $category_item->id }}" @if($product_data->category_id == $category_item->id) selected @endif>{{ json_decode($category_item->name)->ge }}</option>
+                                                        <option value="{{ $category_item->id }}">{{ json_decode($category_item->name)->ge }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -73,7 +73,7 @@
                                             <div class="col-12 mt-2">
                                                 <div class="form-group">
                                                     <label class="form-label" for="product_name_ge">პროდუქტის დასახელება (ქართულად)</label>
-                                                    <input type="text" name="product_name_ge" id="product_name_ge" class="form-control check-input" value="{{ $product_data->name_ge }}">
+                                                    <input type="text" name="product_name_ge" id="product_name_ge" class="form-control check-input">
                                                 </div>
                                             </div>
                                             <div class="col-12 mt-2">
@@ -85,7 +85,7 @@
                                             <div class="col-12 mt-2">
                                                 <div class="form-group">
                                                     <label class="form-label" for="product_brand">პროდუქტის დასახელება (ინგლისურად)</label>
-                                                    <input type="text" name="product_name_en" id="product_name_en" class="form-control" value="{{ $product_data->name_en  }}">
+                                                    <input type="text" name="product_name_en" id="product_name_en" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-12 mt-2">
@@ -99,25 +99,16 @@
                                     <div class="tab-pane" id="product_gallery">
                                         <div class="row">
                                             <div class="col-12">
+                                                <label class="form-label">პროდუქტის სურათი</label>
                                                 <div class="form-group">
-                                                    <input id="thumbnail" class="form-control" type="text" style="width: 85%; float: left;">
-                                                    <input type="hidden" name="product_photo" id="product_photo">
-                                                    <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-light font-helvetica-regular" style="max-width: 15%; float: right;">სურათის არჩევა</a>
+                                                    <input id="product_photo" name="product_photo" class="form-control" type="text" style="width: 85%; float: left;">
+                                                    <a id="lfm" data-input="product_photo" data-preview="holder" class="btn btn-light font-helvetica-regular" style="max-width: 15%; float: right;">სურათის არჩევა</a>
                                                 </div>
                                             </div>
-                                            <div class="col-12 mt-2">
-                                                <div class="nk-fmg-quick-list nk-block">
-                                                    <div class="toggle-expand-content expanded" data-content="quick-access">
-                                                        <div class="nk-files nk-files-view-grid">
-                                                            <div class="nk-files-list">
-                                                                <div class="nk-file-item nk-file">
-                                                                    <div class="nk-file-info" id="holder">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="col-sm-12 mt-2">
+                                                <label class="form-label">დამატებითი რაოდენობა (მაქს 5)</label>
+                                                <input id="gallery" name="gallery_photo" class="form-control" type="text" style="width: 85%; float: left;">
+                                                <a id="lfm_gallery" data-input="gallery" data-preview="holder" class="btn btn-light font-helvetica-regular" style="max-width: 15%; float: right;">სურათის არჩევა</a>
                                             </div>
                                         </div>
                                     </div>
@@ -189,6 +180,7 @@
                                         <div class="form-group">
                                             <label class="form-label" for="product_price">პროდუქტის ღირებულება</label>
                                             <input type="number" name="product_price" id="product_price" class="form-control check-input" value="0">
+                                            <input type="hidden" name="product_price_id" value="">
                                         </div>
                                     </div>
                                     <div class="col-6 mt-2">
@@ -209,16 +201,22 @@
                                             <input type="number" name="product_count" id="product_count" class="form-control" value="0">
                                         </div>
                                     </div>
-                                    <div class="col-6 mt-2">
+                                    <div class="col-4 mt-2">
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input" name="product_in_stock" value="1" id="product_in_stock" checked>
                                             <label class="custom-control-label form-label" for="product_in_stock">მარაგშია</label>
                                         </div>
                                     </div>
-                                    <div class="col-6 mt-2">
+                                    <div class="col-4 mt-2">
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input" name="product_preorder" value="1" id="product_preorder">
                                             <label class="custom-control-label form-label" for="product_preorder">წინასწარი შეკვეთით</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 mt-2">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" name="product_used" value="1" id="product_used">
+                                            <label class="custom-control-label form-label" for="product_used">მეორადი</label>
                                         </div>
                                     </div>
                                     <div class="col-12 mt-2">
@@ -245,6 +243,7 @@
 <script type="text/javascript">
     var route_prefix = "{{ url('filemanager') }}";
     $('#lfm').filemanager('image', {prefix: route_prefix});
+    $('#lfm_gallery').filemanager('image', {prefix: route_prefix});
 
     $(document).ready(function() {
         $('.summernote').summernote();

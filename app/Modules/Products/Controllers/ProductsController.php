@@ -14,6 +14,7 @@ use App\Modules\Products\Models\ProductOption;
 use App\Modules\Products\Models\ProductCountLog;
 use App\Modules\Products\Models\ProductCountLogItem;
 use App\Modules\Products\Models\ProductStatus;
+use App\Modules\Products\Models\ProductFacebook;
 
 class ProductsController extends Controller
 {
@@ -86,6 +87,11 @@ class ProductsController extends Controller
 
             $ProductList = $ProductList->orderBy('id', $OrderBy)->get();
 
+            $ProductStatus = new ProductStatus();
+            $ProductStatusList = $ProductStatus::where('deleted_at_int', '!=', 0)
+                                    ->where('active', 1)
+                                    ->get();
+
             $data = [
                 'product_list' => $ProductList,
                 'product_statuses' => $Product->productStatuses(),
@@ -93,6 +99,7 @@ class ProductsController extends Controller
                 'product_condition' => $Product->productCondition(),
                 'product_sort' => $Product->productSort(),
                 'product_category_list' => $ProductCategoryList,
+                'product_status' => $ProductStatusList,
             ];
 
             return view('products.products_index', $data);
@@ -273,18 +280,6 @@ class ProductsController extends Controller
             ];
 
             return view('products.products_options', $data);
-        } else {
-            abort('404');
-        }
-    }
-
-    public function actionProductsFacebook(Request $Request) {
-        if (view()->exists('products.products_facebook')) {
-
-            $data = [
-            ];
-
-            return view('products.products_facebook', $data);
         } else {
             abort('404');
         }

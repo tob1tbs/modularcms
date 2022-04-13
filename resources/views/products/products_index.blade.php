@@ -188,6 +188,7 @@
                                                     <div class="nk-tb-col tb-col-md"><span>ფასი</span></div>
                                                     <div class="nk-tb-col tb-col-lg"><span>დამატების თარიღი</span></div>
                                                     <div class="nk-tb-col tb-col-lg"><span>ნაშთი</span></div>
+                                                    <div class="nk-tb-col tb-col-lg"><span>Facebook</span></div>
                                                     <div class="nk-tb-col tb-col-md"><span>სტატუსი</span></div>
                                                     <div class="nk-tb-col nk-tb-col-tools">&nbsp;</div>
                                                 </div>
@@ -197,6 +198,7 @@
                                                         <div class="user-card">
                                                             <div class="user-info">
                                                                 <span class="tb-lead">@if(count($product_item->getProductChild) > 0) <em style="cursor: pointer; font-size: 18px; position: relative; top: 3px;" class="icon ni ni-arrow-down-circle show-child-product" data-parent-id="{{ $product_item->id }}"></em> @endif #{{ $product_item->id }} - {{ $product_item->name_ge }}</span>
+                                                                <br>{{ $product_item->productStatus->name }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -230,6 +232,12 @@
                                                     </div>
                                                     <div class="nk-tb-col tb-col-md">
                                                             <span class="badge badge-success" style="cursor: pointer;" onclick="UpdateProductCount({{ $product_item->id}}, this)">{{ $product_item->count }}</span>
+                                                    </div>
+                                                    <div class="nk-tb-col tb-col-lg">
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" id="product_facebook_{{ $product_item->id }}" onclick="ProductFacebookChange({{ $product_item->id }}, this)" @if($product_item->facebook == 1) checked @endif>
+                                                            <label class="custom-control-label" for="product_facebook_{{ $product_item->id }}"></label>
+                                                        </div>
                                                     </div>
                                                     <div class="nk-tb-col tb-col-lg">
                                                         <div class="custom-control custom-switch">
@@ -318,6 +326,12 @@
                                                         </div>
                                                         <div class="nk-tb-col tb-col-lg">
                                                             <div class="custom-control custom-switch">
+                                                                <input type="checkbox" class="custom-control-input" id="product_facebook_{{ $product_item->id }}" onclick="ProductFacebookChange({{ $product_item->id }}, this)" @if($product_item->facebook == 1) checked @endif>
+                                                                <label class="custom-control-label" for="product_facebook_{{ $product_item->id }}"></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-lg">
+                                                            <div class="custom-control custom-switch">
                                                                 <input type="checkbox" class="custom-control-input" id="product_active_{{ $product_child_item->id }}" onclick="ProductActiveChange({{ $product_child_item->id }}, this)" @if($product_child_item->active == 1) checked @endif>
                                                                 <label class="custom-control-label" for="product_active_{{ $product_child_item->id }}"></label>
                                                             </div>
@@ -328,14 +342,31 @@
                                                                     <div class="drodown">
                                                                         <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                                                         <div class="dropdown-menu dropdown-menu-right" style="min-width: 250px; width: 100%;">
-                                                                            <ul class="link-check">
-                                                                              <li><span>Show</span></li>
-                                                                              <li class="active"><a href="#">10 Items</a></li>
-                                                                              <li><a href="#">20 Items</a></li>
-                                                                              <li><a href="#">50 Items</a></li>
-                                                                            </ul>
-                                                                            <ul class="link-check">
-                                                                              <li><span class="font-neue">მოქმედება</span></li>
+                                                                            <ul class="link-list-opt no-bdr">
+                                                                                <li>
+                                                                                    <a href="{{ route('actionProductsEdit', $product_item->id) }}">
+                                                                                        <em class="icon ni ni-dot"></em>
+                                                                                        <span>რედაქტირება</span>
+                                                                                    </a>
+                                                                                </li>                                                                                   
+                                                                                <li>
+                                                                                    <a href="javascript:;" onclick="GetProductPhotos({{ $product_item->id }})">
+                                                                                        <em class="icon ni ni-dot"></em>
+                                                                                        <span>დამატებითი სურათები</span>
+                                                                                    </a>
+                                                                                </li>                                                                              
+                                                                                <li>
+                                                                                    <a href="javascript:;" onclick="ChangeProductStatus({{ $product_item->id }})">
+                                                                                        <em class="icon ni ni-dot"></em>
+                                                                                        <span>სტატუსის შეცვლა</span>
+                                                                                    </a>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <a href="javascript:;" onclick="ProductDelete({{ $product_item->id }})" class="text-danger">
+                                                                                        <em class="icon ni ni-trash"></em>
+                                                                                        <span>პროდუქტის წაშლა</span>
+                                                                                    </a>
+                                                                                </li>
                                                                             </ul>
                                                                         </div>
                                                                     </div>
@@ -448,13 +479,17 @@
             <div class="modal-body">
                 <form action="#" class="form-validate is-alter" novalidate="novalidate" id="product_status_form">
                     <div class="form-group">
-                        <label class="form-label font-helvetica-regular" for="product_status">სტატუსი</label>
+                        <label class="form-label font-helvetica-regular" for="product_status_data">სტატუსი</label>
                         <div class="form-control-wrap">
-                            <select class="form-control form-select-sm" name="product_status" id="product_status">
+                            <select class="form-control" name="product_status_data" id="product_status_data">
                                 <option value="0"></option>
+                                @foreach($product_status as $status_item)
+                                <option value="{{ $status_item->id }}">{{ $status_item->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
+                    <input type="hidden" name="status_product_id" id="status_product_id">
                     <button type="button" class="btn btn-success font-helvetica-regular" onclick="ChangeProductStatusSubmit()">განახლება</button>
                 </form>
             </div>

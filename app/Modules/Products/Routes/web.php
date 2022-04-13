@@ -9,7 +9,6 @@ Route::group(['prefix' => 'products', 'middleware' => ['login']], function () {
     Route::get('/brands', 'ProductsController@actionProductsBrands')->name('actionProductsBrands');
     Route::get('/options', 'ProductsController@actionProductsOptions')->name('actionProductsOptions');
     Route::get('/vendor', 'ProductsController@actionProductsVendors')->name('actionProductsVendors');
-    Route::get('/facebook', 'ProductsController@actionProductsFacebook')->name('actionProductsFacebook');
     Route::get('/balance/history', 'ProductsController@actionProductsBalanceHistory')->name('actionProductsBalanceHistory');
     Route::get('/balance/history/{id}', 'ProductsController@actionProductsBalanceHistoryList')->name('actionProductsBalanceHistoryList');
 });
@@ -24,6 +23,8 @@ Route::group(['prefix' => 'products/ajax', 'middleware' => []], function () {
     Route::post('/active', 'ProductsAjaxController@ajaxProductActive')->name('ajaxProductActive');
     Route::post('/delete', 'ProductsAjaxController@ajaxProductDelete')->name('ajaxProductDelete');
     Route::get('/photo', 'ProductsAjaxController@ajaxGetProductPhotos')->name('ajaxGetProductPhotos');
+    Route::get('/status/get', 'ProductsAjaxController@ajaxGetProductStatus')->name('ajaxGetProductStatus');
+    Route::post('/status/update', 'ProductsAjaxController@ajaxUpdateProductStatus')->name('ajaxUpdateProductStatus');
     Route::post('/photo/gallery/delete', 'ProductsAjaxController@ajaxGetProductPhotosGalleryDelete')->name('ajaxGetProductPhotosGalleryDelete');
     Route::post('/photo/gallery/update', 'ProductsAjaxController@ajaxGetProductPhotosGalleryUpdate')->name('ajaxGetProductPhotosGalleryUpdate');
     // BALANCE

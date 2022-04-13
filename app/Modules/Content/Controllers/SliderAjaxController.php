@@ -60,6 +60,7 @@ class SliderAjaxController extends Controller
                         'id' => $Request->slider_id,
                         'text' => json_encode($Array),
                         'path' => $Request->slider_photo,
+                        'is_banner' => $Request->is_banner,
                         'url' => $Request->slider_url,
                     ],
                 );

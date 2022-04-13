@@ -85,11 +85,6 @@
                                     <span class="nk-menu-text">პროდუქციის დამატება</span>
                                 </a>
                             </li>
-                            <li class="nk-menu-item">
-                                <a href="{{ route('actionProductsFacebook') }}" class="nk-menu-link">
-                                    <span class="nk-menu-text">Facebook Feed</span>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nk-menu-item has-sub">

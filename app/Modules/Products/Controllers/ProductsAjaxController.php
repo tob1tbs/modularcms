@@ -981,7 +981,7 @@ class ProductsAjaxController extends Controller
                 'active' => $Request->product_active,
             ]);
 
-            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+            return Response::json(['status' => true]);
 
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
@@ -998,7 +998,7 @@ class ProductsAjaxController extends Controller
                 'deleted_at_int' => 0,
             ]);
 
-            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+            return Response::json(['status' => true, 'message' => 'პროდუქტი წარმატებით წაიშალა']);
             
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
@@ -1172,6 +1172,49 @@ class ProductsAjaxController extends Controller
             ]);
 
             return Response::json(['status' => true, 'message' => 'ნაშტები წარმატებით დაბრუნდა !!!']);
+
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxGetProductFacebook(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->product_id)) {
+
+            $Product = new Product();
+            $Product::find($Request->product_id)->update([
+                'facebook' => $Request->product_facebook,
+            ]);
+
+            return Response::json(['status' => true]);
+
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxGetProductStatus(Request $Request) {
+        if($Request->isMethod('GET') && !empty($Request->product_id)) {
+
+            $Product = new Product();
+            $ProductData = $Product::find($Request->product_id);
+
+            return Response::json(['status' => true, 'ProductData' => $ProductData]);
+
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxUpdateProductStatus(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->product_id)) {
+
+            $Product = new Product();
+            $Product::find($Request->product_id)->update([
+                'status' => $Request->status,
+            ]);
+
+            return Response::json(['status' => true, 'message' => 'სტატუსი წარმატებით შეიცვალა !!!']);
 
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);

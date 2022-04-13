@@ -1859,5 +1859,52 @@ function RestoreItemCount(item_id) {
 }
 
 function ChangeProductStatus(product_id) {
-    $("#ProductStatusModal").modal('show');
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/status/get",
+        type: "GET",
+        data: {
+            product_id: product_id,
+        },
+        success: function(data) {
+            if(data['status'] == true) {
+                $("#status_product_id").val(product_id);
+                $("#product_status_data option[value='"+data['ProductData']['status']+"']").attr("selected","selected");
+                $("#ProductStatusModal").modal('show');
+            }   
+        }
+    });
+}
+
+function ChangeProductStatusSubmit() {
+    Swal.fire({
+        title: "ნამდვილად გსურთ სტატუსის შეცვლა?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'დადასტურება',
+        cancelButtonText: "გათიშვა",
+        preConfirm: () => {
+            $.ajax({
+                dataType: 'json',
+                url: "/products/ajax/status/update",
+                type: "POST",
+                data: {
+                    product_id: $("#status_product_id").val(),
+                    status: $("#product_status_data").val(),
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    if(data['status'] == true) {
+                        Swal.fire({
+                          icon: 'success',
+                          text: data['message'],
+                        })
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
 }

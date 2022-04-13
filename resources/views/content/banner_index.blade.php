@@ -16,7 +16,7 @@
                     <div class="nk-block-head-content">
                         <ul class="nk-block-tools g-3">
                             <li>
-                                <a href="javascript:;" class="btn btn-white btn-outline-light">
+                                <a href="javascript:;" onclick="AddNewPhoto()" class="btn btn-white btn-outline-light">
                                     <em class="icon ni ni-plus"></em>
                                     <span class="font-helvetica-regular">ახალი სურათი</span>
                                 </a>
@@ -25,20 +25,64 @@
                     </div>
                 </div>
             </div>
-            <div class="card card-preview">
-                <div class="card-inner">
-                    <div class="toggle-expand-content expanded" data-content="quick-access">
-                        <div class="nk-files nk-files-view-grid">
-                            <div class="nk-files-list">
-
+            <div class="card-inner">
+                <div class="nk-block">
+                    <div class="card card-bordered card-stretch">
+                        <div class="card-inner p-0">
+                            <div class="nk-tb-list nk-tb-ulist">
+                                <div class="nk-tb-item nk-tb-head font-helvetica-regular">
+                                    <div class="nk-tb-col"><span># სურათი</span></div>
+                                    <div class="nk-tb-col tb-col-md"><span>სტატუსი</span></div>
+                                    <div class="nk-tb-col nk-tb-col-tools">&nbsp;</div>
+                                </div>
+                                @foreach($banner_list as $banner_item)
+                                <div class="nk-tb-item font-helvetica-regular">
+                                    <div class="nk-tb-col">
+                                        <div class="user-avatar sq xl">
+                                            <img src="{{ $banner_item->path }}" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="nk-tb-col tb-col-lg">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="product_active_{{ $banner_item->id }}" onclick="BannerActiveChange({{ $banner_item->id }}, this)" @if($banner_item->active == 1) checked @endif>
+                                            <label class="custom-control-label" for="product_active_{{ $banner_item->id }}"></label>
+                                        </div>
+                                    </div>
+                                    <div class="nk-tb-col nk-tb-col-tools">
+                                        <ul class="nk-tb-actions gx-1">
+                                            <li>
+                                                <div class="drodown">
+                                                    <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                                    <div class="dropdown-menu dropdown-menu-right" style="min-width: 250px; width: 100%;">
+                                                        <ul class="link-list-opt no-bdr">
+                                                            <li>
+                                                                <a href="javascript:;" onclick="ViewBannerPhoto({{ $banner_item->id }})">
+                                                                    <em class="icon ni ni-dot"></em>
+                                                                    <span>სურათის ნახვა</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" onclick="DeleteBannerPhoto({{ $banner_item->id }})" class="text-danger">
+                                                                    <em class="icon ni ni-trash"></em>
+                                                                    <span>სურათის წაშლა</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div>                         
+            </div>                         
         </div>
     </div>
-</div>	
+</div>  
 <style type="text/css">
     .nk-files-view-grid .nk-file {
         width: calc(33.33% - 16px);
