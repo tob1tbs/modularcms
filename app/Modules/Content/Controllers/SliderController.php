@@ -31,20 +31,4 @@ class SliderController extends Controller
             abort('404');
         }
     }
-
-    public function actionBannerIndex() {
-        if (view()->exists('content.banner_index')) {
-
-            $Banner = new Banner();
-            $BannerList = $Banner::where('deleted_at_int', '!=', 0)->get();
-
-            $data = [
-                'banner_list' => $BannerList,
-            ];
-
-            return view('content.banner_index', $data);
-        } else {
-            abort('404');
-        }
-    }
 }

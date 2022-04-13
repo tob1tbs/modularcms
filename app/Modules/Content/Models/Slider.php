@@ -11,5 +11,5 @@ class Slider extends Model
 
     protected $table = "new_slider";
 
-    protected $fillable = ['id', 'path', 'text', 'url', 'active', 'deleted_at', 'deleted_at_int'];
+    protected $fillable = ['id', 'path', 'text', 'url', 'is_banner', 'active', 'deleted_at', 'deleted_at_int'];
 }
