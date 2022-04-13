@@ -45,13 +45,13 @@
                                     </div>
                                     <div class="nk-tb-col tb-col-lg">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" id="photo_is_banner_{{ $slider_item->id }}" onclick="ProductActiveChange({{ $slider_item->id }}, this)" @if($slider_item->is_banner == 1) checked @endif>
+                                            <input type="checkbox" class="custom-control-input" id="photo_is_banner_{{ $slider_item->id }}" onclick="IsBannerChange({{ $slider_item->id }}, this)" @if($slider_item->is_banner == 1) checked @endif>
                                             <label class="custom-control-label" for="photo_is_banner_{{ $slider_item->id }}"></label>
                                         </div>
                                     </div>
                                     <div class="nk-tb-col tb-col-lg">
                                         <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" id="slider_active_{{ $slider_item->id }}" onclick="ProductActiveChange({{ $slider_item->id }}, this)" @if($slider_item->active == 1) checked @endif>
+                                            <input type="checkbox" class="custom-control-input" id="slider_active_{{ $slider_item->id }}" onclick="SliderActiveChange({{ $slider_item->id }}, this)" @if($slider_item->active == 1) checked @endif>
                                             <label class="custom-control-label" for="slider_active_{{ $slider_item->id }}"></label>
                                         </div>
                                     </div>

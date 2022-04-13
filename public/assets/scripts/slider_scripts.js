@@ -57,6 +57,11 @@ function ViewSliderPhoto(slider_id) {
             	$("#slider_big_text_en").val(JSON.parse(data['SliderPhoto']['text'])['big_text_en']);
             	$("#slider_url").val(data['SliderPhoto']['url']);
             	$("#slider_id").val(data['SliderPhoto']['id']);
+                if(data['SliderPhoto']['is_banner'] == 1) {
+                    $("#is_banner").prop('checked',true);
+                } else {
+                    $("#is_banner").prop('checked',false);
+                }
                 $("#SliderPhotoUpload").modal('show');
             }
         }
@@ -89,6 +94,54 @@ function DeleteSliderPhoto(slider_id) {
                     location.reload();
                 }
             });
+        }
+    });
+}
+
+function SliderActiveChange(slider_id, elem) {
+    if($(elem).is(":checked")) {
+        slider_active = 1;
+    } else {
+        slider_active = 0
+    }
+
+    $.ajax({
+        dataType: 'json',
+        url: "/content/ajax/slider/active",
+        type: "POST",
+        data: {
+            slider_id: slider_id,
+            slider_active: slider_active,
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            return;
+        }
+    });
+}
+
+function IsBannerChange(slider_id, elem) {
+    if($(elem).is(":checked")) {
+        is_banner = 1;
+    } else {
+        is_banner = 0
+    }
+
+    $.ajax({
+        dataType: 'json',
+        url: "/content/ajax/slider/banner",
+        type: "POST",
+        data: {
+            slider_id: slider_id,
+            is_banner: is_banner,
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            return;
         }
     });
 }

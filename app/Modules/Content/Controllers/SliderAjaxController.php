@@ -86,6 +86,28 @@ class SliderAjaxController extends Controller
     }
 
     public function ajaxSliderActiveChange(Request $Request) {
-        
+        if($Request->isMethod('POST') && !empty($Request->slider_id)) {
+            $Slider = new Slider();
+            $Slider::find($Request->slider_id)->update([
+                'active' => $Request->slider_active,
+            ]);
+
+            return Response::json(['status' => true]);
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxSliderBanner(Request $Request) {
+        if($Request->isMethod('POST') && !empty($Request->slider_id)) {
+            $Slider = new Slider();
+            $Slider::find($Request->slider_id)->update([
+                'is_banner' => $Request->is_banner,
+            ]);
+
+            return Response::json(['status' => true]);
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა, გთხოვთ სცადოთ თავიდან !!!']);
+        }
     }
 }
