@@ -855,6 +855,8 @@ class ProductsAjaxController extends Controller
                         'count' => $Request->product_count,
                         'stock' => $Request->product_in_stock,
                         'preorder' => $Request->product_preorder,
+                        'status' => $Request->product_status,
+                        'vendor_id' => $Request->product_vendor,
                         'used' => $Request->product_used,
                     ],
                 );

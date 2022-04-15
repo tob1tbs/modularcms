@@ -27,6 +27,7 @@ Route::group(['prefix' => 'products/ajax', 'middleware' => []], function () {
     Route::post('/status/update', 'ProductsAjaxController@ajaxUpdateProductStatus')->name('ajaxUpdateProductStatus');
     Route::post('/photo/gallery/delete', 'ProductsAjaxController@ajaxGetProductPhotosGalleryDelete')->name('ajaxGetProductPhotosGalleryDelete');
     Route::post('/photo/gallery/update', 'ProductsAjaxController@ajaxGetProductPhotosGalleryUpdate')->name('ajaxGetProductPhotosGalleryUpdate');
+    Route::post('/facebook', 'ProductsAjaxController@ajaxGetProductFacebook')->name('ajaxGetProductFacebook');
     // BALANCE
     Route::get('/balance/export', 'ProductsAjaxController@ajaxProductBalanceExport')->name('ajaxProductBalanceExport');
     Route::post('/balance/update', 'ProductsAjaxController@ajaxProductBalanceUpdate')->name('ajaxProductBalanceUpdate');

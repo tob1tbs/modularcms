@@ -1908,3 +1908,27 @@ function ChangeProductStatusSubmit() {
         }
     });
 }
+
+function ProductFacebookChange(product_id, elem) {
+    if($(elem).is(":checked")) {
+        product_facebook = 1;
+    } else {
+        product_facebook = 2
+    }
+
+    $.ajax({
+        dataType: 'json',
+        url: "/products/ajax/facebook",
+        type: "POST",
+        data: {
+            product_id: product_id,
+            product_facebook: product_facebook,
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            return;
+        }
+    });
+}
