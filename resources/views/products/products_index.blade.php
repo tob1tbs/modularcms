@@ -216,8 +216,10 @@
                                                     </div>
                                                     <div class="nk-tb-col tb-col-lg">
                                                         <span class="tb-date">
-                                                            @if(!empty($product_item->getProductPrice->price))
-                                                            {{ $product_item->getProductPrice->price / 100 }} ₾
+                                                            @if(!empty($product_item->getProductPrice))
+                                                            {{ $product_item->getProductPrice['0']->price / 100 }} ₾
+                                                            @else 
+                                                            0 
                                                             @endif
                                                             @if(!empty($product_item->discount_price))
                                                             <span class="badge badge-outline-primary" title="ფასდაკლებული თანხა">{{ $product_item->discount_price / 100 }} ₾</span>

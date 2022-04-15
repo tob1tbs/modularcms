@@ -878,6 +878,12 @@ class ProductsAjaxController extends Controller
                 $ProductMeta->description = json_encode($MetaDescriptionArray);
                 $ProductMeta->save();
 
+                $ProductMeta = new ProductMeta();
+                $ProductMeta::updateOrCreate(
+                    ['id' => $Request->product_meta_id],
+                    ['id' => $Request->product_meta_id, 'product_id' => $Request->product_id, 'keywords' => json_encode($MetaKeywordsArray), 'description' => json_encode($MetaDescriptionArray)],
+                );
+
                 $ProductPrice = new ProductPrice();
                 $ProductPrice::updateOrCreate(
                     ['id' => $Request->product_price_id],
@@ -1217,6 +1223,19 @@ class ProductsAjaxController extends Controller
             ]);
 
             return Response::json(['status' => true, 'message' => 'სტატუსი წარმატებით შეიცვალა !!!']);
+
+        } else {
+            return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
+        }
+    }
+
+    public function ajaxGetProductOptionsData(Request $Request) {
+        if($Request->isMethod('GET') && !empty($Request->product_id)) {
+
+            $ProductOptionItem = new ProductOptionItem();
+            $ProductOptionItemList = $ProductOptionItem::where('product_id', $Request->product_id)->get()->load('optionValueData');
+
+            return Response::json(['status' => true, 'ProductOptionItemList' => $ProductOptionItemList,]);
 
         } else {
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);

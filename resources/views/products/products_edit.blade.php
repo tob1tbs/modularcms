@@ -147,6 +147,7 @@
                                                     <label class="form-label" for="product_meta_description_en">პროდუქტის მეტა DESCRIPTION (ინგლისურად)</label>
                                                     <input type="text" name="product_meta_description_en" id="product_meta_description_en" class="form-control" value="{{ json_decode($product_data->productMeta->description)->en }}">
                                                 </div>
+                                                <input type="hidden" name="product_meta_id" value="{{ $product_data->productMeta->id }}">
                                             </div>
                                         </div>
                                     </div>
@@ -357,6 +358,23 @@
                     `);    
                 }
             }
+        });
+
+        $.ajax({
+            dataType: 'json',
+            url: "/products/ajax/options/data",
+            type: "GET",
+            data: {
+                product_id: {{ $product_data->id }},
+            },
+            success: function(data) {
+                if(data['ProductOptionItemList'].length > 0) {
+                    $.each(data['ProductOptionItemList'], function(key, value) {
+                        
+                    });
+                };
+            }
+
         });
     });
 </script>
