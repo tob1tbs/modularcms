@@ -216,7 +216,7 @@
                                                     </div>
                                                     <div class="nk-tb-col tb-col-lg">
                                                         <span class="tb-date">
-                                                            @if(!empty($product_item->getProductPrice))
+                                                            @if(!empty($product_item->getProductPrice['0']))
                                                             {{ $product_item->getProductPrice['0']->price / 100 }} ₾
                                                             @else 
                                                             0 

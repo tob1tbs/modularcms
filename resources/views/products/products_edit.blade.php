@@ -181,6 +181,7 @@
                                         <div class="form-group">
                                             <label class="form-label" for="product_price">პროდუქტის ღირებულება</label>
                                             <input type="number" name="product_price" id="product_price" class="form-control check-input" value="@if(!empty($product_data->getProductPrice)){{ $product_data->getProductPrice['0']->price / 100 }}@else 0 @endif">
+                                            <input type="hidden" name="product_price_id" value="@if(!empty($product_data->getProductPrice)){{ $product_data->getProductPrice['0']->id }}@else 0 @endif">
                                         </div>
                                     </div>
                                     <div class="col-6 mt-2">
