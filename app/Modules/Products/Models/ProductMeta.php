@@ -11,5 +11,5 @@ class ProductMeta extends Model
 
     protected $table = "new_product_meta";
 
-    protected $fillable = ['id', 'product_id', 'keywords_ge', 'keywords_en', 'description_ge', 'description_ge'];
+    protected $fillable = ['id', 'product_id', 'keywords','description'];
 }

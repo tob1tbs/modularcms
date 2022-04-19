@@ -875,21 +875,28 @@ class ProductsAjaxController extends Controller
                     'en' => $Request->product_meta_description_en,
                 ];
 
-                $ProductMeta->keywords = json_encode($MetaKeywordsArray);
-                $ProductMeta->description = json_encode($MetaDescriptionArray);
-                $ProductMeta->save();
+                // dd($MetaKeywordsArray);
+
+                // k
 
                 $ProductMeta = new ProductMeta();
                 $ProductMeta::updateOrCreate(
                     ['id' => $Request->product_meta_id],
-                    ['id' => $Request->product_meta_id, 'product_id' => $Request->product_id, 'keywords' => json_encode($MetaKeywordsArray), 'description' => json_encode($MetaDescriptionArray)],
+                    ['id' => $Request->product_meta_id, 'product_id' => $ProductData->id, 'keywords' => json_encode($MetaKeywordsArray), 'description' => json_encode($MetaDescriptionArray)],
                 );
 
                 $ProductPrice = new ProductPrice();
-                $ProductPrice::updateOrCreate(
-                    ['id' => $Request->product_price_id],
-                    ['id' => $Request->product_price_id, 'product_id' => $ProductData->id, 'price' => $Request->product_price * 100,],
-                );
+
+                if(!empty($Request->product_price)) {
+                    $ProductPrice::updateOrCreate(
+                        ['id' => $Request->product_price_id],
+                        ['id' => $Request->product_price_id, 'product_id' => $ProductData->id, 'price' => $Request->product_price * 100,],
+                    );
+                } else {
+                    $ProductPrice->product_id = $ProductData->id;
+                    $ProductPrice->price = 0;
+                    $ProductPrice->save();
+                }
 
                 if(!empty($Request->product_option)) {
                     foreach($Request->product_option as $OptionKey => $OptionItem) {
@@ -1242,4 +1249,5 @@ class ProductsAjaxController extends Controller
             return Response::json(['status' => false, 'message' => 'დაფიქსირდა შეცდომა გთხოვთ სცადოთ თავიდან !!!']);
         }
     }
+
 }
