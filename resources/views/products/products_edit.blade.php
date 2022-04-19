@@ -107,7 +107,7 @@
                                             </div>
                                             <div class="col-sm-12 mt-2">
                                                 <label class="form-label">დამატებითი რაოდენობა (მაქს 5)</label>
-                                                <input id="gallery" name="gallery_photo" class="form-control" type="text" style="width: 85%; float: left;">
+                                                <input id="gallery" name="gallery_photo" class="form-control" type="text" style="width: 85%; float: left;" value="{{ $product_gallery_item }}">
                                                 <a id="lfm_gallery" data-input="gallery" data-preview="holder" class="btn btn-light font-helvetica-regular" style="max-width: 15%; float: right;">სურათის არჩევა</a>
                                             </div>
                                         </div>

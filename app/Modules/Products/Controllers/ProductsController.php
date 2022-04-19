@@ -151,7 +151,19 @@ class ProductsController extends Controller
             $Product = new Product();
             $ProductData = $Product::find($Request->product_id);
 
-            // dd($ProductData);
+            $ProductGallery = $ProductData->productGallery;
+
+            switch (count($ProductGallery)) {
+                case '0':
+                    $GalleryItem = '';
+                    break;
+                case '1':
+                    $GalleryItem =  $ProductGallery[0]->path;
+                    break;
+               default:
+                    $GalleryItem = $ProductGallery->pluck('path')->implode(', ');
+                    break;
+            }
 
             $ProductCategory = new ProductCategory();
             $ProductCategoryList = $ProductCategory::where('deleted_at_int', '!=', 0)
@@ -179,6 +191,7 @@ class ProductsController extends Controller
                 'product_list' => $ProductList,
                 'product_status' => $ProductStatusList,
                 'product_data' => $ProductData,
+                'product_gallery_item' => $GalleryItem,
             ];
 
             return view('products.products_edit', $data);

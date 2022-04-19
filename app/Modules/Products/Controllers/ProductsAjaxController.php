@@ -916,9 +916,12 @@ class ProductsAjaxController extends Controller
                 }
 
                 if(!empty($Request->gallery_photo)) {
-                    $GalleryPath = explode(',', $Request->gallery_photo);
+                    $ProductGallery = new ProductGallery();
+                    $ProductGallery::where('product_id', $ProductData->id)->delete();
 
+                    $GalleryPath = explode(',', $Request->gallery_photo);
                     if(count($GalleryPath) <= 5) {
+
                         foreach($GalleryPath as $GalleryItem) {
                             $ProductGallery = new ProductGallery();
                             $ProductGallery->path = $GalleryItem;

@@ -71,4 +71,8 @@ class Product extends Model
     public function productMeta() {
         return $this->hasOne('App\Modules\Products\Models\ProductMeta', 'product_id', 'id');
     }
+
+    public function productGallery() {
+        return $this->hasMany('App\Modules\Products\Models\ProductGallery', 'product_id', 'id')->orderBy('id', 'DESC');
+    }
 }
