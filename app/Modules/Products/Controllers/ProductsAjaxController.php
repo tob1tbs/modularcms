@@ -812,6 +812,7 @@ class ProductsAjaxController extends Controller
             $messages = array(
                 'product_name_ge.required' => 'გთხოვთ შეიყვანოთ პროდუქტის დასახელება',
                 'product_category.required' => 'გთხოვთ აირჩიოთ პროდუქტის კატეგორია',
+                'child_category_id.required' => 'გთხოვთ აირჩიოთ პროდუქტის ქვეკატეგორია',
                 'product_meta_keywords_ge.required' => 'გთხოვთ შეიყვანოთ მეტა ქივორდები',
                 'product_meta_description_ge.required' => 'გთხოვთ შეიყვანოთ მეტა აღწერა',
                 'product_price.required' => 'გთხოვთ შეიყვანოთ პროდუქტის ფასი',
@@ -822,6 +823,7 @@ class ProductsAjaxController extends Controller
             $validator = Validator::make($Request->all(), [
                 'product_name_ge' => 'required|max:255',
                 'product_category' => 'required|max:255',
+                'child_category_id' => 'required|max:255',
                 'product_meta_keywords_ge' => 'required|max:255',
                 'product_meta_description_ge' => 'required|max:255',
                 'product_price' => 'required|max:255|not_in:0',
