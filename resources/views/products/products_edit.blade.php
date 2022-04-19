@@ -73,25 +73,25 @@
                                             <div class="col-12 mt-2">
                                                 <div class="form-group">
                                                     <label class="form-label" for="product_name_ge">პროდუქტის დასახელება (ქართულად)</label>
-                                                    <input type="text" name="product_name_ge" id="product_name_ge" class="form-control check-input" value="{{ $product_item->name_ge }}">
+                                                    <input type="text" name="product_name_ge" id="product_name_ge" class="form-control check-input" value="{{ $product_data->name_ge }}">
                                                 </div>
                                             </div>
                                             <div class="col-12 mt-2">
                                                 <div class="form-group">
                                                     <label class="form-label" for="product_description_ge">პროდუქტის აღწერა (ქართულად)</label>
-                                                    <textarea class="summernote check-input" name="product_description_ge" id="product_description_ge">{{ json_decode($product_item->description)->ge }}</textarea>
+                                                    <textarea class="summernote check-input" name="product_description_ge" id="product_description_ge">{{ json_decode($product_data->description)->ge }}</textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12 mt-2">
                                                 <div class="form-group">
                                                     <label class="form-label" for="product_brand">პროდუქტის დასახელება (ინგლისურად)</label>
-                                                    <input type="text" name="product_name_en" id="product_name_en" class="form-control" value="{{ $product_item->name_en }}">
+                                                    <input type="text" name="product_name_en" id="product_name_en" class="form-control" value="{{ $product_data->name_en }}">
                                                 </div>
                                             </div>
                                             <div class="col-12 mt-2">
                                                 <div class="form-group">
                                                     <label class="form-label" for="product_description_en">პროდუქტის აღწერა (ინგლისურად)</label>
-                                                    <textarea class="summernote" name="product_description_en" id="product_description_en">{{ json_decode($product_item->description)->en }}</textarea>
+                                                    <textarea class="summernote" name="product_description_en" id="product_description_en">{{ json_decode($product_data->description)->en }}</textarea>
                                                 </div>
                                             </div>
                                         </div>

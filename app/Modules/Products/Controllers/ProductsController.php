@@ -151,6 +151,8 @@ class ProductsController extends Controller
             $Product = new Product();
             $ProductData = $Product::find($Request->product_id);
 
+            // dd($ProductData);
+
             $ProductCategory = new ProductCategory();
             $ProductCategoryList = $ProductCategory::where('deleted_at_int', '!=', 0)
                                                     ->where('parent_id', 0)
@@ -160,7 +162,6 @@ class ProductsController extends Controller
             $ProductVendor = new ProductVendor();
             $ProductVendorList = $ProductVendor::where('deleted_at_int', '!=', 0)->get();
 
-            $Product = new Product();
             $ProductList = $Product::where('deleted_at_int', '!=', 0)
                                     ->where('parent_id', 0)
                                     ->where('active', 1)
